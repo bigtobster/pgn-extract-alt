@@ -1,4 +1,4 @@
-# pgn-extract-alt
+# PGN-extract-alt
 A highly extensible modular rewrite of the PGN processing application pgn-extract written in Java.
 
 ##Latest##
