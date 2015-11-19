@@ -1,5 +1,5 @@
 # PGN-extract-alt
-A highly extensible modular rewrite of the PGN processing application pgn-extract written in Java.
+A highly extensible modular rewrite of the PGN processing application pgn-extract written in Java and available on Windows, Mac and Linux.
 
 ##Latest##
  <ul>
