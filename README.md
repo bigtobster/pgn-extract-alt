@@ -46,7 +46,8 @@ TBC
 TBC
 
 ##Structure##
-The core of PGN-extract is based on Chesspresso (http://www.chesspresso.org/). The interface is built on Clamshell-CLI (https://github.com/vladimirvivien/clamshell-cli).
+The core of PGN-extract-alt is based on Chesspresso (http://www.chesspresso.org/). The interface is built on Clamshell-CLI (https://github
+.com/vladimirvivien/clamshell-cli).
 
 The Machine Correlation module uses Stockfish 6 as its benchmark (https://stockfishchess.org/) wrapped in a thin-client called Chess-misc (https://github.com/rahular/chess-misc). 
 
