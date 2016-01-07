@@ -113,9 +113,11 @@
 							<useUniqueVersions>false</useUniqueVersions>
 							<classpathPrefix>lib/</classpathPrefix>
 							<mainClass>${jar.mainclass}</mainClass>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
 						<manifestEntries>
 							<version>${project.version}</version>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -144,6 +146,22 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doUpdate>true</doUpdate>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>
