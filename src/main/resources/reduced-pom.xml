@@ -6,7 +6,49 @@
 	<artifactId>pgn-extract-alt</artifactId>
 	<name>pgn-extract-alt</name>
 	<version>1.0-SNAPSHOT</version>
+	<description>A modular PGN processing application</description>
 	<url>https://github.com/bigtobster/pgn-extract-alt</url>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/bigtobster/pgn-extract-alt/issues</url>
+	</issueManagement>
+	<inceptionYear>2015</inceptionYear>
+	<developers>
+		<developer>
+			<name>Toby Leheup</name>
+			<email>toby.leheup@googlemail.com</email>
+			<url>https://github.com/bigtobster</url>
+			<roles>
+				<role>Developer</role>
+				<role>Student at University of Kent</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Dr David Barnes</name>
+			<email>D.J.Barnes@kent.ac.uk</email>
+			<url>https://www.cs.kent.ac.uk/people/staff/djb/</url>
+			<roles>
+				<role>Project Supervisor</role>
+			</roles>
+		</contributor>
+	</contributors>
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>http://opensource.org/licenses/mit-license.php</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/bigtobster/pgn-extract-alt</connection>
+		<url>https://github.com/bigtobster/pgn-extract-alt</url>
+	</scm>
+	<organization>
+		<name>University of Kent</name>
+		<url>https://www.kent.ac.uk/</url>
+	</organization>
 	<build>
 		<resources>
 			<resource>
@@ -76,18 +118,6 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>spring-release</id>
-			<name>Spring Maven RELEASE Repository</name>
-			<url>http://repo.springframework.org/release</url>
-		</repository>
-		<repository>
-			<id>libs-release</id>
-			<name>Spring Maven libs-release Repository</name>
-			<url>http://repo.springframework.org/libs-release</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -102,6 +132,26 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+				<configuration>
+					<detectLinks>true</detectLinks>
+					<show>package</show>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.8.1</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.3</version>
+			</plugin>
+		</plugins>
+	</reporting>
 	<properties>
 		<spring.shell.version>1.1.0.RELEASE</spring.shell.version>
 		<log4j.version>1.2.17</log4j.version>

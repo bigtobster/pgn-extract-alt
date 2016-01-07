@@ -31,7 +31,7 @@ public class PGNIOCommands implements CommandMarker
 	@CliCommand(value = PGNIOCommands.EXPORT_COMMAND, help = PGNIOCommands.EXPORT_COMMAND_HELP)
 	public static String exportPGN()
 	{
-		//noinspection MagicNumber,ConstantConditions,ConstantIfStatement
+		//ConstantConditions,ConstantIfStatement
 		if(true)
 		{
 			return PGNIOCommands.SUCCESSFUL_EXPORT;

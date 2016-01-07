@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changelog>
+
+	<changeset datePattern="yyyyMMdd HH:mm:ss z" start="20151208 18:50:06 GMT" end="20160108 18:50:06 GMT">
+		<changelog-entry>
+			<date pattern="yyyy-MM-dd">2016-01-07</date>
+			<time pattern="HH:mm:ss">01:04:49</time>
+			<author><![CDATA[Bigtobster <toby.leheup@googlemail.com>]]></author>
+			<file>
+				<action>added</action>
+				<name>.gitignore</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>LICENSE</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>README.md</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>pom.xml</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/java/com/bigtobster/pgnextractalt/commands/PGNIOCommands.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/java/com/bigtobster/pgnextractalt/commands/package-info.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/java/com/bigtobster/pgnextractalt/core/HistoryFileNameProvider.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/java/com/bigtobster/pgnextractalt/core/PromptProvider.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/java/com/bigtobster/pgnextractalt/core/SplashScreen.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/java/com/bigtobster/pgnextractalt/core/package-info.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/resources/META-INF/spring/spring-shell-plugin.xml</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/resources/log4j.properties</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/resources/pgn-extract-alt.properties</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/main/resources/reduced-pom.xml</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/test/java/com/bigtobster/pgnextractalt/commands/PGNIOCommandsTest.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<file>
+				<action>added</action>
+				<name>src/test/java/com/bigtobster/pgnextractalt/core/ShellCoreTest.java</name>
+				<revision>3b9b4a79314b5021a96e12bade04a21ecd3ea857</revision>
+			</file>
+			<msg><![CDATA[Initial Project Check In.
+Maven POM.
+Stub Import/Export commands.
+Splash, Prompt and History Config.
+.gitignore with ignored files.
+Testing for Import and Export Stubs.
+Testing for Shell boot and stop.
+Properties and Spring Shell structural stuff.]]></msg>
+		</changelog-entry>
+	</changeset>
+
+</changelog>

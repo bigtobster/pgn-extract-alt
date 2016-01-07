@@ -1,3 +1,8 @@
+/target/javadoc-bundle-options
+/target/maven-archiver
+/target/lib
+/target/original-pgn-extract-alt-1.0-SNAPSHOT.jar
+/history.log
 /.idea
 /pgn-extract-alt.iml
 # Created by .ignore support plugin (hsz.mobi)
