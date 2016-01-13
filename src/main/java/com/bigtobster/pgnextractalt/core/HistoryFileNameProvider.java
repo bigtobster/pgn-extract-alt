@@ -18,6 +18,7 @@ public class HistoryFileNameProvider extends DefaultHistoryFileNameProvider
 
 	private static final String LOG_FILENAME = "history.log";
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String getHistoryFileName()
 	{

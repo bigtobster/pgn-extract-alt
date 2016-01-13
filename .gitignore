@@ -8,3 +8,5 @@
 /.idea
 /pgn-extract-alt.iml
 # Created by .ignore support plugin (hsz.mobi)
+/target/history.log
+/spring-shell.log

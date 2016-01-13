@@ -88,14 +88,14 @@ public class SplashScreen extends DefaultBannerProvider
 				}
 				catch(final IOException ex)
 				{
-					this.logger.log(Level.WARNING, ex.getMessage());
+					this.logger.log(Level.SEVERE, ex.getMessage());
 				}
 			}
 		}
-		this.logger.log(Level.INFO, SplashScreen.VERSION + version);
 		return version;
 	}
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String getWelcomeMessage()
 	{

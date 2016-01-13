@@ -9,4 +9,12 @@
 	<context:component-scan base-package="com.bigtobster.pgnextractalt.core"/>
 	<context:component-scan base-package="com.bigtobster.pgnextractalt.commands"/>
 
+	<context:annotation-config/>
+
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+	<bean id="chessContext" class="com.bigtobster.pgnextractalt.chess.ChessContext"/>
+	<bean id="commandContext" class="com.bigtobster.pgnextractalt.commands.CommandContext"/>
+	<bean id="chessIO" class="com.bigtobster.pgnextractalt.chess.ChessIO"/>
+
 </beans>

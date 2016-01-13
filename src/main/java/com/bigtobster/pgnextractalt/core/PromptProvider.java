@@ -18,6 +18,7 @@ public class PromptProvider extends DefaultPromptProvider
 
 	private static final String PROMPT = "pgn-extract-alt>";
 
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String getPrompt()
 	{
