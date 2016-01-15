@@ -3,12 +3,15 @@ package com.bigtobster.pgnextractalt.chess;
 import chesspresso.game.Game;
 import chesspresso.pgn.PGNReader;
 import chesspresso.pgn.PGNSyntaxError;
+import chesspresso.pgn.PGNWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.activation.UnsupportedDataTypeException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -19,6 +22,7 @@ import java.util.logging.Logger;
 @SuppressWarnings({"PublicMethodNotExposedInInterface"})
 public final class ChessIO
 {
+	private static final String FAILED_TO_EXPORT_INVALID_GAME = "Failed to export an invalid game";
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger LOGGER = Logger.getLogger(ChessIO.class.getName());
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
@@ -26,13 +30,55 @@ public final class ChessIO
 	private ChessContext chessContext;
 
 	/**
-	 * Returns number of games in current context
-	 *
-	 * @return Number of games in current context
+	 * Writes the currently imported games to a PGN file
+	 * @param printWriter The printWriter with the bundled file to write to
 	 */
-	public int getGamesCount()
+	public void exportPGN(final PrintWriter printWriter)
 	{
-		return this.chessContext.getGames().size();
+		final PGNWriter pgnWriter = new PGNWriter(printWriter);
+		for(final Game game : this.chessContext.getGames())
+		{
+			//noinspection ProhibitedExceptionCaught
+			try
+			{
+				pgnWriter.write(game.getModel());
+			}
+			catch(final NullPointerException ignored)
+			{
+				/*
+				Bit of a Chesspresso weird-ism here
+				It tries super hard to import games - whether they are sane or not
+				In theory, the same issue applies when modifying games - you could "corrupt" them
+				Consequently, when you try to do something to, in this case export, those games,
+				you end up with errors. Those errors aren't fluffy and nice - they're NPEs...
+				As a rule, GIGO applies.
+				This is fundamentally an issue with Chesspresso that needs fixing at the Chesspresso level
+				If this isn't possible, perhaps consider having a validity scanner that validates games before export
+				and does something sensible with the invalid ones
+				 */
+				ChessIO.LOGGER.log(Level.WARNING, ChessIO.FAILED_TO_EXPORT_INVALID_GAME);
+				ChessIO.LOGGER.log(Level.WARNING, game.toString());
+			}
+		}
+		/*
+		Another Chesspresso weird-ism
+		It seems that PGNWriter does not flush the the printWriter
+		If you don't do the below, you have missing data on export!
+		 */
+		if(printWriter != null)
+		{
+			printWriter.flush();
+			printWriter.close();
+		}
+	}
+
+	/**
+	 * Returns number of games in current context
+	 *@return ArrayList&lt;Game&gt; List of current games
+	 */
+	public ArrayList<Game> getGames()
+	{
+		return this.chessContext.getGames();
 	}
 
 	/**

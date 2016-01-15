@@ -3,6 +3,7 @@ package com.bigtobster.pgnextractalt.commands;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -20,6 +21,21 @@ public class CommandContext
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private ChessIO chessIO;
+
+	/**
+	 * Logs a severe error in logs
+	 *
+	 * @param logger    The erring class's Logger
+	 * @param message   The message to be logged
+	 * @param exception The exception causing the error
+	 */
+	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
+	static void logSevereError(final Logger logger, final String message, final Exception exception)
+	{
+		logger.log(Level.SEVERE, message);
+		logger.log(Level.SEVERE, exception.getMessage());
+		logger.log(Level.SEVERE, exception.toString(), exception.fillInStackTrace());
+	}
 
 	/**
 	 * Getter for an Autowired ChessIO instance
