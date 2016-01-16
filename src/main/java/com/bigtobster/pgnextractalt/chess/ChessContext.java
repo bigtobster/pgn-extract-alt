@@ -14,19 +14,26 @@ import java.util.logging.Logger;
 class ChessContext
 {
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger          LOGGER        = Logger.getLogger(ChessContext.class.getName());
-	private final        ArrayList<Game> games         = new ArrayList<Game>(10);
-	private              boolean         isPGNImported = false;
+	private static final Logger          LOGGER = Logger.getLogger(ChessContext.class.getName());
+	private final        ArrayList<Game> games  = new ArrayList<Game>(10);
+
+	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
+	@Override
+	public String toString()
+	{
+		return "ChessContext{" +
+			   ", games=" + this.games +
+			   '}';
+	}
 
 	/**
 	 * Setter for the list of parsed games
 	 *
 	 * @param newGames New list of parsed games
 	 */
-	public void addGames(final ArrayList<Game> newGames)
+	void addGames(final ArrayList<Game> newGames)
 	{
 		this.games.addAll(newGames);
-		this.isPGNImported = true;
 	}
 
 	/**
@@ -34,7 +41,7 @@ class ChessContext
 	 *
 	 * @return ArrayList&lt;Game&gt; List of parsed games
 	 */
-	public ArrayList<Game> getGames()
+	ArrayList<Game> getGames()
 	{
 		return this.games;
 	}
@@ -44,27 +51,16 @@ class ChessContext
 	 *
 	 * @return boolean True if imported successfully else false
 	 */
-	public boolean isPGNImported()
+	boolean isPGNImported()
 	{
-		return this.isPGNImported;
+		return ! this.games.isEmpty();
 	}
 
 	/**
 	 * Resets PGN-Extract-Alt Context
 	 */
-	public void reset()
+	void reset()
 	{
-		this.isPGNImported = false;
 		this.games.clear();
-	}
-
-	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
-	@Override
-	public String toString()
-	{
-		return "ChessContext{" +
-			   "isPGNImported=" + this.isPGNImported +
-			   ", games=" + this.games +
-			   '}';
 	}
 }

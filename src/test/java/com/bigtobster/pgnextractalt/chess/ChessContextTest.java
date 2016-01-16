@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * Tests the Context of PGNExtractAlt Created by Toby Leheup on 08/01/16 for pgn-extract-alt.
@@ -18,6 +19,7 @@ public class ChessContextTest
 	private static final String BAD_DIFFERENT_GAME_LIST = "getGames returns different list to the one set";
 	private static final String BAD_IMPORT_INIT         = "ChessContext falsely initialising as imported";
 	private static final String BAD_NULL_GAME_LIST      = "getGames returns Null when it shouldn't";
+	private static final Logger LOGGER = Logger.getLogger(ChessContext.class.getName());
 	private static final String NON_EMPTY_GAME_LIST     = "chessContext should contain non-empty game list";
 	private static final String SUCCESSFUL_IMPORT       = "Import should be successful";
 

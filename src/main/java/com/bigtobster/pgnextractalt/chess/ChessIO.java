@@ -110,7 +110,7 @@ public final class ChessIO
 			game = pgnReader.parseGame();
 		}
 		while(game != null);
-		this.chessContext.addGames(games);
+		this.addGames(games);
 	}
 
 	/**
@@ -135,8 +135,19 @@ public final class ChessIO
 	@Override
 	public String toString()
 	{
+		//noinspection DuplicateStringLiteralInspection
 		return "ChessIO{" +
 			   "chessContext=" + this.chessContext +
 			   '}';
+	}
+
+	/**
+	 * Adds a list of established games to the current list of games
+	 *
+	 * @param games List of games to be added to the existing list
+	 */
+	void addGames(final ArrayList<Game> games)
+	{
+		this.chessContext.addGames(games);
 	}
 }

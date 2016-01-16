@@ -1,10 +1,13 @@
 package com.bigtobster.pgnextractalt.core;
 
+import com.bigtobster.pgnextractalt.chess.ChessIO;
+import com.bigtobster.pgnextractalt.chess.ChessTagModder;
 import org.junit.After;
 import org.springframework.context.ApplicationContext;
 import org.springframework.shell.Bootstrap;
 import org.springframework.shell.core.JLineShellComponent;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -15,6 +18,10 @@ import java.util.logging.Logger;
 @SuppressWarnings({"PublicMethodNotExposedInInterface"})
 public class TestContext
 {
+	/**
+	 * Assertion error message on expected console output being different to the actual result
+	 */
+	public static final  String              CONSOLE_MESSAGE_DIFFERS = "Console Message differs from expected case";
 	/**
 	 * Name of the dump directory relative to the binary. Files in here is where PGN-Extract-Alt should write test files to.
 	 */
@@ -77,6 +84,7 @@ public class TestContext
 	public static final  String              TEST_RESOURCE_NOT_FOUND = "Test resource not found";
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger              LOGGER                  = Logger.getLogger(TestContext.class.getName());
+	private static final char                SPACE                   = ' ';
 	private              ApplicationContext  applicationContext      = null;
 	private              Bootstrap           bootstrap               = null;
 	private              JLineShellComponent shell                   = null;
@@ -92,6 +100,31 @@ public class TestContext
 	}
 
 	/**
+	 * Builds a command string up from a basic command plus a Hash Map of Option, Argument value pairs to get "command [--&lt;option&gt; &lt;
+	 * arg&gt;]*"
+	 *
+	 * @param command         The base command
+	 * @param optionValuesMap The hash map of Option, Argument pairs
+	 * @return The fully constructed command
+	 */
+	public static String buildCommand(final String command, final HashMap<String, String> optionValuesMap)
+	{
+		final StringBuilder newCommandBuilder = new StringBuilder(50);
+		newCommandBuilder.append(command);
+		if(optionValuesMap != null)
+		{
+			for(final String key : optionValuesMap.keySet())
+			{
+				newCommandBuilder.append(" --");
+				newCommandBuilder.append(key);
+				newCommandBuilder.append(TestContext.SPACE);
+				newCommandBuilder.append(optionValuesMap.get(key));
+			}
+		}
+		return newCommandBuilder.toString();
+	}
+
+	/**
 	 * Getter for the Bootstrap application context
 	 *
 	 * @return The bootstrap application context
@@ -99,6 +132,27 @@ public class TestContext
 	public ApplicationContext getApplicationContext()
 	{
 		return this.applicationContext;
+	}
+
+	/**
+	 * Returns the ChessIO for the current context
+	 *
+	 * @return The current context's ChessIO instance
+	 */
+	public ChessIO getChessIO()
+	{
+		return this.applicationContext.getBean(ChessIO.class);
+	}
+
+	/**
+	 * Returns the ChessTagModder for the current context
+	 *
+	 * @return The current context's ChessTagModder instance
+	 */
+	@SuppressWarnings("UnusedDeclaration")
+	public ChessTagModder getChessTagModder()
+	{
+		return this.applicationContext.getBean(ChessTagModder.class);
 	}
 
 	/**

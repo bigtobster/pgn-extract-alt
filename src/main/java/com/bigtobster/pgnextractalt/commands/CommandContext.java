@@ -1,6 +1,7 @@
 package com.bigtobster.pgnextractalt.commands;
 
 import com.bigtobster.pgnextractalt.chess.ChessIO;
+import com.bigtobster.pgnextractalt.chess.ChessTagModder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.logging.Level;
@@ -12,8 +13,7 @@ import java.util.logging.Logger;
  *
  * @author Toby Leheup (Bigtobster)
  */
-@SuppressWarnings("PublicMethodNotExposedInInterface")
-public class CommandContext
+class CommandContext
 {
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger LOGGER = Logger.getLogger(CommandContext.class.getName());
@@ -22,6 +22,10 @@ public class CommandContext
 	@Autowired
 	private ChessIO chessIO;
 
+	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
+	@Autowired
+	private ChessTagModder chessTagModder;
+
 	/**
 	 * Logs a severe error in logs
 	 *
@@ -29,22 +33,12 @@ public class CommandContext
 	 * @param message   The message to be logged
 	 * @param exception The exception causing the error
 	 */
-	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
+	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "SameParameterValue"})
 	static void logSevereError(final Logger logger, final String message, final Exception exception)
 	{
 		logger.log(Level.SEVERE, message);
 		logger.log(Level.SEVERE, exception.getMessage());
 		logger.log(Level.SEVERE, exception.toString(), exception.fillInStackTrace());
-	}
-
-	/**
-	 * Getter for an Autowired ChessIO instance
-	 *
-	 * @return the ChessIO instance
-	 */
-	public ChessIO getChessIO()
-	{
-		return this.chessIO;
 	}
 
 	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
@@ -54,5 +48,25 @@ public class CommandContext
 		return "CommandContext{" +
 			   "chessIO=" + this.chessIO +
 			   '}';
+	}
+
+	/**
+	 * Getter for an Autowired ChessIO instance
+	 *
+	 * @return the ChessIO instance
+	 */
+	ChessIO getChessIO()
+	{
+		return this.chessIO;
+	}
+
+	/**
+	 * Getter for an Autowired ChessTagModder instance
+	 *
+	 * @return ChessTagModder the ChessTagModder instance
+	 */
+	ChessTagModder getChessTagModder()
+	{
+		return this.chessTagModder;
 	}
 }

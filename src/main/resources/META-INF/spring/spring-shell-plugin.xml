@@ -16,5 +16,6 @@
 	<bean id="chessContext" class="com.bigtobster.pgnextractalt.chess.ChessContext"/>
 	<bean id="commandContext" class="com.bigtobster.pgnextractalt.commands.CommandContext"/>
 	<bean id="chessIO" class="com.bigtobster.pgnextractalt.chess.ChessIO"/>
+	<bean id="chessTagModder" class="com.bigtobster.pgnextractalt.chess.ChessTagModder"/>
 
 </beans>

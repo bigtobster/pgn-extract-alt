@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import static java.nio.file.Files.createDirectory;
 
@@ -25,6 +26,7 @@ public class ChessIOTest
 {
 	private static final String INTENDED_PGN_IMPORT_FAILURE = "PGN should not have been successfully imported";
 	private static final String INTENDED_SUCCESSFUL_IMPORT  = "PGN should have imported successfully";
+	private static final Logger LOGGER = Logger.getLogger(ChessIOTest.class.getName());
 
 	private static void assertImportFailure(final ChessIO chessIO)
 	{
@@ -35,7 +37,7 @@ public class ChessIOTest
 	private static void assertImportSuccess(final ChessIO chessIO)
 	{
 		Assert.assertTrue(ChessIOTest.INTENDED_SUCCESSFUL_IMPORT, chessIO.isPGNImported());
-		Assert.assertTrue("Game list should not be empty on import success", ! chessIO.getGames().isEmpty());
+		Assert.assertTrue("Game list should not be empty on import success", chessIO.isPGNImported());
 	}
 
 	private static ChessIO chessIOTestInit()
