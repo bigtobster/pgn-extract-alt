@@ -18,9 +18,17 @@ import java.util.logging.Logger;
 public class TagCommands implements CommandMarker
 {
 	/**
+	 * Message on failure to insert tags
+	 */
+	static final         String FAILED_TO_INSERT_TAGS          = "Failed to insert tags.";
+	/**
 	 * The force option
 	 */
-	static final         String FORCE_INSERT                   = "Force";
+	static final         String FORCE                          = "Force";
+	/**
+	 * Info to user that key has already been fully used
+	 */
+	static final         String KEY_ALREADY_USED               = "Key already used by all games. Using --Force to overwrite.";
 	/**
 	 * The message substring on successfully inserting tags
 	 */
@@ -38,7 +46,9 @@ public class TagCommands implements CommandMarker
 	 */
 	static final         String TAG_VALUE                      = "TagValue";
 	private static final String INSERT_CUSTOM_TAG_COMMAND      = "insert-custom-tag";
-	private static final String INSERT_CUSTOM_TAG_COMMAND_HELP = "Insert a custom tag into list of games. Available when games imported.";
+	private static final String INSERT_CUSTOM_TAG_COMMAND_HELP =
+			"Insert a custom tag into list of games. Available when games imported. New tag " +
+			"must be a recognised PGN tag.";
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger LOGGER                         = Logger.getLogger(TagCommands.class.getName());
 	private static final char   SPACE                          = ' ';
@@ -72,11 +82,16 @@ public class TagCommands implements CommandMarker
 			final String tagKey,
 			@CliOption(key = {TagCommands.TAG_VALUE}, mandatory = true, help = "The value of the tag to be inserted.")
 			final String tagValue,
-			@CliOption(key = {TagCommands.FORCE_INSERT}, mandatory = false, help = "\"true\" to overwrite any existing tags with this key")
+			@CliOption(key = {TagCommands.FORCE}, mandatory = false, help = "\"true\" to overwrite any existing tags with this key",
+					   unspecifiedDefaultValue = "false")
 			final boolean forceInsert
 						   )
 	{
 		final int tagsInsertedNo = this.commandContext.getChessTagModder().insertCustomTag(tagKey, tagValue, forceInsert);
+		if(tagsInsertedNo == 0)
+		{
+			return TagCommands.FAILED_TO_INSERT_TAGS + TagCommands.SPACE + TagCommands.KEY_ALREADY_USED;
+		}
 		return TagCommands.SUCCESSFULLY_INSERTED_TAGS + TagCommands.SPACE + tagsInsertedNo + TagCommands.SPACE + TagCommands.TAGS_INSERTED;
 	}
 

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Toby Leheup (Bigtobster)
  */
+@SuppressWarnings("ClassWithTooManyMethods")
 public class TagCommandsTest
 {
 	private static final String COMMAND_CONSTRUCTION_ERROR = "Command construction error";
@@ -38,7 +39,16 @@ public class TagCommandsTest
 		final HashMap<String, String> args = new HashMap<String, String>(3);
 		args.put(TagCommands.TAG_KEY, key);
 		args.put(TagCommands.TAG_VALUE, value);
-		args.put(TagCommands.FORCE_INSERT, String.valueOf(force));
+		args.put(TagCommands.FORCE, String.valueOf(force));
+		return TestContext.buildCommand(command, args);
+	}
+
+	private static String buildInsertCustomTagCommand(final String key, final String value)
+	{
+		final String command = TagCommands.getInsertCustomTagCommand();
+		final HashMap<String, String> args = new HashMap<String, String>(3);
+		args.put(TagCommands.TAG_KEY, key);
+		args.put(TagCommands.TAG_VALUE, value);
 		return TestContext.buildCommand(command, args);
 	}
 
@@ -51,7 +61,7 @@ public class TagCommandsTest
 		Assert.assertNotNull(TagCommandsTest.COMMAND_CONSTRUCTION_ERROR, commandResult.getResult());
 		final String resultOutput = commandResult.getResult().toString();
 
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, resultOutput, predictedOutput);
+		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
 	}
 
 	/**
@@ -66,9 +76,7 @@ public class TagCommandsTest
 
 		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
 
-		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
-									   TagCommandsTest.SPACE +
-									   0 + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
+		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
 
 		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
 	}
@@ -102,7 +110,7 @@ public class TagCommandsTest
 		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
 
 		args.remove(TagCommands.TAG_VALUE);
-		args.put(TagCommands.FORCE_INSERT, TagCommandsTest.TRUE);
+		args.put(TagCommands.FORCE, TagCommandsTest.TRUE);
 		finalCommand = TestContext.buildCommand(command, args);
 		commandResult = shell.executeCommand(finalCommand);
 		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
@@ -169,6 +177,23 @@ public class TagCommandsTest
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
+
+		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+	}
+
+	/**
+	 * Test forcing all tags to change
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void insertCustomTagMissingForce()
+	{
+		final TestContext testContext = new TestContext();
+		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
+
+		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE);
+
+		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
 
 		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
 	}

@@ -80,6 +80,7 @@ public class IOCommands implements CommandMarker
 	private static final String IMPORT_COMMAND_HELP  = "Import a PGN file for processing";
 	private static final Logger LOGGER               = Logger.getLogger(IOCommands.class.getName());
 	private static final String NOTIFY_DEV           = "Please notify PGN-Extract-Alt Developer";
+	private static final String NO_CHESS_GAMES = "Imported file appears to contain 0 chess games";
 	private static final String RESET_COMMAND        = "reset";
 	private static final String RESET_COMMAND_HELP   = "Reset PGN-Extract-Alt - WARNING: Will lose all changes. Available on successful import.";
 	private static final char   SPACE                = ' ';
@@ -136,21 +137,20 @@ public class IOCommands implements CommandMarker
 
 	/**
 	 * Attempt to export a PGN file
-	 * @param filePath Path of the PGN file to be imported
+	 * @param file File to be imported
 	 * @return Successful export of PGN file
 	 */
 	@CliCommand(value = IOCommands.EXPORT_COMMAND, help = IOCommands.EXPORT_COMMAND_HELP)
 	public String exportPGN(
-			@CliOption(key = {IOCommands.FILE_PATH_OPTION}, mandatory = true, help = "Path (including file name) for exported PGN. File will be " +
-																					 "created if it doesn't exist.")
-			final String filePath
+			@CliOption(key = {IOCommands.FILE_PATH_OPTION}, help = "Path (including file name) for exported PGN. File will be " +
+																   "created if it doesn't exist.", mandatory = true) final File file
 						   )
 	{
 		final PrintWriter printWriter;
 		String failureDetails = null;
+		final String filePath = file.getAbsolutePath();
 		try
 		{
-			final File file = new File(filePath);
 			if(! file.exists())
 			{
 				//noinspection ResultOfMethodCallIgnored
@@ -199,21 +199,20 @@ public class IOCommands implements CommandMarker
 	/**
 	 * Attempt to import a PGN file
 	 *
-	 * @param filePath Path of the PGN file to be imported
+	 * @param file The file to be imported
 	 * @return Successful import of PGN file
 	 * @throws java.io.IOException Crashes on unknown failure to open PGN file
 	 */
 	@CliCommand(value = IOCommands.IMPORT_COMMAND, help = IOCommands.IMPORT_COMMAND_HELP)
 	public String importPGN(
-			@CliOption(key = {IOCommands.FILE_PATH_OPTION}, mandatory = true, help = "Path to the PGN file to be imported")
-			final String filePath
+			@CliOption(key = {"", IOCommands.FILE_PATH_OPTION}, help = "Path to the PGN file to be imported", mandatory = true) final File file
 						   ) throws IOException
 	{
 		final FileInputStream fileInputStream;
 		String failureDetails = null;
+		final String filePath = file.getPath();
 		try
 		{
-			final File file = new File(filePath);
 			if(! file.canRead() && file.exists())
 			{
 				//noinspection ThrowCaughtLocally
@@ -255,6 +254,10 @@ public class IOCommands implements CommandMarker
 		catch(final InvalidObjectException ioe)
 		{
 			failureDetails = ioe.getMessage();
+		}
+		if(this.commandContext.getChessIO().getGames().size() < 0)
+		{
+			failureDetails = IOCommands.NO_CHESS_GAMES;
 		}
 		if(failureDetails == null)
 		{

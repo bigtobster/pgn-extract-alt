@@ -185,8 +185,9 @@ public class IOCommandsTest
 				new File(TestContext.FALSE_PGN_PATH),
 				testContext.getShell()
 																		   ).getResult().toString();
-		final String predictedOutput = IOCommands.FAILED_IMPORT + IOCommandsTest.SPACE + IOCommands.NO_FILE_AT + IOCommandsTest.SPACE + TestContext
-				.FALSE_PGN_PATH;
+		final File file = new File(TestContext.FALSE_PGN_PATH);
+		final String predictedOutput = IOCommands.FAILED_IMPORT + IOCommandsTest.SPACE + IOCommands.NO_FILE_AT + IOCommandsTest.SPACE + file
+				.getAbsolutePath();
 		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
 	}
 
