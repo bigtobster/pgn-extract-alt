@@ -42,6 +42,20 @@ TBC
 ##Documentation##
 TBC
 
+Currently, only the following tags are supported for insertion:
+
+Event
+Site
+Date
+Round
+White
+Black
+Result
+WhiteElo
+BlackElo
+EventDate
+ECO
+
 ##Tutorial##
 TBC
 

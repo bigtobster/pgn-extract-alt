@@ -33,7 +33,7 @@ class CommandContext
 	 * @param message   The message to be logged
 	 * @param exception The exception causing the error
 	 */
-	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
+	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
 	static void logSevereError(final Logger logger, final String message, final Exception exception)
 	{
 		logger.log(Level.SEVERE, message);

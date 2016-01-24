@@ -5,8 +5,6 @@ import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.core.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.shell.core.CommandResult;
-import org.springframework.shell.core.Shell;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,22 +18,22 @@ import java.util.logging.Logger;
 @SuppressWarnings("ClassWithTooManyMethods")
 public class TagCommandsTest
 {
-	private static final String COMMAND_CONSTRUCTION_ERROR = "Command construction error";
-	private static final String EVENT_KEY                  = "Event";
+	@SuppressWarnings("DuplicateStringLiteralInspection")
+	private static final String EVENT_KEY      = "Event";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger LOGGER                     = Logger.getLogger(IOCommandsTest.class.getName());
+	private static final Logger LOGGER         = Logger.getLogger(IOCommandsTest.class.getName());
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	private static final String NEW_TEST_KEY               = "TestKey";
+	private static final String NEW_TEST_KEY   = "TestKey";
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	private static final String NEW_TEST_VALUE             = "NewTestValue";
-	private static final char   SPACE                      = ' ';
+	private static final String NEW_TEST_VALUE = "NewTestValue";
+	private static final char   SPACE          = ' ';
 	@SuppressWarnings("ConstantNamingConvention")
-	private static final String TRUE                       = "true";
+	private static final String TRUE           = "true";
 
 	@SuppressWarnings("SameParameterValue")
-	private static String buildInsertCustomTagCommand(final String key, final String value, final boolean force)
+	private static String buildInsertTagCommand(final String key, final String value, final boolean force)
 	{
-		final String command = TagCommands.getInsertCustomTagCommand();
+		final String command = TagCommands.getInsertTagCommand();
 		final HashMap<String, String> args = new HashMap<String, String>(3);
 		args.put(TagCommands.TAG_KEY, key);
 		args.put(TagCommands.TAG_VALUE, value);
@@ -43,77 +41,56 @@ public class TagCommandsTest
 		return TestContext.buildCommand(command, args);
 	}
 
-	private static String buildInsertCustomTagCommand(final String key, final String value)
+	@SuppressWarnings("SameParameterValue")
+	private static String buildInsertTagCommand(final String key, final String value)
 	{
-		final String command = TagCommands.getInsertCustomTagCommand();
+		final String command = TagCommands.getInsertTagCommand();
 		final HashMap<String, String> args = new HashMap<String, String>(3);
 		args.put(TagCommands.TAG_KEY, key);
 		args.put(TagCommands.TAG_VALUE, value);
 		return TestContext.buildCommand(command, args);
 	}
 
-	private static void testInsertCustomTag(final TestContext testContext, final String finalCommand, final String predictedOutput)
-	{
-		final Shell shell = testContext.getShell();
-
-		final CommandResult commandResult = shell.executeCommand(finalCommand);
-		Assert.assertNotNull(TagCommandsTest.COMMAND_CONSTRUCTION_ERROR, commandResult);
-		Assert.assertNotNull(TagCommandsTest.COMMAND_CONSTRUCTION_ERROR, commandResult.getResult());
-		final String resultOutput = commandResult.getResult().toString();
-
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
-	}
-
 	/**
 	 * Test forcing all tags to change
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagAllGames()
+	public void insertTagAllGames()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
-	 * Test missing arguments fail to work on insertingCustomTags
+	 * Test missing arguments fail to work on insertingTags
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagBadCommandTest()
+	public void insertTagBadCommandTest()
 	{
 		final TestContext testContext = new TestContext();
-		final Shell shell = testContext.getShell();
 
-		final String command = TagCommands.getInsertCustomTagCommand();
+		final String command = TagCommands.getInsertTagCommand();
 		final HashMap<String, String> args = new HashMap<String, String>(3);
-		CommandResult commandResult;
-		String finalCommand;
 
-		finalCommand = TestContext.buildCommand(command, args);
-		commandResult = shell.executeCommand(finalCommand);
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
+		testContext.assertCommandFails(TestContext.buildCommand(command, args));
 
 		args.put(TagCommands.TAG_KEY, TagCommandsTest.NEW_TEST_KEY);
-		finalCommand = TestContext.buildCommand(command, args);
-		commandResult = shell.executeCommand(finalCommand);
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
+		testContext.assertCommandFails(TestContext.buildCommand(command, args));
 
 		args.put(TagCommands.TAG_VALUE, TagCommandsTest.NEW_TEST_VALUE);
-		finalCommand = TestContext.buildCommand(command, args);
-		commandResult = shell.executeCommand(finalCommand);
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
+		testContext.assertCommandFails(TestContext.buildCommand(command, args));
 
 		args.remove(TagCommands.TAG_VALUE);
 		args.put(TagCommands.FORCE, TagCommandsTest.TRUE);
-		finalCommand = TestContext.buildCommand(command, args);
-		commandResult = shell.executeCommand(finalCommand);
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
+		testContext.assertCommandFails(TestContext.buildCommand(command, args));
 	}
 
 	/**
@@ -121,19 +98,19 @@ public class TagCommandsTest
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagForceAllGames()
+	public void insertTagForceAllGames()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final int totalGames = testContext.getApplicationContext().getBean(ChessIO.class).getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -141,19 +118,19 @@ public class TagCommandsTest
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagForceNoGames()
+	public void insertTagForceNoGames()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final int totalGames = testContext.getApplicationContext().getBean(ChessIO.class).getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -161,7 +138,7 @@ public class TagCommandsTest
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagForceSomeGames()
+	public void insertTagForceSomeGames()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
@@ -171,14 +148,14 @@ public class TagCommandsTest
 			games.get(i).setTag(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE);
 		}
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final int totalGames = testContext.getApplicationContext().getBean(ChessIO.class).getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -186,16 +163,16 @@ public class TagCommandsTest
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagMissingForce()
+	public void insertTagMissingForce()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -203,34 +180,19 @@ public class TagCommandsTest
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagNoGames()
+	public void insertTagNoGames()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final int totalGames = testContext.getApplicationContext().getBean(ChessIO.class).getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
-	}
-
-	/**
-	 * Test forcing all tags to change
-	 */
-	@Test
-	public void insertCustomTagNoImportedGames()
-	{
-		final TestContext testContext = new TestContext();
-
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-
-		final Shell shell = testContext.getShell();
-		final CommandResult commandResult = shell.executeCommand(finalCommand);
-		Assert.assertNotNull(TagCommandsTest.COMMAND_CONSTRUCTION_ERROR, commandResult);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -238,7 +200,19 @@ public class TagCommandsTest
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void insertCustomTagSomeGames()
+	public void insertTagNoImportedGames()
+	{
+		final TestContext testContext = new TestContext();
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
+		testContext.assertCommandFails(finalCommand);
+	}
+
+	/**
+	 * Test forcing all tags to change
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void insertTagSomeGames()
 	{
 		final TestContext testContext = new TestContext();
 		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
@@ -250,13 +224,32 @@ public class TagCommandsTest
 			gamesModified++;
 		}
 
-		final String finalCommand = TagCommandsTest.buildInsertCustomTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
-
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
 		final int totalGames = testContext.getApplicationContext().getBean(ChessIO.class).getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   (totalGames - gamesModified) + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TagCommandsTest.testInsertCustomTag(testContext, finalCommand, predictedOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+	}
+
+	/**
+	 * Tests that writable tag command output is appropriate
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void listWritableTags()
+	{
+		final TestContext testContext = new TestContext();
+
+		final String finalCommand = TagCommands.getListWritableTagsCommand();
+		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		for(final String tag : testContext.getChessTagModder().getWritableTags())
+		{
+			Assert.assertNotNull("Tag should not be null", tag);
+			Assert.assertTrue("Tag should not be empty String", ! tag.isEmpty());
+			TestContext.assertCommandOutputContains(actualOutput, tag);
+		}
 	}
 }

@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @SuppressWarnings("UnusedDeclaration")
 public class ChessTagModderTest
 {
-	private static final String AUTOWIRED_BEAN_NOT_CREATED = "Autowired bean not created";
 	private static final String DIFF_GAME_TAG_AND_TEST_TAG = "Difference between test game tag and original test tag";
 	private static final String GAME_FAILED_TO_INSERT      = "Game failed to insert";
 	private static final Logger LOGGER                     = Logger.getLogger(ChessTagModder.class.getName());
@@ -27,27 +26,16 @@ public class ChessTagModderTest
 	@SuppressWarnings("DuplicateStringLiteralInspection")
 	private static final String TEST_KEY                   = "TestKey";
 
-	private static TestContext initInsertCustomTag()
-	{
-		final TestContext testContext = new TestContext();
-		Assert.assertNotNull("Error in creating TestContext", testContext);
-		final ChessTagModder chessTagModder = testContext.getApplicationContext().getBean(ChessTagModder.class);
-		Assert.assertNotNull(ChessTagModderTest.AUTOWIRED_BEAN_NOT_CREATED, chessTagModder);
-		final ChessContext chessContext = testContext.getApplicationContext().getBean(ChessContext.class);
-		Assert.assertNotNull(ChessTagModderTest.AUTOWIRED_BEAN_NOT_CREATED, chessContext);
-		return testContext;
-	}
-
-	private static void testInsertCustomTag(
+	private static void testInsertTag(
 			final TestContext testContext, final ArrayList<Game> testGames, final boolean forceInsert,
 			final String predictedOutput
-										   )
+									 )
 	{
 		final ChessIO chessIO = testContext.getChessIO();
 		chessIO.addGames(testGames);
 		Assert.assertTrue(ChessTagModderTest.GAME_FAILED_TO_INSERT, chessIO.isPGNImported());
 		final ChessTagModder chessTagModder = testContext.getApplicationContext().getBean(ChessTagModder.class);
-		chessTagModder.insertCustomTag(ChessTagModderTest.TEST_KEY, ChessTagModderTest.NEW_TEST_VALUE, forceInsert);
+		chessTagModder.insertTag(ChessTagModderTest.TEST_KEY, ChessTagModderTest.NEW_TEST_VALUE, forceInsert);
 		for(final Game game : chessIO.getGames())
 		{
 			Assert.assertEquals(
@@ -58,12 +46,23 @@ public class ChessTagModderTest
 	}
 
 	/**
+	 * Tests getWritableTags returns the set of tags it's supposed to return
+	 */
+	@SuppressWarnings({"MethodMayBeStatic", "PublicMethodNotExposedInInterface"})
+	public void getWritableTagsTest()
+	{
+		final TestContext testContext = new TestContext();
+		final ChessContext chessContext = testContext.getApplicationContext().getBean(ChessContext.class);
+		Assert.assertArrayEquals("Tag keys do not match!", testContext.getChessTagModder().getWritableTags(), chessContext.getTagKeys());
+	}
+
+	/**
 	 * Tests tag changes appropriately when attempting to change an existing tag
 	 */
 	@Test
-	public void insertCustomTagExistingTest()
+	public void insertTagExistingTest()
 	{
-		final TestContext testContext = ChessTagModderTest.initInsertCustomTag();
+		final TestContext testContext = new TestContext();
 
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
@@ -78,16 +77,16 @@ public class ChessTagModderTest
 				testGame.getTag(ChessTagModderTest.TEST_KEY)
 						   );
 
-		ChessTagModderTest.testInsertCustomTag(testContext, testGames, false, ChessTagModderTest.OLD_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testContext, testGames, false, ChessTagModderTest.OLD_TEST_VALUE);
 	}
 
 	/**
 	 * Tests tag changes appropriately when forcing a change to an existing tag
 	 */
 	@Test
-	public void insertCustomTagForceExistingTest()
+	public void insertTagForceExistingTest()
 	{
-		final TestContext testContext = ChessTagModderTest.initInsertCustomTag();
+		final TestContext testContext = new TestContext();
 
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
@@ -102,17 +101,16 @@ public class ChessTagModderTest
 				testGame.getTag(ChessTagModderTest.TEST_KEY)
 						   );
 
-		ChessTagModderTest.testInsertCustomTag(testContext, testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testContext, testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
 	}
 
 	/**
 	 * Tests tag inserts appropriately when forcing a change to a non-existent tag
 	 */
-	@SuppressWarnings("InstanceMethodNamingConvention")
 	@Test
-	public void insertCustomTagForceNonExistingTest()
+	public void insertTagForceNonExistingTest()
 	{
-		final TestContext testContext = ChessTagModderTest.initInsertCustomTag();
+		final TestContext testContext = new TestContext();
 
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
@@ -120,16 +118,16 @@ public class ChessTagModderTest
 		testGames.add(testGame);
 		Assert.assertTrue(ChessTagModderTest.GAME_FAILED_TO_INSERT, ! testGames.isEmpty());
 
-		ChessTagModderTest.testInsertCustomTag(testContext, testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testContext, testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
 	}
 
 	/**
 	 * Tests tag inserts appropriately when inserting a non-existent tag
 	 */
 	@Test
-	public void insertCustomTagNonExistingTest()
+	public void insertTagNonExistingTest()
 	{
-		final TestContext testContext = ChessTagModderTest.initInsertCustomTag();
+		final TestContext testContext = new TestContext();
 
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
@@ -137,6 +135,6 @@ public class ChessTagModderTest
 		testGames.add(testGame);
 		Assert.assertTrue(ChessTagModderTest.GAME_FAILED_TO_INSERT, ! testGames.isEmpty());
 
-		ChessTagModderTest.testInsertCustomTag(testContext, testGames, false, ChessTagModderTest.NEW_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testContext, testGames, false, ChessTagModderTest.NEW_TEST_VALUE);
 	}
 }

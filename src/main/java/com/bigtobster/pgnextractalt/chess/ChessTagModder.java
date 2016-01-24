@@ -11,6 +11,7 @@ import java.util.logging.Logger;
  *
  * @author Toby Leheup (Bigtobster)
  */
+@SuppressWarnings("PublicMethodNotExposedInInterface")
 public class ChessTagModder
 {
 	@SuppressWarnings("UnusedDeclaration")
@@ -21,6 +22,16 @@ public class ChessTagModder
 	private ChessContext chessContext;
 
 	/**
+	 * Returns an array of all the tags that can be written to a game
+	 *
+	 * @return The array of tags that can be written to a game
+	 */
+	public String[] getWritableTags()
+	{
+		return this.chessContext.getTagKeys();
+	}
+
+	/**
 	 * Inserted tags with a given key from Chess games
 	 *
 	 * @param tagKey   The key of the tag to be inserted
@@ -29,7 +40,7 @@ public class ChessTagModder
 	 * @return The total number of games that were inserted
 	 */
 	@SuppressWarnings({"PublicMethodNotExposedInInterface", "BooleanParameter"})
-	public int insertCustomTag(final String tagKey, final String tagValue, final boolean tagForce)
+	public int insertTag(final String tagKey, final String tagValue, final boolean tagForce)
 	{
 		int counter = 0;
 		final ArrayList<Game> games = this.chessContext.getGames();

@@ -3,8 +3,10 @@ package com.bigtobster.pgnextractalt.core;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
 import org.junit.After;
+import org.junit.Assert;
 import org.springframework.context.ApplicationContext;
 import org.springframework.shell.Bootstrap;
+import org.springframework.shell.core.CommandResult;
 import org.springframework.shell.core.JLineShellComponent;
 
 import java.util.HashMap;
@@ -19,75 +21,85 @@ import java.util.logging.Logger;
 public class TestContext
 {
 	/**
-	 * Assertion error message on expected console output being different to the actual result
-	 */
-	public static final  String              CONSOLE_MESSAGE_DIFFERS = "Console Message differs from expected case";
-	/**
 	 * Name of the dump directory relative to the binary. Files in here is where PGN-Extract-Alt should write test files to.
 	 */
-	public static final  String              DUMP_DIR                = "dump";
+	public static final  String              DUMP_DIR                       = "dump";
 	/**
 	 * Name of a PGN file with no characters
 	 */
-	public static final  String              EMPTY_PGN               = "empty.pgn";
+	public static final  String              EMPTY_PGN                      = "empty.pgn";
 	/**
 	 * Name of the exports directory relative to the binary. Files in here should be used for overwrite testing only.
 	 */
-	public static final  String              EXPORTS_DIR             = "exports";
+	public static final  String              EXPORTS_DIR                    = "exports";
 	/**
 	 * Name of a PGN file that doesn't exist
 	 */
-	public static final  String              FALSE_PGN_PATH          = "false.pgn";
+	public static final  String              FALSE_PGN_PATH                 = "false.pgn";
 	/**
 	 * Name of the imports directory relative to the binary
 	 */
-	public static final  String              IMPORTS_DIR             = "imports";
+	public static final  String              IMPORTS_DIR                    = "imports";
 	/**
 	 * Name of a large PGN file with many valid games (and no invalid games)
 	 */
-	public static final  String              LARGE_PGN               = "large.pgn";
+	public static final  String              LARGE_PGN                      = "large.pgn";
 	/**
 	 * Name of a PGN file with multiple invalid and multiple valid games
 	 */
-	public static final  String              MULTI_INVALID_PGN       = "invalid_multi.pgn";
+	public static final  String              MULTI_INVALID_PGN              = "invalid_multi.pgn";
 	/**
 	 * Name of a PGN file with multiple valid games (and no invalid games)
 	 */
-	public static final  String              MULTI_PGN               = "multi.pgn";
+	public static final  String              MULTI_PGN                      = "multi.pgn";
 	/**
 	 * Name of a PGN file that isn't remotely a PGN-looking file
 	 */
-	public static final  String              NOT_A_PGN               = "not_a_pgn.test";
+	public static final  String              NOT_A_PGN                      = "not_a_pgn.test";
 	/**
 	 * Name of a PGN file with protected file permissions
 	 */
-	public static final  String              PROTECTED_PGN           = "protected.pgn";
+	public static final  String              PROTECTED_PGN                  = "protected.pgn";
 	/**
 	 * Name of a PGN file with a single, syntactically invalid game
 	 */
-	public static final  String              SINGLE_INVALID_PGN      = "invalid_single.pgn";
+	public static final  String              SINGLE_INVALID_PGN             = "invalid_single.pgn";
 	/**
 	 * Name of PGN file with a single valid game
 	 */
-	public static final  String              SINGLE_PGN              = "single.pgn";
+	public static final  String              SINGLE_PGN                     = "single.pgn";
 	/**
 	 * The name of the target directory from project home where output is placed
 	 */
-	public static final  String              TARGET_DIR              = "target";
+	public static final  String              TARGET_DIR                     = "target";
 	/**
 	 * The name of the Test Classes directory where test files are placed
 	 */
-	public static final  String              TEST_CLASSES_DIR        = "test-classes";
+	public static final  String              TEST_CLASSES_DIR               = "test-classes";
 	/**
 	 * Error message for assertions on null resources
 	 */
-	public static final  String              TEST_RESOURCE_NOT_FOUND = "Test resource not found";
+	public static final  String              TEST_RESOURCE_NOT_FOUND        = "Test resource not found";
+	private static final String              AUTOWIRED_BEAN_NOT_CREATED     = "Autowired bean not created";
+	private static final String              COMMAND_CONSTRUCTION_ERROR     = "Command construction error";
+	/**
+	 * Error message when command success when it was expected to fail
+	 */
+	private static final String              COMMAND_SUCCEEDS_FAIL_EXPECTED = "Command succeeds when failure expected";
+	/**
+	 * Assertion error message on expected console output being different to the actual result
+	 */
+	private static final String              CONSOLE_MESSAGE_DIFFERS        = "Console Message differs from expected case";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger              LOGGER                  = Logger.getLogger(TestContext.class.getName());
-	private static final char                SPACE                   = ' ';
-	private              ApplicationContext  applicationContext      = null;
-	private              Bootstrap           bootstrap               = null;
-	private              JLineShellComponent shell                   = null;
+	private static final Logger              LOGGER                         = Logger.getLogger(TestContext.class.getName());
+	/**
+	 * Error message when a tag is missing from the provided tag list
+	 */
+	private static final String              MISSING_TAG                    = "Tag list does not contain tag ";
+	private static final char                SPACE                          = ' ';
+	private              ApplicationContext  applicationContext             = null;
+	private              Bootstrap           bootstrap                      = null;
+	private              JLineShellComponent shell                          = null;
 
 	/**
 	 * Initialise TestContext
@@ -97,6 +109,32 @@ public class TestContext
 		this.bootstrap = new Bootstrap();
 		this.shell = this.bootstrap.getJLineShellComponent();
 		this.applicationContext = this.bootstrap.getApplicationContext();
+		Assert.assertNotNull(TestContext.AUTOWIRED_BEAN_NOT_CREATED, this.getChessTagModder());
+		Assert.assertNotNull(TestContext.AUTOWIRED_BEAN_NOT_CREATED, this.getChessIO());
+	}
+
+	/**
+	 * Weaker test than assertOutputMatchesPredicted as it tests only that output contains a certain substring
+	 * @param actualOutput The output on the shell
+	 * @param substr The substring in the output of the command
+	 */
+	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
+	public static void assertCommandOutputContains(final String actualOutput, final String substr)
+	{
+		Assert.assertNotNull(TestContext.COMMAND_CONSTRUCTION_ERROR, substr);
+		Assert.assertTrue(TestContext.MISSING_TAG, actualOutput.contains(substr));
+	}
+
+	/**
+	 * Runs a non-null command and asserts that it's output is not NULL and that it matches the non-null predictedOutput
+	 *
+	 * @param actualOutput    The output on the shell
+	 * @param predictedOutput The predicted output
+	 */
+	public static void assertOutputMatchesPredicted(final String actualOutput, final String predictedOutput)
+	{
+		Assert.assertNotNull(TestContext.COMMAND_CONSTRUCTION_ERROR, predictedOutput);
+		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, actualOutput);
 	}
 
 	/**
@@ -122,6 +160,32 @@ public class TestContext
 			}
 		}
 		return newCommandBuilder.toString();
+	}
+
+	/**
+	 * Checks that a command fails
+	 *
+	 * @param finalCommand The command that is destined to fail
+	 */
+	public void assertCommandFails(final String finalCommand)
+	{
+		Assert.assertNotNull(TestContext.COMMAND_CONSTRUCTION_ERROR, finalCommand);
+		this.executeInvalidCommand(finalCommand);
+	}
+
+	/**
+	 * Checks that a command is valid, executes it and then checks the output is valid
+	 *
+	 * @param finalCommand The command to execute
+	 * @return The shell output of that command
+	 */
+	public String executeValidCommand(final String finalCommand)
+	{
+		Assert.assertNotNull(TestContext.COMMAND_CONSTRUCTION_ERROR, finalCommand);
+		final CommandResult commandResult = this.shell.executeCommand(finalCommand);
+		Assert.assertNotNull(TestContext.COMMAND_CONSTRUCTION_ERROR, commandResult);
+		Assert.assertNotNull(TestContext.COMMAND_CONSTRUCTION_ERROR, commandResult.getResult());
+		return commandResult.getResult().toString();
 	}
 
 	/**
@@ -156,16 +220,6 @@ public class TestContext
 	}
 
 	/**
-	 * Return shell
-	 *
-	 * @return The current shell
-	 */
-	public JLineShellComponent getShell()
-	{
-		return this.shell;
-	}
-
-	/**
 	 * Shutdown shell
 	 */
 	@After
@@ -183,5 +237,11 @@ public class TestContext
 			   "shell=" + this.shell +
 			   ", bootstrap=" + this.bootstrap +
 			   '}';
+	}
+
+	private void executeInvalidCommand(final String command)
+	{
+		final CommandResult commandResult = this.shell.executeCommand(command);
+		Assert.assertNull(TestContext.COMMAND_SUCCEEDS_FAIL_EXPECTED, commandResult.getResult());
 	}
 }

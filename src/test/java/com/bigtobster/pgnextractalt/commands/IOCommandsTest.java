@@ -1,11 +1,8 @@
 package com.bigtobster.pgnextractalt.commands;
 
-import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.core.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.shell.core.CommandResult;
-import org.springframework.shell.core.Shell;
 
 import java.io.File;
 import java.util.HashMap;
@@ -37,16 +34,33 @@ public class IOCommandsTest
 		final File pgnFile = new File(pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
-		final String resultOutput = IOCommandsTest.executeTestImportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		final String command = IOCommandsTest.buildImportCommand(pgnFile);
+		final String actualOutput = testContext.executeValidCommand(command);
 		final String predictedOutput = IOCommandsTest.createSuccessfulImportMessage(testContext);
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+	}
+
+	private static String buildExportCommand(final File file)
+	{
+		//Execute command
+		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
+		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
+		return TestContext.buildCommand(IOCommands.getExportCommand(), optionArgs);
+	}
+
+	private static String buildImportCommand(final File file)
+	{
+		//Execute command
+		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
+		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
+		return TestContext.buildCommand(IOCommands.getImportCommand(), optionArgs);
 	}
 
 	private static String createSuccessfulExportMessage(final TestContext testContext)
 	{
 		return IOCommands.SUCCESSFUL_EXPORT +
 			   IOCommandsTest.SPACE +
-			   testContext.getApplicationContext().getBean(ChessIO.class).getGames().size() +
+			   testContext.getChessIO().getGames().size() +
 			   IOCommandsTest.SPACE +
 			   IOCommands.GAMES_EXPORTED;
 	}
@@ -55,27 +69,9 @@ public class IOCommandsTest
 	{
 		return IOCommands.SUCCESSFUL_IMPORT +
 			   IOCommandsTest.SPACE +
-			   testContext.getApplicationContext().getBean(ChessIO.class).getGames().size() +
+			   testContext.getChessIO().getGames().size() +
 			   IOCommandsTest.SPACE +
 			   IOCommands.GAMES_IMPORTED;
-	}
-
-	private static CommandResult executeTestExportCommand(final File file, final Shell shell)
-	{
-		//Execute command
-		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
-		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
-		final String finalCommand = TestContext.buildCommand(IOCommands.getExportCommand(), optionArgs);
-		return shell.executeCommand(finalCommand);
-	}
-
-	private static CommandResult executeTestImportCommand(final File file, final Shell shell)
-	{
-		//Execute command
-		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
-		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
-		final String finalCommand = TestContext.buildCommand(IOCommands.getImportCommand(), optionArgs);
-		return shell.executeCommand(finalCommand);
 	}
 
 	private static void makeFileProtected(final File pgnFile, final boolean read, final boolean write, final boolean execute)
@@ -91,15 +87,15 @@ public class IOCommandsTest
 	/**
 	 * Tests Export functionality on an empty PGN file
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
 	public void exportNoPathTest()
 	{
 		final TestContext testContext = new TestContext();
-		final Shell shell = testContext.getShell();
-		final String command = IOCommands.getExportCommand();
-		final CommandResult commandResult = shell.executeCommand(command);
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, IOCommandsTest.executeTestExportCommand(new File(""), shell).getResult());
+		String command = IOCommands.getExportCommand();
+		testContext.assertCommandFails(command);
+		command = IOCommandsTest.buildExportCommand(new File(""));
+		testContext.assertCommandFails(command);
 	}
 
 	/**
@@ -148,19 +144,22 @@ public class IOCommandsTest
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
 
 		IOCommandsTest.makeFileProtected(pgnFile, false, false, false);
-		String resultOutput = IOCommandsTest.executeTestExportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		String command = IOCommandsTest.buildExportCommand(pgnFile);
+		String actualOutput = testContext.executeValidCommand(command);
 		String predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnPath;
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
 		IOCommandsTest.makeFileProtected(pgnFile, true, false, false);
-		resultOutput = IOCommandsTest.executeTestExportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		command = IOCommandsTest.buildExportCommand(pgnFile);
+		actualOutput = testContext.executeValidCommand(command);
 		predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnPath;
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
 		IOCommandsTest.makeFileProtected(pgnFile, false, true, false);
-		resultOutput = IOCommandsTest.executeTestExportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		command = IOCommandsTest.buildExportCommand(pgnFile);
+		actualOutput = testContext.executeValidCommand(command);
 		predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnPath;
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -177,18 +176,17 @@ public class IOCommandsTest
 	/**
 	 * Tests Import functionality on a non-existent path
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
 	public void importFalsePGNTest()
 	{
 		final TestContext testContext = new TestContext();
-		final String resultOutput = IOCommandsTest.executeTestImportCommand(
-				new File(TestContext.FALSE_PGN_PATH),
-				testContext.getShell()
-																		   ).getResult().toString();
+		final String command = IOCommandsTest.buildImportCommand(new File(TestContext.FALSE_PGN_PATH));
+		final String actualOutput = testContext.executeValidCommand(command);
 		final File file = new File(TestContext.FALSE_PGN_PATH);
 		final String predictedOutput = IOCommands.FAILED_IMPORT + IOCommandsTest.SPACE + IOCommands.NO_FILE_AT + IOCommandsTest.SPACE + file
 				.getAbsolutePath();
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -221,15 +219,15 @@ public class IOCommandsTest
 	/**
 	 * Tests Import functionality without adding a file to import
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
 	public void importNoPathTest()
 	{
 		final TestContext testContext = new TestContext();
-		final Shell shell = testContext.getShell();
-		final String command = IOCommands.getImportCommand();
-		final CommandResult commandResult = shell.executeCommand(command);
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, commandResult.getResult());
-		Assert.assertNull(TestContext.CONSOLE_MESSAGE_DIFFERS, IOCommandsTest.executeTestImportCommand(new File(""), shell).getResult());
+		String command = IOCommands.getImportCommand();
+		testContext.assertCommandFails(command);
+		command = IOCommandsTest.buildImportCommand(new File(""));
+		testContext.assertCommandFails(command);
 	}
 
 	/**
@@ -256,9 +254,10 @@ public class IOCommandsTest
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
 		final TestContext testContext = new TestContext();
-		final String resultOutput = IOCommandsTest.executeTestImportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		final String command = IOCommandsTest.buildImportCommand(pgnFile);
+		final String actualOutput = testContext.executeValidCommand(command);
 		final String predictedOutput = IOCommands.FAILED_IMPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_READABLE + IOCommandsTest.SPACE + pgnPath;
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -286,16 +285,14 @@ public class IOCommandsTest
 	public void resetTest()
 	{
 		final TestContext testContext = new TestContext();
-		final Shell shell = testContext.getShell();
 		final String path = File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.SINGLE_PGN;
 		final String pgnPath = this.getClass().getResource(path).getPath();
-		final File pgnFile = new File(pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
-		CommandResult cr = shell.executeCommand(IOCommands.getResetCommand());
-		Assert.assertNotNull("Reset unavailable before successful import", cr);
-		IOCommandsTest.executeTestImportCommand(pgnFile, shell);
-		cr = shell.executeCommand(IOCommands.getResetCommand());
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, IOCommands.SUCCESSFUL_RESET, cr.getResult().toString());
+		testContext.assertCommandFails(IOCommands.getResetCommand());
+		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final String command = IOCommands.getResetCommand();
+		final String actualOutput = testContext.executeValidCommand(command);
+		TestContext.assertOutputMatchesPredicted(actualOutput, IOCommands.SUCCESSFUL_RESET);
 	}
 
 	private void genericImportTest(final String importFileName, final boolean isSuccessful, final String failureMessage)
@@ -306,7 +303,8 @@ public class IOCommandsTest
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
 		final TestContext testContext = new TestContext();
-		final String resultOutput = IOCommandsTest.executeTestImportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		final String command = IOCommandsTest.buildImportCommand(pgnFile);
+		final String actualOutput = testContext.executeValidCommand(command);
 		final String predictedOutput;
 		if(isSuccessful)
 		{
@@ -316,7 +314,7 @@ public class IOCommandsTest
 		{
 			predictedOutput = failureMessage;
 		}
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	private void successfulExportToDestination(final String destinationPath, final boolean isDestPathExist)
@@ -351,15 +349,17 @@ public class IOCommandsTest
 		final File pgnFile = new File(pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
-		String resultOutput = IOCommandsTest.executeTestExportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		String command = IOCommandsTest.buildExportCommand(pgnFile);
+		String actualOutput = testContext.executeValidCommand(command);
 		String predictedOutput = IOCommandsTest.createSuccessfulExportMessage(testContext);
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
 		//Test Export is importable
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
-		resultOutput = IOCommandsTest.executeTestImportCommand(pgnFile, testContext.getShell()).getResult().toString();
+		command = IOCommandsTest.buildImportCommand(pgnFile);
+		actualOutput = testContext.executeValidCommand(command);
 		predictedOutput = IOCommandsTest.createSuccessfulImportMessage(testContext);
-		Assert.assertEquals(TestContext.CONSOLE_MESSAGE_DIFFERS, predictedOutput, resultOutput);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 }

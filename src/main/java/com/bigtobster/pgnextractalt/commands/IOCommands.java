@@ -203,6 +203,7 @@ public class IOCommands implements CommandMarker
 	 * @return Successful import of PGN file
 	 * @throws java.io.IOException Crashes on unknown failure to open PGN file
 	 */
+	@SuppressWarnings("FeatureEnvy")
 	@CliCommand(value = IOCommands.IMPORT_COMMAND, help = IOCommands.IMPORT_COMMAND_HELP)
 	public String importPGN(
 			@CliOption(key = {"", IOCommands.FILE_PATH_OPTION}, help = "Path to the PGN file to be imported", mandatory = true) final File file

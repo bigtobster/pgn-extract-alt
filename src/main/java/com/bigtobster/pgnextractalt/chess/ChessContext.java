@@ -13,9 +13,42 @@ import java.util.logging.Logger;
  */
 class ChessContext
 {
+	private static final String          BLACK_ELO_KEY       = "BlackElo";
+	private static final String          BLACK_KEY           = "Black";
+	private static final String          DATE_KEY            = "Date";
+	private static final String          ECO_KEY             = "ECO";
+	private static final String          EVENT_DATE_KEY      = "EventDate";
+	@SuppressWarnings("DuplicateStringLiteralInspection")
+	private static final String          EVENT_KEY           = "Event";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger          LOGGER = Logger.getLogger(ChessContext.class.getName());
-	private final        ArrayList<Game> games  = new ArrayList<Game>(10);
+	private static final Logger          LOGGER              = Logger.getLogger(ChessContext.class.getName());
+	private static final int             NO_OF_EDITABLE_TAGS = 11;
+	private static final String          RESULT_KEY          = "Result";
+	private static final String          ROUND_KEY           = "Round";
+	private static final String          SITE_KEY            = "Site";
+	private static final String          WHITE_ELO_KEY       = "WhiteElo";
+	private static final String          WHITE_KEY           = "White";
+	private final        ArrayList<Game> games               = new ArrayList<Game>(10);
+	private final String[] tagKeys;
+
+	/**
+	 * Initialises the chess context
+	 */
+	ChessContext()
+	{
+		this.tagKeys = new String[ChessContext.NO_OF_EDITABLE_TAGS];
+		this.tagKeys[0] = ChessContext.EVENT_KEY;
+		this.tagKeys[1] = ChessContext.SITE_KEY;
+		this.tagKeys[2] = ChessContext.DATE_KEY;
+		this.tagKeys[3] = ChessContext.ROUND_KEY;
+		this.tagKeys[4] = ChessContext.WHITE_KEY;
+		this.tagKeys[5] = ChessContext.BLACK_KEY;
+		this.tagKeys[6] = ChessContext.RESULT_KEY;
+		this.tagKeys[7] = ChessContext.WHITE_ELO_KEY;
+		this.tagKeys[8] = ChessContext.BLACK_ELO_KEY;
+		this.tagKeys[9] = ChessContext.EVENT_DATE_KEY;
+		this.tagKeys[10] = ChessContext.ECO_KEY;
+	}
 
 	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
 	@Override
@@ -44,6 +77,16 @@ class ChessContext
 	ArrayList<Game> getGames()
 	{
 		return this.games;
+	}
+
+	/**
+	 * Getter for Tag Keys
+	 *
+	 * @return String[] The array of string of all possible keys in tags
+	 */
+	String[] getTagKeys()
+	{
+		return this.tagKeys;
 	}
 
 	/**
