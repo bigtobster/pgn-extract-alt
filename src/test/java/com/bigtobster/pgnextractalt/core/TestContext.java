@@ -2,6 +2,8 @@ package com.bigtobster.pgnextractalt.core;
 
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
+import com.bigtobster.pgnextractalt.commands.IOCommands;
+import com.bigtobster.pgnextractalt.commands.IOCommandsTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.springframework.context.ApplicationContext;
@@ -9,6 +11,7 @@ import org.springframework.shell.Bootstrap;
 import org.springframework.shell.core.CommandResult;
 import org.springframework.shell.core.JLineShellComponent;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -20,6 +23,14 @@ import java.util.logging.Logger;
 @SuppressWarnings({"PublicMethodNotExposedInInterface"})
 public class TestContext
 {
+	/**
+	 * black_win_mate_headless.pgn filename
+	 */
+	public static final  String              BLACK_WIN_MATE_HEADLESS_PGN    = "black_win_mate_headless.pgn";
+	/**
+	 * draw_headless.pgn filename
+	 */
+	public static final  String              DRAW_HEADLESS_PGN              = "draw_headless.pgn";
 	/**
 	 * Name of the dump directory relative to the binary. Files in here is where PGN-Extract-Alt should write test files to.
 	 */
@@ -40,6 +51,10 @@ public class TestContext
 	 * Name of the imports directory relative to the binary
 	 */
 	public static final  String              IMPORTS_DIR                    = "imports";
+	/**
+	 * incalculable_headless.pgn filename
+	 */
+	public static final  String              INCALCULABLE_HEADLESS_PGN      = "incalculable_headless.pgn";
 	/**
 	 * Name of a large PGN file with many valid games (and no invalid games)
 	 */
@@ -80,6 +95,10 @@ public class TestContext
 	 * Error message for assertions on null resources
 	 */
 	public static final  String              TEST_RESOURCE_NOT_FOUND        = "Test resource not found";
+	/**
+	 * white_win_mate_headless.pgn filename
+	 */
+	public static final  String              WHITE_WIN_MATE_HEADLESS_PGN    = "white_win_mate_headless.pgn";
 	private static final String              AUTOWIRED_BEAN_NOT_CREATED     = "Autowired bean not created";
 	private static final String              COMMAND_CONSTRUCTION_ERROR     = "Command construction error";
 	/**
@@ -160,6 +179,25 @@ public class TestContext
 			}
 		}
 		return newCommandBuilder.toString();
+	}
+
+	/**
+	 * Loads any given context with files located at a given path
+	 *
+	 * @param testContext The context to import files to
+	 * @param pgn         Path to a PGN file to import
+	 */
+	public static void preloadPGN(final TestContext testContext, final String pgn)
+	{
+		final String path = File.separator + TestContext.IMPORTS_DIR + File.separator + pgn;
+		final String pgnPath = IOCommands.class.getResource(path).getPath();
+		final File pgnFile = new File(pgnPath);
+		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
+		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
+		final String command = IOCommandsTest.buildImportCommand(pgnFile);
+		final String actualOutput = testContext.executeValidCommand(command);
+		final String predictedOutput = IOCommandsTest.createSuccessfulImportMessage(testContext);
+		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**

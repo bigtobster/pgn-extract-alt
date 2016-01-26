@@ -1,6 +1,8 @@
 package com.bigtobster.pgnextractalt.chess;
 
 import chesspresso.game.Game;
+import chesspresso.move.Move;
+import chesspresso.position.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -16,10 +18,53 @@ public class ChessTagModder
 {
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger LOGGER = Logger.getLogger(ChessTagModder.class.getName());
+	private static final int MAX_MOVE_CLOCK = 50;
 
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private ChessContext chessContext;
+
+	/**
+	 * Inserts the correct result, if calculable, into a chess game
+	 * Works on confirmed mates and draws
+	 * In most cases it will not be able to work it out
+	 * @return Number of inserted tags
+	 */
+	public int calculateGameResults()
+	{
+		int counter = 0;
+		for(final Game game : this.chessContext.getGames())
+		{
+			if((game.getResultStr() == null) || game.getResultStr().isEmpty())
+			{
+				game.gotoEndOfLine();
+				final Position position = game.getPosition();
+				if(position.isMate())
+				{
+					final Move move = position.getLastMove();
+					if(move.isWhiteMove())
+					{
+						game.setTag(ChessContext.RESULT_KEY, "1-0");
+						counter++;
+					}
+					else
+					{
+						game.setTag(ChessContext.RESULT_KEY, "0-1");
+						counter++;
+					}
+				}
+				else if(position.isStaleMate() || (position.getHalfMoveClock() >= ChessTagModder.MAX_MOVE_CLOCK))
+				{
+					game.setTag(ChessContext.RESULT_KEY, "1/2-1/2");
+					counter++;
+				}
+				//Everything else is where someone topples, a result is agreed, the game is unfinished or the game is invalid
+				//This state cannot be ascertained from the position of the board
+				//Note that Chesspresso ignores the result signifier after the move list
+			}
+		}
+		return counter;
+	}
 
 	/**
 	 * Returns an array of all the tags that can be written to a game

@@ -13,6 +13,22 @@ import java.util.logging.Logger;
  */
 class ChessContext
 {
+	/**
+	 * String for a Black Win
+	 */
+	static final String BLACK_WIN_RESULT = "0-1";
+	/**
+	 * String for a Draw
+	 */
+	static final String DRAW_RESULT      = "1/2-1/2";
+	/**
+	 * Key for the Result Tag
+	 */
+	static final String RESULT_KEY       = "Result";
+	/**
+	 * String for a White Win
+	 */
+	static final String WHITE_WIN_RESULT = "1-0";
 	private static final String          BLACK_ELO_KEY       = "BlackElo";
 	private static final String          BLACK_KEY           = "Black";
 	private static final String          DATE_KEY            = "Date";
@@ -23,7 +39,6 @@ class ChessContext
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger          LOGGER              = Logger.getLogger(ChessContext.class.getName());
 	private static final int             NO_OF_EDITABLE_TAGS = 11;
-	private static final String          RESULT_KEY          = "Result";
 	private static final String          ROUND_KEY           = "Round";
 	private static final String          SITE_KEY            = "Site";
 	private static final String          WHITE_ELO_KEY       = "WhiteElo";

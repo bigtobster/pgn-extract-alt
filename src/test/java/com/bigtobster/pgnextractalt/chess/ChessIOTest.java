@@ -42,7 +42,7 @@ public class ChessIOTest
 
 	private static ChessIO chessIOTestInit()
 	{
-		final ChessIO chessIO = new TestContext().getApplicationContext().getBean(ChessIO.class);
+		final ChessIO chessIO = new TestContext().getChessIO();
 		Assert.assertTrue("Import", ! chessIO.isPGNImported());
 		return chessIO;
 	}

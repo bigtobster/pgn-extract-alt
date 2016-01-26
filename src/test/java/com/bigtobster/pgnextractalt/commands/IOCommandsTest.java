@@ -23,21 +23,31 @@ public class IOCommandsTest
 	private static final char   SPACE                   = ' ';
 
 	/**
-	 * Loads any given context with files located at a given path
-	 * @param testContext The context to import files to
-	 * @param pgn Path to a PGN file to import
+	 * Builds an import command
+	 * @param file The file being imported
+	 * @return The full, complete import command including the reference to the file to be imported
 	 */
-	public static void preloadPGN(final TestContext testContext, final String pgn)
+	public static String buildImportCommand(final File file)
 	{
-		final String path = File.separator + TestContext.IMPORTS_DIR + File.separator + pgn;
-		final String pgnPath = IOCommands.class.getResource(path).getPath();
-		final File pgnFile = new File(pgnPath);
-		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
-		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
-		final String command = IOCommandsTest.buildImportCommand(pgnFile);
-		final String actualOutput = testContext.executeValidCommand(command);
-		final String predictedOutput = IOCommandsTest.createSuccessfulImportMessage(testContext);
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		//Execute command
+		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
+		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
+		return TestContext.buildCommand(IOCommands.getImportCommand(), optionArgs);
+	}
+
+	/**
+	 * Creates a message for a successful import
+	 *
+	 * @param testContext The current context
+	 * @return The message
+	 */
+	public static String createSuccessfulImportMessage(final TestContext testContext)
+	{
+		return IOCommands.SUCCESSFUL_IMPORT +
+			   IOCommandsTest.SPACE +
+			   testContext.getChessIO().getGames().size() +
+			   IOCommandsTest.SPACE +
+			   IOCommands.GAMES_IMPORTED;
 	}
 
 	private static String buildExportCommand(final File file)
@@ -48,14 +58,6 @@ public class IOCommandsTest
 		return TestContext.buildCommand(IOCommands.getExportCommand(), optionArgs);
 	}
 
-	private static String buildImportCommand(final File file)
-	{
-		//Execute command
-		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
-		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
-		return TestContext.buildCommand(IOCommands.getImportCommand(), optionArgs);
-	}
-
 	private static String createSuccessfulExportMessage(final TestContext testContext)
 	{
 		return IOCommands.SUCCESSFUL_EXPORT +
@@ -63,15 +65,6 @@ public class IOCommandsTest
 			   testContext.getChessIO().getGames().size() +
 			   IOCommandsTest.SPACE +
 			   IOCommands.GAMES_EXPORTED;
-	}
-
-	private static String createSuccessfulImportMessage(final TestContext testContext)
-	{
-		return IOCommands.SUCCESSFUL_IMPORT +
-			   IOCommandsTest.SPACE +
-			   testContext.getChessIO().getGames().size() +
-			   IOCommandsTest.SPACE +
-			   IOCommands.GAMES_IMPORTED;
 	}
 
 	private static void makeFileProtected(final File pgnFile, final boolean read, final boolean write, final boolean execute)
@@ -135,7 +128,7 @@ public class IOCommandsTest
 		final TestContext testContext = new TestContext();
 
 		//Pre-load
-		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
+		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
 
 		final String path = File.separator + TestContext.EXPORTS_DIR + File.separator + TestContext.PROTECTED_PGN;
 		final String pgnPath = this.getClass().getResource(path).getPath();
@@ -289,7 +282,7 @@ public class IOCommandsTest
 		final String pgnPath = this.getClass().getResource(path).getPath();
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnPath);
 		testContext.assertCommandFails(IOCommands.getResetCommand());
-		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
+		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
 		final String command = IOCommands.getResetCommand();
 		final String actualOutput = testContext.executeValidCommand(command);
 		TestContext.assertOutputMatchesPredicted(actualOutput, IOCommands.SUCCESSFUL_RESET);
@@ -322,7 +315,7 @@ public class IOCommandsTest
 		final TestContext testContext = new TestContext();
 
 		//Pre-load
-		IOCommandsTest.preloadPGN(testContext, TestContext.MULTI_PGN);
+		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
 
 		//Export
 		final String pgnPath;
