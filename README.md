@@ -4,6 +4,7 @@ A highly extensible modular rewrite of the PGN processing application pgn-extrac
 ##Latest##
  <ul>
  	<li>Project Started! - 19/11/2015</li>
+ 	<li>PGN-Extract-Alt Released! - 28/01/201</li>
  </ul>
 
 ##Overview##
@@ -14,33 +15,26 @@ PGN-extract is a popular and useful PGN processing application written by David 
 PGN-extract-alt aims to provide a modular alternative to PGN-extract using modern tools and languages. It is not intended to reproduce all of the features currently available in PGN-extract but instead provide a framework and accompanying documentation for the community to add whatever features they desire. PGN-extract-alt's core will be released with the following features:
 
 <ul>
-	<li>Filter Ordering Optimiser</li>
-	<li>PGN type conversion (SAN, FEN, etc)</li>
-	<li>Tag editing</li>
+	<li>Tag Creation</li>
+	<li>Tag Editing</li>
+	<li>Result Updater</li>
 	<li>Interactive CLI Interface</li>
-	<li>Highly concurrent implementation</li>
-</ul>
-
-Additionally, the following (non-essential) modules will be released with the core package:
-
-<ul>
-	<li>Machine Correlation Filtering</li>
-	<li>Move Bound Filtering</l>
-	<li>Result Filtering</li>
-	<li>Duplicate Game Filtering</li>
-	<li>Set Based Filtering</li>
 </ul>
 
 Recommendations for future modules are welcomed. 
 
 ##Installation##
-TBC
+Installation is via Maven. You will need to install Maven if you have not already done so.
+
+* Download Repo
+* Extract
+* Open directory with "POM.xml" in a CLI
+* Run "mvn install"
 
 ##Usage##
-TBC
+The binary is deployed to [pgn-extract-alt]/target and will have the filename pgn-extract-alt-[version].jar
 
-##Documentation##
-TBC
+To run the binary, open a CLI in the same directory as the binary and type: java -jar [filename]
 
 Currently, only the following tags are supported for insertion:
 
@@ -56,16 +50,52 @@ BlackElo
 EventDate
 ECO
 
+##Documentation##
+Extensive technical documentation is available in <pgn-extract-alt>/target/site. Open index.html in a web browser. The following artifacts are 
+available:
+ 
+ * Technical Summary
+ * Dependencies
+ * Licence
+ * Maven Plugin Info
+ * Project Team
+ * JavaDocs
+ * ChangeLogs
+ * Unit Test Reports
+ 
+Note that the project follows Spring design patterns. Basic familiarity with Spring is recommended.
+
+In order to extend PGN-Extract-Alt:
+
+1. Add and define a new command class in commands package
+2. Add and define a new chess class in chess package
+3. Add your chess package as a Spring Bean
+4. Test your command class in commands package
+5. Test your chess class in chess package
+6. Rebuild (mvn install)
+ 
 ##Tutorial##
-TBC
+Once running, type "help" to get a full list of commands.
+
+Tab completion is available to help you with parameters.
+
+PGN processing has the following patterns
+
+1. Import: import --FilePath [pathToPGN]
+2. [Processing Commands] e.g: calculate-result
+3. Export: export --FilePath [pathToNewPGN]
+
+A full user guide is currently under consideration.
 
 ##Structure##
-The core of PGN-extract-alt is based on Chesspresso (http://www.chesspresso.org/). The interface is built on Clamshell-CLI (https://github
-.com/vladimirvivien/clamshell-cli).
+The core of PGN-extract-alt is based on Chesspresso (http://www.chesspresso.org/). The interface is built on Spring Shell (http://docs.spring
+.io/spring-shell/docs/current/reference/htmlsingle/).
 
-The Machine Correlation module uses Stockfish 6 as its benchmark (https://stockfishchess.org/) wrapped in a thin-client called Chess-misc (https://github.com/rahular/chess-misc). 
+Note that the source code is divided into 3 distinct packages:
 
-TBC
+* chess - For chess logic
+* commands - For Spring Shell Commands logic
+* core - For project dependent classes
 
 ##Contact##
 Developer: Toby Leheup - toby.leheup@googlemail.com
