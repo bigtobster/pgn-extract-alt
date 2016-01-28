@@ -44,7 +44,7 @@ class CommandContext
 	 * @param exception The exception causing the error
 	 */
 	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
-	static void logSevereError(final Logger logger, final String message, final Exception exception)
+	static void logSevereError(@SuppressWarnings("SameParameterValue") final Logger logger, final String message, final Exception exception)
 	{
 		logger.log(Level.SEVERE, message);
 		logger.log(Level.SEVERE, exception.getMessage());

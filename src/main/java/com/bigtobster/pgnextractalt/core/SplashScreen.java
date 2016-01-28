@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  *
  * @author Toby Leheup (Bigtobster)
  */
-@SuppressWarnings("RefusedBequest")
+@SuppressWarnings({"RefusedBequest", "ClassUnconnectedToPackage", "ClassIndependentOfModule"})
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SplashScreen extends DefaultBannerProvider

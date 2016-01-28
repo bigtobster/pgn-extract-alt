@@ -38,22 +38,17 @@ public class ChessTagModderTest
 	@SuppressWarnings("DuplicateStringLiteralInspection")
 	private static final String TEST_KEY                    = "TestKey";
 
-	private static void testInsertTag(
-			final TestContext testContext, final ArrayList<Game> testGames, final boolean forceInsert,
-			final String predictedOutput
-									 )
+	private static void testInsertTag(final ArrayList<Game> testGames, final boolean forceInsert, final String predictedOutput)
 	{
-		final ChessIO chessIO = testContext.getChessIO();
+		final TestChessContext testChessContext = new TestChessContext();
+		final ChessIO chessIO = testChessContext.getChessIO();
 		chessIO.addGames(testGames);
 		Assert.assertTrue(ChessTagModderTest.GAME_FAILED_TO_INSERT, chessIO.isPGNImported());
-		final ChessTagModder chessTagModder = testContext.getChessTagModder();
+		final ChessTagModder chessTagModder = testChessContext.getChessTagModder();
 		chessTagModder.insertTag(ChessTagModderTest.TEST_KEY, ChessTagModderTest.NEW_TEST_VALUE, forceInsert);
 		for(final Game game : chessIO.getGames())
 		{
-			Assert.assertEquals(
-					ChessTagModderTest.DIFF_GAME_TAG_AND_TEST_TAG, predictedOutput,
-					game.getTag(ChessTagModderTest.TEST_KEY)
-							   );
+			Assert.assertEquals(ChessTagModderTest.DIFF_GAME_TAG_AND_TEST_TAG, predictedOutput, game.getTag(ChessTagModderTest.TEST_KEY));
 		}
 	}
 
@@ -63,10 +58,10 @@ public class ChessTagModderTest
 	@Test
 	public void calculateResultBlackWinTest()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.BLACK_WIN_MATE_HEADLESS_PGN);
-		testContext.getChessTagModder().calculateGameResults();
-		final Game game = testContext.getChessIO().getGames().get(0);
+		final TestChessContext testChessContext = new TestChessContext();
+		testChessContext.preloadPGN(TestContext.BLACK_WIN_MATE_HEADLESS_PGN);
+		testChessContext.getChessTagModder().calculateGameResults();
+		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_BLACK_WINS, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.BLACK_WIN_RESULT, game.getResultStr());
 	}
@@ -77,10 +72,10 @@ public class ChessTagModderTest
 	@Test
 	public void calculateResultDrawTest()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.DRAW_HEADLESS_PGN);
-		testContext.getChessTagModder().calculateGameResults();
-		final Game game = testContext.getChessIO().getGames().get(0);
+		final TestChessContext testChessContext = new TestChessContext();
+		testChessContext.preloadPGN(TestContext.DRAW_HEADLESS_PGN);
+		testChessContext.getChessTagModder().calculateGameResults();
+		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_DRAW, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.DRAW_RESULT, game.getResultStr());
 	}
@@ -91,11 +86,12 @@ public class ChessTagModderTest
 	@Test
 	public void calculateResultExistingResTest()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
-		testContext.getChessTagModder().insertTag(ChessContext.RESULT_KEY, ChessContext.BLACK_WIN_RESULT, false);
-		testContext.getChessTagModder().calculateGameResults();
-		final Game game = testContext.getChessIO().getGames().get(0);
+		final TestChessContext testChessContext = new TestChessContext();
+		testChessContext.preloadPGN(TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
+		final ChessTagModder chessTagModder = testChessContext.getChessTagModder();
+		chessTagModder.insertTag(ChessContext.RESULT_KEY, ChessContext.BLACK_WIN_RESULT, false);
+		chessTagModder.calculateGameResults();
+		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_BLACK_WINS, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.BLACK_WIN_RESULT, game.getResultStr());
 	}
@@ -106,10 +102,10 @@ public class ChessTagModderTest
 	@Test
 	public void calculateResultNoResultTest()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.INCALCULABLE_HEADLESS_PGN);
-		testContext.getChessTagModder().calculateGameResults();
-		final Game game = testContext.getChessIO().getGames().get(0);
+		final TestChessContext testChessContext = new TestChessContext();
+		testChessContext.preloadPGN(TestContext.INCALCULABLE_HEADLESS_PGN);
+		testChessContext.getChessTagModder().calculateGameResults();
+		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.NO_RES, (long) game.getResult());
 		Assert.assertNull(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, game.getResultStr());
 	}
@@ -120,10 +116,10 @@ public class ChessTagModderTest
 	@Test
 	public void calculateResultWhiteWinTest()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
-		testContext.getChessTagModder().calculateGameResults();
-		final Game game = testContext.getChessIO().getGames().get(0);
+		final TestChessContext testChessContext = new TestChessContext();
+		testChessContext.preloadPGN(TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
+		testChessContext.getChessTagModder().calculateGameResults();
+		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_WHITE_WINS, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.WHITE_WIN_RESULT, game.getResultStr());
 	}
@@ -134,9 +130,9 @@ public class ChessTagModderTest
 	@SuppressWarnings({"MethodMayBeStatic", "PublicMethodNotExposedInInterface"})
 	public void getWritableTagsTest()
 	{
-		final TestContext testContext = new TestContext();
-		final ChessContext chessContext = testContext.getApplicationContext().getBean(ChessContext.class);
-		Assert.assertArrayEquals("Tag keys do not match!", testContext.getChessTagModder().getWritableTags(), chessContext.getTagKeys());
+		final TestChessContext testChessContext = new TestChessContext();
+		final ChessContext chessContext = testChessContext.getChessContext();
+		Assert.assertArrayEquals("Tag keys do not match!", testChessContext.getChessTagModder().getWritableTags(), chessContext.getTagKeys());
 	}
 
 	/**
@@ -145,8 +141,6 @@ public class ChessTagModderTest
 	@Test
 	public void insertTagExistingTest()
 	{
-		final TestContext testContext = new TestContext();
-
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
 		testGame.setTag(ChessTagModderTest.TEST_KEY, ChessTagModderTest.OLD_TEST_VALUE);
@@ -160,7 +154,7 @@ public class ChessTagModderTest
 				testGame.getTag(ChessTagModderTest.TEST_KEY)
 						   );
 
-		ChessTagModderTest.testInsertTag(testContext, testGames, false, ChessTagModderTest.OLD_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testGames, false, ChessTagModderTest.OLD_TEST_VALUE);
 	}
 
 	/**
@@ -169,8 +163,6 @@ public class ChessTagModderTest
 	@Test
 	public void insertTagForceExistingTest()
 	{
-		final TestContext testContext = new TestContext();
-
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
 		testGame.setTag(ChessTagModderTest.TEST_KEY, ChessTagModderTest.OLD_TEST_VALUE);
@@ -184,7 +176,7 @@ public class ChessTagModderTest
 				testGame.getTag(ChessTagModderTest.TEST_KEY)
 						   );
 
-		ChessTagModderTest.testInsertTag(testContext, testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
 	}
 
 	/**
@@ -193,15 +185,13 @@ public class ChessTagModderTest
 	@Test
 	public void insertTagForceNonExistingTest()
 	{
-		final TestContext testContext = new TestContext();
-
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
 		testGames.add(testGame);
 		testGames.add(testGame);
 		Assert.assertTrue(ChessTagModderTest.GAME_FAILED_TO_INSERT, ! testGames.isEmpty());
 
-		ChessTagModderTest.testInsertTag(testContext, testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testGames, true, ChessTagModderTest.NEW_TEST_VALUE);
 	}
 
 	/**
@@ -210,14 +200,12 @@ public class ChessTagModderTest
 	@Test
 	public void insertTagNonExistingTest()
 	{
-		final TestContext testContext = new TestContext();
-
 		final ArrayList<Game> testGames = new ArrayList<Game>(2);
 		final Game testGame = new Game();
 		testGames.add(testGame);
 		testGames.add(testGame);
 		Assert.assertTrue(ChessTagModderTest.GAME_FAILED_TO_INSERT, ! testGames.isEmpty());
 
-		ChessTagModderTest.testInsertTag(testContext, testGames, false, ChessTagModderTest.NEW_TEST_VALUE);
+		ChessTagModderTest.testInsertTag(testGames, false, ChessTagModderTest.NEW_TEST_VALUE);
 	}
 }

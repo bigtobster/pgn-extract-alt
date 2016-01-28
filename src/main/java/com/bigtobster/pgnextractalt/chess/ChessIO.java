@@ -17,8 +17,9 @@ import chesspresso.pgn.PGNWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.activation.UnsupportedDataTypeException;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -96,33 +97,41 @@ public final class ChessIO
 	/**
 	 * Converts a PGN file into a list of Chesspresso games
 	 *
-	 * @param inputStream A InputStream pointing to filePath
-	 * @param filePath    The path to the PGN file
+	 * @param pgnFile The file pointing to a PGN file to import
 	 * @throws javax.activation.UnsupportedDataTypeException Throws exception in the event that passed file is not a PGN
 	 * @throws IOException                                   Filesystem issue with reading PGN file
 	 * @throws PGNSyntaxError                                Syntax error with readying PGN file
 	 */
-	public void importPGN(final InputStream inputStream, final String filePath) throws IOException, PGNSyntaxError, UnsupportedDataTypeException
+	public void importPGN(final File pgnFile) throws IOException, PGNSyntaxError, UnsupportedDataTypeException
 	{
 		final PGNReader pgnReader;
 		final ArrayList<Game> games = new ArrayList<Game>(100);
-		if(! PGNReader.isPGNFile(filePath))
+		final FileInputStream fileInputStream;
+		if(! PGNReader.isPGNFile(pgnFile.getPath()))
 		{
-			throw new UnsupportedDataTypeException("File at " + filePath + " is not a PGN file");
+			throw new UnsupportedDataTypeException("File at " + pgnFile.getPath() + " is not a PGN file");
 		}
-		pgnReader = new PGNReader(inputStream, filePath);
-		Game game = pgnReader.parseGame();
-		if(game == null)
+		fileInputStream = new FileInputStream(pgnFile);
+		try
 		{
-			throw new PGNSyntaxError(PGNSyntaxError.ERROR, "Empty PGN file!", filePath, 0, "");
+			pgnReader = new PGNReader(new FileInputStream(pgnFile), pgnFile.getPath());
+			Game game = pgnReader.parseGame();
+			if(game == null)
+			{
+				throw new PGNSyntaxError(PGNSyntaxError.ERROR, "Empty PGN file!", pgnFile.getPath(), 0, "");
+			}
+			do
+			{
+				games.add(game);
+				game = pgnReader.parseGame();
+			}
+			while(game != null);
+			this.addGames(games);
 		}
-		do
+		finally
 		{
-			games.add(game);
-			game = pgnReader.parseGame();
+			fileInputStream.close();
 		}
-		while(game != null);
-		this.addGames(games);
 	}
 
 	/**

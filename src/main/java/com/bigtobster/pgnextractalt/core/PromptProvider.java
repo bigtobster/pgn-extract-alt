@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Toby Leheup (Bigtobster)
  */
-@SuppressWarnings("RefusedBequest")
+@SuppressWarnings({"RefusedBequest", "ClassUnconnectedToPackage", "ClassIndependentOfModule"})
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class PromptProvider extends DefaultPromptProvider

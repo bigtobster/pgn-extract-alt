@@ -115,7 +115,7 @@ public class IOCommands implements CommandMarker
 	 *
 	 * @return String Import Command
 	 */
-	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
+	@SuppressWarnings({"MethodReturnAlwaysConstant"})
 	public static String getImportCommand()
 	{
 		return IOCommands.IMPORT_COMMAND;
@@ -143,6 +143,18 @@ public class IOCommands implements CommandMarker
 	{
 		//always available
 		return true;
+	}
+
+	/**
+	 * Takes a severe IO error, forms a coherent bundle of failure data and reports to user
+	 * @param ioException The exception that's caused the issue
+	 * @throws IOException The original exception rethrown
+	 */
+	private static void handleAndThrowIOPGNError(final IOException ioException) throws IOException
+	{
+		final String failureDetails = IOCommands.UNKNOWN_IMPORT_ERROR + OsUtils.LINE_SEPARATOR + IOCommands.NOTIFY_DEV;
+		CommandContext.logSevereError(IOCommands.LOGGER, failureDetails, ioException);
+		throw ioException;
 	}
 
 	/**
@@ -220,7 +232,6 @@ public class IOCommands implements CommandMarker
 			@CliOption(key = {"", IOCommands.FILE_PATH_OPTION}, help = "Path to the PGN file to be imported", mandatory = true) final File file
 						   ) throws IOException
 	{
-		final FileInputStream fileInputStream;
 		String failureDetails = null;
 		final String filePath = file.getPath();
 		try
@@ -230,10 +241,9 @@ public class IOCommands implements CommandMarker
 				//noinspection ThrowCaughtLocally
 				throw new InvalidObjectException(IOCommands.PGN_NOT_READABLE + IOCommands.SPACE + filePath);
 			}
-			fileInputStream = new FileInputStream(file);
 			try
 			{
-				this.commandContext.getChessIO().importPGN(fileInputStream, filePath);
+				this.commandContext.getChessIO().importPGN(file);
 			}
 			catch(final UnsupportedDataTypeException ignored)
 			{
@@ -241,22 +251,11 @@ public class IOCommands implements CommandMarker
 			}
 			catch(final IOException ioe)
 			{
-				this.handleAndThrowIOPGNError(ioe);
+				IOCommands.handleAndThrowIOPGNError(ioe);
 			}
 			catch(final PGNSyntaxError ignored)
 			{
 				failureDetails = IOCommands.INVALID_SYNTAX;
-			}
-			finally
-			{
-				try
-				{
-					fileInputStream.close();
-				}
-				catch(final IOException ioe)
-				{
-					this.handleAndThrowIOPGNError(ioe);
-				}
 			}
 		}
 		catch(final FileNotFoundException ignored)
@@ -325,13 +324,5 @@ public class IOCommands implements CommandMarker
 		return "IOCommands{" +
 			   this.commandContext +
 			   '}';
-	}
-
-	@SuppressWarnings("MethodMayBeStatic")
-	private void handleAndThrowIOPGNError(final IOException ioException) throws IOException
-	{
-		final String failureDetails = IOCommands.UNKNOWN_IMPORT_ERROR + OsUtils.LINE_SEPARATOR + IOCommands.NOTIFY_DEV;
-		CommandContext.logSevereError(IOCommands.LOGGER, failureDetails, ioException);
-		throw ioException;
 	}
 }

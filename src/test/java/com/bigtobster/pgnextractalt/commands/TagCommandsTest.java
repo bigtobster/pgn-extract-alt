@@ -42,7 +42,7 @@ public class TagCommandsTest
 	private static String buildInsertResultCommand()
 	{
 		final String command = TagCommands.getCalculateResultCommand();
-		return TestContext.buildCommand(command, new HashMap<String, String>(3));
+		return TestCommandContext.buildCommand(command, new HashMap<String, String>(3));
 	}
 
 	@SuppressWarnings("SameParameterValue")
@@ -52,7 +52,7 @@ public class TagCommandsTest
 		final HashMap<String, String> args = new HashMap<String, String>(3);
 		args.put(TagCommands.TAG_KEY, key);
 		args.put(TagCommands.TAG_VALUE, value);
-		return TestContext.buildCommand(command, args);
+		return TestCommandContext.buildCommand(command, args);
 	}
 
 	@SuppressWarnings("SameParameterValue")
@@ -63,7 +63,7 @@ public class TagCommandsTest
 		args.put(TagCommands.TAG_KEY, key);
 		args.put(TagCommands.TAG_VALUE, value);
 		args.put(TagCommands.FORCE, String.valueOf(force));
-		return TestContext.buildCommand(command, args);
+		return TestCommandContext.buildCommand(command, args);
 	}
 
 	/**
@@ -73,12 +73,12 @@ public class TagCommandsTest
 	@Test
 	public void insertResultIncalculable()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.INCALCULABLE_HEADLESS_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.INCALCULABLE_HEADLESS_PGN);
 		final String finalCommand = TagCommandsTest.buildInsertResultCommand();
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.UNABLE_TO_ASCERTAIN_ANY_RESULTS;
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -88,17 +88,17 @@ public class TagCommandsTest
 	@Test
 	public void insertResultMixedHeadless()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.INCALCULABLE_HEADLESS_PGN);
-		TestContext.preloadPGN(testContext, TestContext.DRAW_HEADLESS_PGN);
-		TestContext.preloadPGN(testContext, TestContext.BLACK_WIN_MATE_HEADLESS_PGN);
-		TestContext.preloadPGN(testContext, TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
-		TestContext.preloadPGN(testContext, TestContext.INCALCULABLE_HEADLESS_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.INCALCULABLE_HEADLESS_PGN);
+		testCommandContext.preloadPGN(TestContext.DRAW_HEADLESS_PGN);
+		testCommandContext.preloadPGN(TestContext.BLACK_WIN_MATE_HEADLESS_PGN);
+		testCommandContext.preloadPGN(TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
+		testCommandContext.preloadPGN(TestContext.INCALCULABLE_HEADLESS_PGN);
 		final String finalCommand = TagCommandsTest.buildInsertResultCommand();
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS + TagCommandsTest.SPACE + 3 + TagCommandsTest.SPACE +
 									   TagCommands.TAGS_INSERTED;
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -108,9 +108,9 @@ public class TagCommandsTest
 	@Test
 	public void insertResultNoImportedGames()
 	{
-		final TestContext testContext = new TestContext();
+		final TestCommandContext testCommandContext = new TestCommandContext();
 		final String finalCommand = TagCommandsTest.buildInsertResultCommand();
-		testContext.assertCommandFails(finalCommand);
+		testCommandContext.assertCommandFails(finalCommand);
 	}
 
 	/**
@@ -120,12 +120,12 @@ public class TagCommandsTest
 	@Test
 	public void insertResultNoneMissing()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
 		final String finalCommand = TagCommandsTest.buildInsertResultCommand();
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.ALL_GAMES_COMPLETED_RESULT_TAG;
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -135,14 +135,14 @@ public class TagCommandsTest
 	@Test
 	public void insertTagAllGames()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -152,22 +152,22 @@ public class TagCommandsTest
 	@Test
 	public void insertTagBadCommandTest()
 	{
-		final TestContext testContext = new TestContext();
+		final TestCommandContext testCommandContext = new TestCommandContext();
 
 		final String command = TagCommands.getInsertTagCommand();
 		final HashMap<String, String> args = new HashMap<String, String>(3);
 
-		testContext.assertCommandFails(TestContext.buildCommand(command, args));
+		testCommandContext.assertCommandFails(TestCommandContext.buildCommand(command, args));
 
 		args.put(TagCommands.TAG_KEY, TagCommandsTest.NEW_TEST_KEY);
-		testContext.assertCommandFails(TestContext.buildCommand(command, args));
+		testCommandContext.assertCommandFails(TestCommandContext.buildCommand(command, args));
 
 		args.put(TagCommands.TAG_VALUE, TagCommandsTest.NEW_TEST_VALUE);
-		testContext.assertCommandFails(TestContext.buildCommand(command, args));
+		testCommandContext.assertCommandFails(TestCommandContext.buildCommand(command, args));
 
 		args.remove(TagCommands.TAG_VALUE);
 		args.put(TagCommands.FORCE, TagCommandsTest.TRUE);
-		testContext.assertCommandFails(TestContext.buildCommand(command, args));
+		testCommandContext.assertCommandFails(TestCommandContext.buildCommand(command, args));
 	}
 
 	/**
@@ -177,17 +177,17 @@ public class TagCommandsTest
 	@Test
 	public void insertTagForceAllGames()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
-		final int totalGames = testContext.getChessIO().getGames().size();
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
+		final int totalGames = testCommandContext.getChessIO().getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -197,17 +197,17 @@ public class TagCommandsTest
 	@Test
 	public void insertTagForceNoGames()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
-		final int totalGames = testContext.getChessIO().getGames().size();
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
+		final int totalGames = testCommandContext.getChessIO().getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -217,22 +217,22 @@ public class TagCommandsTest
 	@Test
 	public void insertTagForceSomeGames()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
-		final ArrayList<Game> games = testContext.getChessIO().getGames();
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		final ArrayList<Game> games = testCommandContext.getChessIO().getGames();
 		for(int i = 0; (i < games.size()) && ((i % 2) == 0); i++)
 		{
 			games.get(i).setTag(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE);
 		}
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final int totalGames = games.size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -242,14 +242,14 @@ public class TagCommandsTest
 	@Test
 	public void insertTagMissingForce()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final String predictedOutput = TagCommands.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -259,17 +259,17 @@ public class TagCommandsTest
 	@Test
 	public void insertTagNoGames()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
-		final int totalGames = testContext.getChessIO().getGames().size();
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
+		final int totalGames = testCommandContext.getChessIO().getGames().size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   totalGames + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -279,9 +279,9 @@ public class TagCommandsTest
 	@Test
 	public void insertTagNoImportedGames()
 	{
-		final TestContext testContext = new TestContext();
+		final TestCommandContext testCommandContext = new TestCommandContext();
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, true);
-		testContext.assertCommandFails(finalCommand);
+		testCommandContext.assertCommandFails(finalCommand);
 	}
 
 	/**
@@ -291,9 +291,9 @@ public class TagCommandsTest
 	@Test
 	public void insertTagSomeGames()
 	{
-		final TestContext testContext = new TestContext();
-		TestContext.preloadPGN(testContext, TestContext.MULTI_PGN);
-		final ArrayList<Game> games = testContext.getChessIO().getGames();
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		final ArrayList<Game> games = testCommandContext.getChessIO().getGames();
 		int gamesModified = 0;
 		for(int i = 0; (i < games.size()) && ((i % 2) == 0); i++)
 		{
@@ -302,13 +302,13 @@ public class TagCommandsTest
 		}
 
 		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.NEW_TEST_KEY, TagCommandsTest.NEW_TEST_VALUE, false);
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
 		final int totalGames = games.size();
 		final String predictedOutput = TagCommands.SUCCESSFULLY_INSERTED_TAGS +
 									   TagCommandsTest.SPACE +
 									   (totalGames - gamesModified) + TagCommandsTest.SPACE + TagCommands.TAGS_INSERTED;
 
-		TestContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
 	/**
@@ -317,15 +317,15 @@ public class TagCommandsTest
 	@Test
 	public void listWritableTags()
 	{
-		final TestContext testContext = new TestContext();
+		final TestCommandContext testCommandContext = new TestCommandContext();
 
 		final String finalCommand = TagCommands.getListWritableTagsCommand();
-		final String actualOutput = testContext.executeValidCommand(finalCommand);
-		for(final String tag : testContext.getChessTagModder().getWritableTags())
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
+		for(final String tag : testCommandContext.getChessTagModder().getWritableTags())
 		{
 			Assert.assertNotNull("Tag should not be null", tag);
 			Assert.assertTrue("Tag should not be empty String", ! tag.isEmpty());
-			TestContext.assertCommandOutputContains(actualOutput, tag);
+			TestCommandContext.assertCommandOutputContains(actualOutput, tag);
 		}
 	}
 }

@@ -18,7 +18,6 @@ import org.junit.Test;
 import javax.activation.UnsupportedDataTypeException;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -52,9 +51,58 @@ public class ChessIOTest
 
 	private static ChessIO chessIOTestInit()
 	{
-		final ChessIO chessIO = new TestContext().getChessIO();
+		final ChessIO chessIO = new TestChessContext().getChessIO();
 		Assert.assertTrue("Import", ! chessIO.isPGNImported());
 		return chessIO;
+	}
+
+	private static void testExportSucceeds(final File importFile, final ChessIO chessIO) throws IOException, PGNSyntaxError
+	{
+		//Need a unique identifier to avoid overwriting other tests
+		// noinspection MagicCharacter
+		final File exportFile = TestChessContext.getPGNFile(TestContext.DUMP_DIR, UUID.randomUUID().toString() + '-' + importFile.getName());
+		if(! exportFile.getParentFile().exists())
+		{
+			createDirectory(exportFile.getParentFile().toPath());
+		}
+		//noinspection ResultOfMethodCallIgnored
+		exportFile.createNewFile();
+		final PrintWriter printWriter = new PrintWriter(exportFile);
+		ChessIOTest.testImportSucceeds(importFile, chessIO);
+		final ArrayList importedChessGames = chessIO.getGames();
+		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, importFile);
+		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, printWriter);
+		chessIO.exportPGN(printWriter);
+		chessIO.reset();
+		ChessIOTest.testImportSucceeds(exportFile, chessIO);
+		final ArrayList exportedChessGames = chessIO.getGames();
+		Assert.assertEquals("Imported games should be logically equal to exported games", importedChessGames, exportedChessGames);
+	}
+
+	private static void testImportFails(final File pgnFile) throws IOException
+	{
+		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
+		try
+		{
+			Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
+			chessIO.importPGN(pgnFile);
+			Assert.fail("Import has succeeded when failure expected!");
+		}
+		catch(final PGNSyntaxError ignored)
+		{
+			ChessIOTest.assertImportFailure(chessIO);
+		}
+		catch(final UnsupportedDataTypeException ignored)
+		{
+			ChessIOTest.assertImportFailure(chessIO);
+		}
+	}
+
+	private static void testImportSucceeds(final File pgnFile, final ChessIO chessIO) throws IOException, PGNSyntaxError
+	{
+		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
+		chessIO.importPGN(pgnFile);
+		ChessIOTest.assertImportSuccess(chessIO);
 	}
 
 	/**
@@ -68,7 +116,7 @@ public class ChessIOTest
 	public void exportLargeTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testExportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.LARGE_PGN, chessIO);
+		ChessIOTest.testExportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.LARGE_PGN), chessIO);
 	}
 
 	/**
@@ -82,7 +130,7 @@ public class ChessIOTest
 	public void exportMultiInvalidTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testExportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.MULTI_INVALID_PGN, chessIO);
+		ChessIOTest.testExportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.MULTI_INVALID_PGN), chessIO);
 	}
 
 	/**
@@ -96,7 +144,7 @@ public class ChessIOTest
 	public void exportMultiTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testExportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.MULTI_PGN, chessIO);
+		ChessIOTest.testExportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.MULTI_PGN), chessIO);
 	}
 
 	/**
@@ -110,7 +158,7 @@ public class ChessIOTest
 	public void exportSingleInvalidTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testExportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.SINGLE_INVALID_PGN, chessIO);
+		ChessIOTest.testExportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.SINGLE_INVALID_PGN), chessIO);
 	}
 
 	/**
@@ -124,7 +172,7 @@ public class ChessIOTest
 	public void exportSingleTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testExportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.SINGLE_PGN, chessIO);
+		ChessIOTest.testExportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.SINGLE_PGN), chessIO);
 	}
 
 	/**
@@ -132,10 +180,11 @@ public class ChessIOTest
 	 *
 	 * @throws java.io.IOException Thrown on uncaught IOException error
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
 	public void importEmptyTest() throws IOException
 	{
-		this.testImportFails(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.EMPTY_PGN);
+		ChessIOTest.testImportFails(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.EMPTY_PGN));
 	}
 
 	/**
@@ -149,7 +198,7 @@ public class ChessIOTest
 	public void importInvalidTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testImportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.SINGLE_INVALID_PGN, chessIO);
+		ChessIOTest.testImportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.SINGLE_INVALID_PGN), chessIO);
 	}
 
 	/**
@@ -163,7 +212,7 @@ public class ChessIOTest
 	public void importLargeTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testImportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.LARGE_PGN, chessIO);
+		ChessIOTest.testImportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.LARGE_PGN), chessIO);
 	}
 
 	/**
@@ -177,7 +226,7 @@ public class ChessIOTest
 	public void importMultiInvalidTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testImportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.MULTI_INVALID_PGN, chessIO);
+		ChessIOTest.testImportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.MULTI_INVALID_PGN), chessIO);
 	}
 
 	/**
@@ -191,7 +240,7 @@ public class ChessIOTest
 	public void importMultiTest() throws IOException, PGNSyntaxError
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testImportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.MULTI_PGN, chessIO);
+		ChessIOTest.testImportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.MULTI_PGN), chessIO);
 	}
 
 	/**
@@ -199,10 +248,11 @@ public class ChessIOTest
 	 *
 	 * @throws java.io.IOException Thrown on uncaught IOException error
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
 	public void importNotAPGNTest() throws IOException
 	{
-		this.testImportFails(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.NOT_A_PGN);
+		ChessIOTest.testImportFails(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.NOT_A_PGN));
 	}
 
 	/**
@@ -216,85 +266,6 @@ public class ChessIOTest
 	public void importSingleTest() throws PGNSyntaxError, IOException
 	{
 		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		this.testImportSucceeds(File.separator + TestContext.IMPORTS_DIR + File.separator + TestContext.SINGLE_PGN, chessIO);
-	}
-
-	private void testExportSucceeds(final String importPGNPath, final ChessIO chessIO) throws IOException, PGNSyntaxError
-	{
-		final File importFile = new File(importPGNPath);
-		//Need a unique identifier to avoid overwriting other tests
-		//noinspection MagicCharacter
-		final String exportPGNPath = File.separator +
-									 TestContext.DUMP_DIR +
-									 File.separator +
-									 UUID.randomUUID() +
-									 '-' +
-									 importFile.getName();
-		final String absExportPGNPath = System.getProperty("user.dir") +
-										File.separator +
-										TestContext.TARGET_DIR +
-										File.separator +
-										TestContext.TEST_CLASSES_DIR +
-										File.separator +
-										exportPGNPath;
-		final File exportFile = new File(absExportPGNPath);
-		if(! exportFile.getParentFile().exists())
-		{
-			createDirectory(exportFile.getParentFile().toPath());
-		}
-		//noinspection ResultOfMethodCallIgnored
-		exportFile.createNewFile();
-		final PrintWriter printWriter = new PrintWriter(exportFile);
-		this.testImportSucceeds(importPGNPath, chessIO);
-		final ArrayList importedChessGames = chessIO.getGames();
-		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, importFile);
-		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, printWriter);
-		chessIO.exportPGN(printWriter);
-		chessIO.reset();
-		this.testImportSucceeds(exportPGNPath, chessIO);
-		final ArrayList exportedChessGames = chessIO.getGames();
-		Assert.assertEquals("Imported games should be logically equal to exported games", importedChessGames, exportedChessGames);
-	}
-
-	private void testImportFails(final String path) throws IOException
-	{
-		final ChessIO chessIO = ChessIOTest.chessIOTestInit();
-		final InputStream inputStream = this.getClass().getResourceAsStream(path);
-		try
-		{
-			Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, inputStream);
-			chessIO.importPGN(inputStream, path);
-			Assert.fail("Import has succeeded when failure expected!");
-		}
-		catch(final PGNSyntaxError ignored)
-		{
-			ChessIOTest.assertImportFailure(chessIO);
-		}
-		catch(final UnsupportedDataTypeException ignored)
-		{
-			ChessIOTest.assertImportFailure(chessIO);
-		}
-		finally
-		{
-			if(inputStream != null)
-			{
-				inputStream.close();
-			}
-		}
-	}
-
-	private void testImportSucceeds(final String path, final ChessIO chessIO) throws IOException, PGNSyntaxError
-	{
-		final InputStream inputStream = this.getClass().getResourceAsStream(path);
-		try
-		{
-			Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, inputStream);
-			chessIO.importPGN(inputStream, path);
-			ChessIOTest.assertImportSuccess(chessIO);
-		}
-		finally
-		{
-			inputStream.close();
-		}
+		ChessIOTest.testImportSucceeds(TestChessContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.SINGLE_PGN), chessIO);
 	}
 }

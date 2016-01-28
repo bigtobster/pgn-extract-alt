@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Toby Leheup (Bigtobster)
  */
-@SuppressWarnings({"RefusedBequest", "WeakerAccess"})
+@SuppressWarnings({"RefusedBequest", "WeakerAccess", "ClassUnconnectedToPackage", "ClassIndependentOfModule"})
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class HistoryFileNameProvider extends DefaultHistoryFileNameProvider
