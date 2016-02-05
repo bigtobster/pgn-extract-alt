@@ -24,22 +24,6 @@ import java.io.IOException;
  */
 class TestChessContext extends TestContext
 {
-	private static final String UNKNOWN_IO_ERROR        = "Unknown IO error on Import\n";
-	private static final String UNKNOWN_PGNSYNTAX_ERROR = "Unknown PGNSyntax error on Import\n";
-
-	/**
-	 * Attempts to find a PGN file and returns a File pointing to curWorkDir/target/test-classes/directory/filename Note that this function makes no
-	 * guarantee that the File points to anything that actually exists!
-	 *
-	 * @param directory The parent directory of filename
-	 * @param filename  The filename of the PGN file including the extension
-	 * @return A file pointer to a PGN file
-	 */
-	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "WeakerAccess"})
-	protected static File getPGNFile(final String directory, final String filename)
-	{
-		return TestContext.getPGNFile(directory, filename);
-	}
 
 	/**
 	 * Returns the ChessContext for the current context
@@ -50,6 +34,18 @@ class TestChessContext extends TestContext
 	protected ChessContext getChessContext()
 	{
 		return (ChessContext) this.getBean(ChessContext.class);
+	}
+
+	/**
+	 * Returns the ChessFilterer for the current context
+	 *
+	 * @return The current context's ChessFilterer instance
+	 */
+	@SuppressWarnings("UnusedDeclaration")
+	@Override
+	protected ChessFilterer getChessFilterer()
+	{
+		return (ChessFilterer) this.getBean(ChessFilterer.class);
 	}
 
 	/**
@@ -93,12 +89,12 @@ class TestChessContext extends TestContext
 		catch(final IOException e)
 		{
 			//noinspection MagicCharacter
-			Assert.fail(TestChessContext.UNKNOWN_IO_ERROR + e.getMessage() + '\n' + e);
+			Assert.fail(TestContext.UNKNOWN_IO_ERROR + e.getMessage() + '\n' + e);
 		}
 		catch(final PGNSyntaxError pgnSyntaxError)
 		{
 			//noinspection MagicCharacter
-			Assert.fail(TestChessContext.UNKNOWN_PGNSYNTAX_ERROR + pgnSyntaxError.getMessage() + '\n' + pgnSyntaxError);
+			Assert.fail(TestContext.UNKNOWN_PGNSYNTAX_ERROR + pgnSyntaxError.getMessage() + '\n' + pgnSyntaxError);
 		}
 	}
 }

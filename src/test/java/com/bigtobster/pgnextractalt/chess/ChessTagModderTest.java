@@ -60,7 +60,7 @@ public class ChessTagModderTest
 	{
 		final TestChessContext testChessContext = new TestChessContext();
 		testChessContext.preloadPGN(TestContext.BLACK_WIN_MATE_HEADLESS_PGN);
-		testChessContext.getChessTagModder().calculateGameResults();
+		ChessPresso.calculateGameResults(testChessContext.getChessIO().getGames());
 		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_BLACK_WINS, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.BLACK_WIN_RESULT, game.getResultStr());
@@ -74,7 +74,7 @@ public class ChessTagModderTest
 	{
 		final TestChessContext testChessContext = new TestChessContext();
 		testChessContext.preloadPGN(TestContext.DRAW_HEADLESS_PGN);
-		testChessContext.getChessTagModder().calculateGameResults();
+		ChessPresso.calculateGameResults(testChessContext.getChessIO().getGames());
 		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_DRAW, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.DRAW_RESULT, game.getResultStr());
@@ -90,7 +90,7 @@ public class ChessTagModderTest
 		testChessContext.preloadPGN(TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
 		final ChessTagModder chessTagModder = testChessContext.getChessTagModder();
 		chessTagModder.insertTag(ChessContext.RESULT_KEY, ChessContext.BLACK_WIN_RESULT, false);
-		chessTagModder.calculateGameResults();
+		ChessPresso.calculateGameResults(testChessContext.getChessIO().getGames());
 		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_BLACK_WINS, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.BLACK_WIN_RESULT, game.getResultStr());
@@ -104,7 +104,7 @@ public class ChessTagModderTest
 	{
 		final TestChessContext testChessContext = new TestChessContext();
 		testChessContext.preloadPGN(TestContext.INCALCULABLE_HEADLESS_PGN);
-		testChessContext.getChessTagModder().calculateGameResults();
+		ChessPresso.calculateGameResults(testChessContext.getChessIO().getGames());
 		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.NO_RES, (long) game.getResult());
 		Assert.assertNull(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, game.getResultStr());
@@ -118,7 +118,7 @@ public class ChessTagModderTest
 	{
 		final TestChessContext testChessContext = new TestChessContext();
 		testChessContext.preloadPGN(TestContext.WHITE_WIN_MATE_HEADLESS_PGN);
-		testChessContext.getChessTagModder().calculateGameResults();
+		ChessPresso.calculateGameResults(testChessContext.getChessIO().getGames());
 		final Game game = testChessContext.getChessIO().getGames().get(0);
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, (long) Chess.RES_WHITE_WINS, (long) game.getResult());
 		Assert.assertEquals(ChessTagModderTest.INCORRECT_RESULT_CALCULATED, ChessContext.WHITE_WIN_RESULT, game.getResultStr());

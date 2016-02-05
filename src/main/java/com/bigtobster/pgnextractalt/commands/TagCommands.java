@@ -11,6 +11,7 @@
 package com.bigtobster.pgnextractalt.commands;
 
 import chesspresso.game.Game;
+import com.bigtobster.pgnextractalt.chess.ChessPresso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
@@ -134,7 +135,7 @@ public class TagCommands implements CommandMarker
 	@CliCommand(value = TagCommands.CALCULATE_RESULT_COMMAND, help = TagCommands.CALCULATE_RESULT_COMMAND_HELP)
 	public String calculateResultTag()
 	{
-		final int tagsInsertedNo = this.commandContext.getChessTagModder().calculateGameResults();
+		final int tagsInsertedNo = ChessPresso.calculateGameResults(this.commandContext.getChessIO().getGames());
 		boolean allResultsCalculated = true;
 		for(final Game game : this.commandContext.getChessIO().getGames())
 		{
@@ -164,14 +165,14 @@ public class TagCommands implements CommandMarker
 	 * @param forceInsert Whether to overwrite existing tags of that key
 	 * @return Success message
 	 */
-	@SuppressWarnings("BooleanParameter")
+	@SuppressWarnings({"BooleanParameter", "DuplicateStringLiteralInspection"})
 	@CliCommand(value = TagCommands.INSERT_TAG_COMMAND, help = TagCommands.INSERT_TAG_COMMAND_HELP)
 	public String insertTag(
 			@CliOption(key = {TagCommands.TAG_KEY}, mandatory = true, help = "The key of the tag to be inserted.")
 			final String tagKey,
 			@CliOption(key = {TagCommands.TAG_VALUE}, mandatory = true, help = "The value of the tag to be inserted.")
 			final String tagValue,
-			@CliOption(key = {TagCommands.FORCE}, mandatory = false, help = "\"true\" to overwrite any existing tags with this key",
+			@SuppressWarnings("DuplicateStringLiteralInspection") @CliOption(key = {TagCommands.FORCE}, mandatory = false, help = "\"true\" to overwrite any existing tags with this key",
 					   unspecifiedDefaultValue = "false")
 			final boolean forceInsert
 						   )
@@ -223,7 +224,7 @@ public class TagCommands implements CommandMarker
 		return outputBuilder.toString();
 	}
 
-	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
+	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter", "DuplicateStringLiteralInspection"})
 	@Override
 	public String toString()
 	{

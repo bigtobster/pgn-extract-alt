@@ -100,6 +100,14 @@ public abstract class TestContext
 	 * A single space character
 	 */
 	protected static final char                SPACE                        = ' ';
+	/**
+	 * Error message on unknown IO error
+	 */
+	protected static final String              UNKNOWN_IO_ERROR             = "Unknown IO error on Import\n";
+	/**
+	 * Error messaged on unknown PGNSyntax Error
+	 */
+	protected static final String              UNKNOWN_PGNSYNTAX_ERROR      = "Unknown PGNSyntax error on Import\n";
 	private static final   String              BEAN_RETRIEVAL_RETURNED_NULL = "Bean retrieval returned a NULL object";
 	@SuppressWarnings("UnusedDeclaration")
 	private static final   Logger              LOGGER                       = Logger.getLogger(TestContext.class.getName());
@@ -124,6 +132,14 @@ public abstract class TestContext
 		this.shell = this.bootstrap.getJLineShellComponent();
 		this.applicationContext = this.bootstrap.getApplicationContext();
 	}
+
+	/**
+	 * Returns the ChessFilterer for the current context
+	 *
+	 * @return The current context's ChessFilterer instance
+	 */
+	@SuppressWarnings("UnusedDeclaration")
+	abstract protected Object getChessFilterer();
 
 	/**
 	 * Returns the ChessIO for the current context
@@ -156,7 +172,7 @@ public abstract class TestContext
 	 * @param filename The filename of the PGN file including the extension
 	 * @return A file pointer to a PGN file
 	 */
-	protected static File getPGNFile(final String directory, final String filename)
+	public static File getPGNFile(final String directory, final String filename)
 	{
 		return new File(
 				Paths.get(".").toAbsolutePath().normalize() +

@@ -10,6 +10,7 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
+import com.bigtobster.pgnextractalt.chess.ChessFilterer;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
 import com.bigtobster.pgnextractalt.core.TestContext;
@@ -57,6 +58,17 @@ final class TestCommandContext extends TestContext
 	}
 
 	/**
+	 * Wrapper for buildCommand when no parameters required
+	 * @param command the command to be executed
+	 * @return The final constructed command
+	 */
+	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
+	static String buildCommand(final String command)
+	{
+		return TestCommandContext.buildCommand(command, new HashMap<String, String>(0));
+	}
+
+	/**
 	 * Builds a command string up from a basic command plus a Hash Map of Option, Argument value pairs to get "command [--&lt;option&gt; &lt;
 	 * arg&gt;]*"
 	 *
@@ -96,17 +108,15 @@ final class TestCommandContext extends TestContext
 	}
 
 	/**
-	 * Attempts to find a PGN file and returns a File pointing to curWorkDir/target/test-classes/directory/filename Note that this function makes no
-	 * guarantee that the File points to anything that actually exists!
+	 * Returns the ChessFilterer for the current context
 	 *
-	 * @param directory The parent directory of filename
-	 * @param filename  The filename of the PGN file including the extension
-	 * @return A file pointer to a PGN file
+	 * @return The current context's ChessFilterer instance
 	 */
-	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "ProtectedMemberInFinalClass", "WeakerAccess"})
-	protected static File getPGNFile(final String directory, final String filename)
+	@SuppressWarnings("UnusedDeclaration")
+	@Override
+	protected ChessFilterer getChessFilterer()
 	{
-		return TestContext.getPGNFile(directory, filename);
+		return (ChessFilterer) this.getBean(ChessFilterer.class);
 	}
 
 	/**

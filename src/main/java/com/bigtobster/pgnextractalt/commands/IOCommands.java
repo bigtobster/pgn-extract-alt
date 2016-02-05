@@ -229,7 +229,7 @@ public class IOCommands implements CommandMarker
 	@SuppressWarnings("FeatureEnvy")
 	@CliCommand(value = IOCommands.IMPORT_COMMAND, help = IOCommands.IMPORT_COMMAND_HELP)
 	public String importPGN(
-			@CliOption(key = {"", IOCommands.FILE_PATH_OPTION}, help = "Path to the PGN file to be imported", mandatory = true) final File file
+			@CliOption(key = {IOCommands.FILE_PATH_OPTION}, help = "Path to the PGN file to be imported", mandatory = true) final File file
 						   ) throws IOException
 	{
 		String failureDetails = null;

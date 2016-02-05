@@ -10,6 +10,7 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
+import com.bigtobster.pgnextractalt.chess.ChessFilterer;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,12 @@ class CommandContext
 {
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger LOGGER = Logger.getLogger(CommandContext.class.getName());
-
+	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
+	@Autowired
+	private ChessFilterer chessFilterer;
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private ChessIO chessIO;
-
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private ChessTagModder chessTagModder;
@@ -55,9 +57,19 @@ class CommandContext
 	@Override
 	public String toString()
 	{
-		return "CommandContext{" +
+		return "CommandContext{" + "" +
 			   "chessIO=" + this.chessIO +
 			   '}';
+	}
+
+	/**
+	 * Getter for an Autowired ChessFilterer instance
+	 *
+	 * @return the ChessFilterer instance
+	 */
+	ChessFilterer getChessFilterer()
+	{
+		return this.chessFilterer;
 	}
 
 	/**
