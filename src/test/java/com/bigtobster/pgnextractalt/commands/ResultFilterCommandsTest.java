@@ -29,7 +29,7 @@ public class ResultFilterCommandsTest
 	@Test
 	public void getFilterByResultCommandTest()
 	{
-		Assert.assertEquals("Command not expected value", "filter-by-result", ResultFilterCommands.getFilterByResultCommand());
+		Assert.assertEquals(TestCommandContext.COMMAND_NOT_EXPECTED_VALUE, "filter-by-result", ResultFilterCommands.getFilterByResultCommand());
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class ResultFilterCommandsTest
 		final String command = TestCommandContext.buildCommand(ResultFilterCommands.getFilterByResultCommand());
 		testCommandContext.assertCommandFails(command);
 		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
-		Assert.assertNotNull("Command fails unexpectedly", testCommandContext.executeValidCommand(command));
+		Assert.assertNotNull(TestCommandContext.COMMAND_FAILS_UNEXPECTEDLY, testCommandContext.executeValidCommand(command));
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ResultFilterCommandsTest
 		options.put(ResultFilterCommands.FILTER_DRAWS_OPTION, Boolean.toString(true));
 		options.put(ResultFilterCommands.FILTER_UNRESOLVED_OPTION, Boolean.toString(true));
 		final String command = TestCommandContext.buildCommand(ResultFilterCommands.getFilterByResultCommand(), options);
-		final String expectedOutput = testCommandContext.getChessIO().getGames().size() + " " + ResultFilterCommands.SUCCESSFULLY_FILTERED_GAMES;
+		final String expectedOutput = testCommandContext.getChessIO().getGames().size() + " " + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
 		final String actualOutput = testCommandContext.executeValidCommand(command);
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
 	}

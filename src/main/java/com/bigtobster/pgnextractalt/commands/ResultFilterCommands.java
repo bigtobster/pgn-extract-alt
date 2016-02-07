@@ -43,13 +43,8 @@ public class ResultFilterCommands implements CommandMarker
 	 * The command option string to filter white wins
 	 */
 	static final         String FILTER_WHITE_WINS_OPTION    = "FilterWhiteWins";
-	/**
-	 * Partial Message on successfully filtering out games
-	 */
-	static final         String SUCCESSFULLY_FILTERED_GAMES = "games filtered";
 	private static final String FAILED_TO_FILTER            = "Filter failed.";
 	private static final String FILTER_BY_RESULT_HELP       = "Filter imported games by their result. Available on successful import.";
-	private static final String FILTER_SUBCOMMAND           = "filter-by-";
 	private static final String NO_GAMES_SATISFY_CRITERIA   = "None of the games satisfied the removal criteria.";
 	private static final String RESULT_FILTER_SUBCOMMAND    = "result";
 	private static final String SPACE                       = " ";
@@ -65,7 +60,7 @@ public class ResultFilterCommands implements CommandMarker
 	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
 	static String getFilterByResultCommand()
 	{
-		return ResultFilterCommands.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND;
+		return CommandContext.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND;
 	}
 
 	/**
@@ -78,7 +73,7 @@ public class ResultFilterCommands implements CommandMarker
 	 * @return Successful/failure message
 	 */
 	@SuppressWarnings({"BooleanParameter", "FeatureEnvy", "DuplicateStringLiteralInspection"})
-	@CliCommand(value = ResultFilterCommands.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND,
+	@CliCommand(value = CommandContext.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND,
 				help = ResultFilterCommands.FILTER_BY_RESULT_HELP)
 	public String filterByResult(
 			@CliOption(key = {ResultFilterCommands.FILTER_WHITE_WINS_OPTION}, help = "Filter white wins in output", mandatory = false,
@@ -99,7 +94,7 @@ public class ResultFilterCommands implements CommandMarker
 		final ChessFilterer chessFilterer = this.commandContext.getChessFilterer();
 		chessFilterer.loadFilter(resultFilter);
 		final int removedGames = chessFilterer.run();
-		return removedGames + ResultFilterCommands.SPACE + ResultFilterCommands.SUCCESSFULLY_FILTERED_GAMES;
+		return removedGames + ResultFilterCommands.SPACE + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
 	}
 
 	/**
@@ -107,7 +102,7 @@ public class ResultFilterCommands implements CommandMarker
 	 *
 	 * @return boolean Available on import
 	 */
-	@CliAvailabilityIndicator(ResultFilterCommands.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND)
+	@CliAvailabilityIndicator(CommandContext.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND)
 	public boolean isFilterByResultAvailable()
 	{
 		return this.commandContext.getChessIO().isPGNImported();

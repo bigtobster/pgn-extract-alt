@@ -27,6 +27,19 @@ import java.io.IOException;
  */
 class TestFilterContext extends TestContext
 {
+	/**
+	 * Error message when all games expected to be unfiltered and this isn't the case
+	 */
+	static final String EXPECTED_ALL_GAMES_REMAINING = "All games should remain after removing no games";
+	/**
+	 * Error message when all games expected to be filtered and this isn't the case
+	 */
+	static final String EXPECTED_NO_GAMES_REMAINING  = "There should be no games remaining after filtering all games";
+	/**
+	 * Error message on number of filtered games being different from expected
+	 */
+	static final String GAMES_FILTERED_DIFFERENT_EXP = "Number of games filtered is different from expected";
+
 	@Override
 	protected ChessFilterer getChessFilterer()
 	{

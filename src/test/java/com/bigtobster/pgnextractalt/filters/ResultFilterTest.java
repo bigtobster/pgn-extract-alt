@@ -24,7 +24,6 @@ import org.junit.Test;
  */
 public class ResultFilterTest
 {
-	private static final String GAMES_FILTERED_DIFFERENT_EXP = "Number of games filtered is different from expected";
 
 	/**
 	 * Tests that filtering all games out works correctly
@@ -40,10 +39,10 @@ public class ResultFilterTest
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
 		chessFilterer.loadFilter(resultFilter);
 		final int expectedNoFiltered = testFilterContext.getChessIO().getGames().size();
-		Assert.assertEquals(ResultFilterTest.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
+		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
 		for(final Game ignored : testFilterContext.getChessIO().getGames())
 		{
-			Assert.fail("There should be no games remaining after filtering all games");
+			Assert.fail(TestFilterContext.EXPECTED_NO_GAMES_REMAINING);
 		}
 	}
 
@@ -60,7 +59,7 @@ public class ResultFilterTest
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
 		chessFilterer.loadFilter(resultFilter);
 		final int expectedNoFiltered = 2;
-		Assert.assertEquals(ResultFilterTest.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
+		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
 		for(final Game game : testFilterContext.getChessIO().getGames())
 		{
 			Assert.assertTrue("No results of Black Win should remain", game.getResult() != Chess.RES_BLACK_WINS);
@@ -80,7 +79,7 @@ public class ResultFilterTest
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
 		chessFilterer.loadFilter(resultFilter);
 		final int expectedNoFiltered = 29;
-		Assert.assertEquals(ResultFilterTest.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
+		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
 		for(final Game game : testFilterContext.getChessIO().getGames())
 		{
 			Assert.assertTrue("No results of Draw should remain", game.getResult() != Chess.RES_DRAW);
@@ -101,9 +100,9 @@ public class ResultFilterTest
 		chessFilterer.loadFilter(resultFilter);
 		final int expectedNoFiltered = 0;
 		final int preFilteredGames = testFilterContext.getChessIO().getGames().size();
-		Assert.assertEquals(ResultFilterTest.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
+		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
 		final int postFilteredGames = testFilterContext.getChessIO().getGames().size();
-		Assert.assertEquals("All games should remain after removing no games", (long) preFilteredGames, (long) postFilteredGames);
+		Assert.assertEquals(TestFilterContext.EXPECTED_ALL_GAMES_REMAINING, (long) preFilteredGames, (long) postFilteredGames);
 	}
 
 	/**
@@ -119,7 +118,7 @@ public class ResultFilterTest
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
 		chessFilterer.loadFilter(resultFilter);
 		final int expectedNoFiltered = testFilterContext.getChessIO().getGames().size();
-		Assert.assertEquals(ResultFilterTest.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
+		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
 		for(final Game game : testFilterContext.getChessIO().getGames())
 		{
 			Assert.assertTrue("Unfinished games should not remain", game.getResult() != Chess.RES_NOT_FINISHED);
@@ -140,7 +139,7 @@ public class ResultFilterTest
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
 		chessFilterer.loadFilter(resultFilter);
 		final int expectedNoFiltered = 3;
-		Assert.assertEquals(ResultFilterTest.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
+		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, (long) expectedNoFiltered, (long) chessFilterer.run());
 		for(final Game game : testFilterContext.getChessIO().getGames())
 		{
 			Assert.assertTrue("No results of White Win should remain", game.getResult() != Chess.RES_WHITE_WINS);

@@ -50,6 +50,13 @@ BlackElo
 EventDate
 ECO
 
+##Extension##
+Other than further modules, two considerable fundamental extensions are being considered:
+
+1. Dependency on an improved version of Chesspresso. This will involve creating a new Chesspresso repo (original source available), depending on that and then extending accordingly. This would mean the maintenance of a second project but would significantly enhance the potential for further PGN-Extract-Alt enhancements.
+
+2. Improving the concurrency model. This will be a particular issue with computationally intense modules. There are various concurrency models available (further details to be referenced). It would be useful to queue operations on data and then execute them in a concurrent fashion that tends towards optimal.
+
 ##Documentation##
 Extensive technical documentation is available in <pgn-extract-alt>/target/site. Open index.html in a web browser. The following artifacts are 
 available:

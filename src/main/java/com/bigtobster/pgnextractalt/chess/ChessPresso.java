@@ -70,7 +70,7 @@ public class ChessPresso
 		return counter;
 	}
 
-	@SuppressWarnings({"HardCodedStringLiteral"})
+	@SuppressWarnings({"HardCodedStringLiteral", "MethodReturnAlwaysConstant"})
 	@Override
 	public String toString()
 	{

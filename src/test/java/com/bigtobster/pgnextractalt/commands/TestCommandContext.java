@@ -25,8 +25,16 @@ import java.util.HashMap;
  *
  * @author Toby Leheup
  */
-final class TestCommandContext extends TestContext
+class TestCommandContext extends TestContext
 {
+	/**
+	 * Error message on a command failing when expected to not fail
+	 */
+	static final         String COMMAND_FAILS_UNEXPECTEDLY     = "Command fails unexpectedly";
+	/**
+	 * Error message on command not being the command expected on a filter
+	 */
+	static final         String COMMAND_NOT_EXPECTED_VALUE     = "Command not expected value";
 	private static final String COMMAND_CONSTRUCTION_ERROR     = "Command construction error";
 	private static final String COMMAND_SUCCEEDS_FAIL_EXPECTED = "Command succeeds when failure expected";
 	private static final String CONSOLE_MESSAGE_DIFFERS        = "Console Message differs from expected case";

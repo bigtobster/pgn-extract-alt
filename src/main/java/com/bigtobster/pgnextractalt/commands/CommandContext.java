@@ -26,14 +26,22 @@ import java.util.logging.Logger;
  */
 class CommandContext
 {
+	/**
+	 * The subcommand for all filter commands
+	 */
+	static final         String FILTER_SUBCOMMAND           = "filter-by-";
+	/**
+	 * Partial Message on successfully filtering out games
+	 */
+	static final         String SUCCESSFULLY_FILTERED_GAMES = "games filtered";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger LOGGER = Logger.getLogger(CommandContext.class.getName());
+	private static final Logger LOGGER                      = Logger.getLogger(CommandContext.class.getName());
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
-	private ChessFilterer chessFilterer;
+	private ChessFilterer  chessFilterer;
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
-	private ChessIO chessIO;
+	private ChessIO        chessIO;
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private ChessTagModder chessTagModder;
@@ -57,7 +65,7 @@ class CommandContext
 	@Override
 	public String toString()
 	{
-		return "CommandContext{" + "" +
+		return "CommandContext{" +
 			   "chessIO=" + this.chessIO +
 			   '}';
 	}
