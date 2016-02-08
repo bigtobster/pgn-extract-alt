@@ -29,7 +29,7 @@ class CommandContext
 	/**
 	 * The subcommand for all filter commands
 	 */
-	static final         String FILTER_SUBCOMMAND           = "filter-by-";
+	static final         String FILTER_SUBCOMMAND           = "-filter";
 	/**
 	 * Partial Message on successfully filtering out games
 	 */

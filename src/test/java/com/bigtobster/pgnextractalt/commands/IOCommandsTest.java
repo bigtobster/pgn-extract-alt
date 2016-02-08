@@ -70,16 +70,6 @@ public class IOCommandsTest
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
-	private static void makeFileProtected(final File pgnFile, final boolean read, final boolean write, final boolean execute)
-	{
-		//noinspection ResultOfMethodCallIgnored
-		pgnFile.setReadable(read);
-		//noinspection ResultOfMethodCallIgnored
-		pgnFile.setWritable(write);
-		//noinspection ResultOfMethodCallIgnored
-		pgnFile.setExecutable(execute);
-	}
-
 	private static void successfulExportToDestination(final String pgnFilename, final boolean isDestPathExist)
 	{
 		final TestCommandContext testCommandContext = new TestCommandContext();
@@ -180,7 +170,7 @@ public class IOCommandsTest
 		{
 			Assert.fail(e.getMessage());
 		}
-		IOCommandsTest.makeFileProtected(pgnFile, false, false, false);
+		TestCommandContext.modifyFilePermissions(pgnFile, false, false, false);
 		String command = IOCommandsTest.buildExportCommand(pgnFile);
 		String actualOutput = testCommandContext.executeValidCommand(command);
 		String predictedOutput = IOCommands.FAILED_EXPORT +
@@ -190,13 +180,13 @@ public class IOCommandsTest
 								 pgnFile.getPath();
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
-		IOCommandsTest.makeFileProtected(pgnFile, true, false, false);
+		TestCommandContext.modifyFilePermissions(pgnFile, true, false, false);
 		command = IOCommandsTest.buildExportCommand(pgnFile);
 		actualOutput = testCommandContext.executeValidCommand(command);
 		predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnFile.getPath();
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
-		IOCommandsTest.makeFileProtected(pgnFile, false, true, false);
+		TestCommandContext.modifyFilePermissions(pgnFile, false, true, false);
 		command = IOCommandsTest.buildExportCommand(pgnFile);
 		actualOutput = testCommandContext.executeValidCommand(command);
 		predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnFile.getPath();
@@ -292,7 +282,7 @@ public class IOCommandsTest
 	public void importProtectedPGNTest()
 	{
 		final File pgnFile = TestCommandContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.PROTECTED_PGN);
-		IOCommandsTest.makeFileProtected(pgnFile, false, false, false);
+		TestCommandContext.modifyFilePermissions(pgnFile, false, false, false);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		final String command = TestCommandContext.buildImportCommand(pgnFile);

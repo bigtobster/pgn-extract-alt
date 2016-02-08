@@ -23,6 +23,7 @@
 
 	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
 
+	<!--PGN-Extract-Alt Beans-->
 	<bean id="chessContext" class="com.bigtobster.pgnextractalt.chess.ChessContext"/>
 	<bean id="commandContext" class="com.bigtobster.pgnextractalt.commands.CommandContext"/>
 	<bean id="chessIO" class="com.bigtobster.pgnextractalt.chess.ChessIO"/>

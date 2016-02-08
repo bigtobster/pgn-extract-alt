@@ -29,7 +29,7 @@ public class PlycountFilterCommandsTest
 	@Test
 	public void getFilterByPlycountCommandTest()
 	{
-		Assert.assertEquals(TestCommandContext.COMMAND_NOT_EXPECTED_VALUE, "filter-by-plycount", PlycountFilterCommands.getFilterByPlycountCommand());
+		Assert.assertEquals(TestCommandContext.COMMAND_NOT_EXPECTED_VALUE, "plycount-filter", PlycountFilterCommands.getFilterByPlycountCommand());
 	}
 
 	/**

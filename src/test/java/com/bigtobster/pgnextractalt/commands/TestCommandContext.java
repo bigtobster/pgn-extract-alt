@@ -25,6 +25,7 @@ import java.util.HashMap;
  *
  * @author Toby Leheup
  */
+@SuppressWarnings("ClassWithTooManyMethods")
 class TestCommandContext extends TestContext
 {
 	/**
@@ -70,7 +71,6 @@ class TestCommandContext extends TestContext
 	 * @param command the command to be executed
 	 * @return The final constructed command
 	 */
-	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 	static String buildCommand(final String command)
 	{
 		return TestCommandContext.buildCommand(command, new HashMap<String, String>(0));
@@ -113,6 +113,25 @@ class TestCommandContext extends TestContext
 		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
 		optionArgs.put(IOCommands.FILE_PATH_OPTION, file.getPath());
 		return TestCommandContext.buildCommand(IOCommands.getImportCommand(), optionArgs);
+	}
+
+	/**
+	 * Modifies the file permissions of an existing file
+	 *
+	 * @param pgnFile The file to be modified
+	 * @param read    Whether file can have the read flag
+	 * @param write   Whether the file can have the write flag
+	 * @param execute Whether the file can be executed
+	 */
+	@SuppressWarnings("SameParameterValue")
+	static void modifyFilePermissions(final File pgnFile, final boolean read, final boolean write, final boolean execute)
+	{
+		//noinspection ResultOfMethodCallIgnored
+		pgnFile.setReadable(read);
+		//noinspection ResultOfMethodCallIgnored
+		pgnFile.setWritable(write);
+		//noinspection ResultOfMethodCallIgnored
+		pgnFile.setExecutable(execute);
 	}
 
 	/**

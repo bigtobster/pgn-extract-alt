@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Spring shell command class for filtering chess games by their result
+ *
  * @author Toby Leheup (Bigtobster)
  */
 @SuppressWarnings("UnusedDeclaration")
@@ -30,24 +31,24 @@ public class ResultFilterCommands implements CommandMarker
 	/**
 	 * The command option string to filter black wins
 	 */
-	static final         String FILTER_BLACK_WINS_OPTION    = "FilterBlackWins";
+	static final         String FILTER_BLACK_WINS_OPTION  = "FilterBlackWins";
 	/**
 	 * The command option string to filter draws
 	 */
-	static final         String FILTER_DRAWS_OPTION         = "FilterDraws";
+	static final         String FILTER_DRAWS_OPTION       = "FilterDraws";
 	/**
 	 * The command option string to filter unresolved cases
 	 */
-	static final         String FILTER_UNRESOLVED_OPTION    = "FilterUnresolved";
+	static final         String FILTER_UNRESOLVED_OPTION  = "FilterUnresolved";
 	/**
 	 * The command option string to filter white wins
 	 */
-	static final         String FILTER_WHITE_WINS_OPTION    = "FilterWhiteWins";
-	private static final String FAILED_TO_FILTER            = "Filter failed.";
-	private static final String FILTER_BY_RESULT_HELP       = "Filter imported games by their result. Available on successful import.";
-	private static final String NO_GAMES_SATISFY_CRITERIA   = "None of the games satisfied the removal criteria.";
-	private static final String RESULT_FILTER_SUBCOMMAND    = "result";
-	private static final String SPACE                       = " ";
+	static final         String FILTER_WHITE_WINS_OPTION  = "FilterWhiteWins";
+	private static final String FAILED_TO_FILTER          = "Filter failed.";
+	private static final String FILTER_BY_RESULT_HELP     = "Filter imported games by their result. Available on successful import.";
+	private static final String NO_GAMES_SATISFY_CRITERIA = "None of the games satisfied the removal criteria.";
+	private static final String RESULT_FILTER_SUBCOMMAND  = "result";
+	private static final String SPACE                     = " ";
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private CommandContext commandContext;
@@ -60,20 +61,20 @@ public class ResultFilterCommands implements CommandMarker
 	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
 	static String getFilterByResultCommand()
 	{
-		return CommandContext.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND;
+		return ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND;
 	}
 
 	/**
 	 * Filter the currently loaded games by result value
 	 *
-	 * @param isWhiteWinFiltered Whether to filter games of white wins in output
-	 * @param isBlackWinFiltered Whether to filter games of black wins in output
-	 * @param isDrawFiltered Whether to filter games of draws in output
+	 * @param isWhiteWinFiltered   Whether to filter games of white wins in output
+	 * @param isBlackWinFiltered   Whether to filter games of black wins in output
+	 * @param isDrawFiltered       Whether to filter games of draws in output
 	 * @param isUnresolvedFiltered Whether to filter games of unresolved result in output
 	 * @return Successful/failure message
 	 */
 	@SuppressWarnings({"BooleanParameter", "FeatureEnvy", "DuplicateStringLiteralInspection"})
-	@CliCommand(value = CommandContext.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND,
+	@CliCommand(value = ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND,
 				help = ResultFilterCommands.FILTER_BY_RESULT_HELP)
 	public String filterByResult(
 			@CliOption(key = {ResultFilterCommands.FILTER_WHITE_WINS_OPTION}, help = "Filter white wins in output", mandatory = false,
@@ -102,7 +103,7 @@ public class ResultFilterCommands implements CommandMarker
 	 *
 	 * @return boolean Available on import
 	 */
-	@CliAvailabilityIndicator(CommandContext.FILTER_SUBCOMMAND + ResultFilterCommands.RESULT_FILTER_SUBCOMMAND)
+	@CliAvailabilityIndicator(ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND)
 	public boolean isFilterByResultAvailable()
 	{
 		return this.commandContext.getChessIO().isPGNImported();

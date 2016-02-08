@@ -95,6 +95,17 @@ public final class ChessIO
 	}
 
 	/**
+	 * Returns number of games in current context
+	 *
+	 * @param newGames The new games to be inserted into PGN-Extract-Alt
+	 */
+	public void setGames(final ArrayList<Game> newGames)
+	{
+		this.chessContext.reset();
+		this.chessContext.addGames(newGames);
+	}
+
+	/**
 	 * Converts a PGN file into a list of Chesspresso games
 	 *
 	 * @param pgnFile The file pointing to a PGN file to import

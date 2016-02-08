@@ -15,9 +15,12 @@ PGN-extract is a popular and useful PGN processing application written by David 
 PGN-extract-alt aims to provide a modular alternative to PGN-extract using modern tools and languages. It is not intended to reproduce all of the features currently available in PGN-extract but instead provide a framework and accompanying documentation for the community to add whatever features they desire. PGN-extract-alt's core will be released with the following features:
 
 <ul>
-	<li>Tag Creation</li>
+	<li>Tag Insertion</li>
 	<li>Tag Editing</li>
-	<li>Result Updater</li>
+	<li>Result Calculator</li>
+	<li>Duplicate Game Filter</li>
+	<li>Plycount Filter</li>
+	<li>Result Filter</li>
 	<li>Interactive CLI Interface</li>
 </ul>
 
@@ -75,10 +78,11 @@ Note that the project follows Spring design patterns. Basic familiarity with Spr
 In order to extend PGN-Extract-Alt:
 
 1. Add and define a new command class in commands package
-2. Add and define a new chess class in chess package
-3. Add your chess package as a Spring Bean
+2. Add and define a new chess class in chess package (filters go in the filter package)
+3. Add your chess class as a Spring Bean (ignore for filters)
 4. Test your command class in commands package
 5. Test your chess class in chess package
+6. Test your filter class in filter package
 6. Rebuild (mvn install)
  
 ##Tutorial##
@@ -98,10 +102,11 @@ A full user guide is currently under consideration.
 The core of PGN-extract-alt is based on Chesspresso (http://www.chesspresso.org/). The interface is built on Spring Shell (http://docs.spring
 .io/spring-shell/docs/current/reference/htmlsingle/).
 
-Note that the source code is divided into 3 distinct packages:
+Note that the source code is divided into 4 distinct packages:
 
 * chess - For chess logic
 * commands - For Spring Shell Commands logic
+* filters - For logic that removes chess games
 * core - For project dependent classes
 
 ##Contact##

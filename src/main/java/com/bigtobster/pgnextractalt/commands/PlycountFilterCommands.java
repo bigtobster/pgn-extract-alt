@@ -52,7 +52,7 @@ public class PlycountFilterCommands implements CommandMarker
 	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
 	static String getFilterByPlycountCommand()
 	{
-		return CommandContext.FILTER_SUBCOMMAND + PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND;
+		return PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class PlycountFilterCommands implements CommandMarker
 	 * @param lessThan    The plycount which, if the game is smaller, will cause that game to be removed.
 	 * @return Successful/failure message
 	 */
-	@CliCommand(value = CommandContext.FILTER_SUBCOMMAND + PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND,
+	@CliCommand(value = PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND,
 				help = PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND_HELP)
 	public String filterByPlycount(
 			@CliOption(key = {PlycountFilterCommands.GREATER_THAN_OPTION},
@@ -88,7 +88,7 @@ public class PlycountFilterCommands implements CommandMarker
 	 *
 	 * @return boolean Available on import
 	 */
-	@CliAvailabilityIndicator(CommandContext.FILTER_SUBCOMMAND + PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND)
+	@CliAvailabilityIndicator(PlycountFilterCommands.PLYCOUNT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND)
 	public boolean isFilterByPlycountAvailable()
 	{
 		return this.commandContext.getChessIO().isPGNImported();

@@ -29,7 +29,7 @@ public class ResultFilterCommandsTest
 	@Test
 	public void getFilterByResultCommandTest()
 	{
-		Assert.assertEquals(TestCommandContext.COMMAND_NOT_EXPECTED_VALUE, "filter-by-result", ResultFilterCommands.getFilterByResultCommand());
+		Assert.assertEquals(TestCommandContext.COMMAND_NOT_EXPECTED_VALUE, "result-filter", ResultFilterCommands.getFilterByResultCommand());
 	}
 
 	/**
