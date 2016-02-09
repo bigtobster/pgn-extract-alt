@@ -123,7 +123,6 @@ class TestCommandContext extends TestContext
 	 * @param write   Whether the file can have the write flag
 	 * @param execute Whether the file can be executed
 	 */
-	@SuppressWarnings("SameParameterValue")
 	static void modifyFilePermissions(final File pgnFile, final boolean read, final boolean write, final boolean execute)
 	{
 		//noinspection ResultOfMethodCallIgnored
@@ -221,6 +220,16 @@ class TestCommandContext extends TestContext
 		Assert.assertNotNull(TestCommandContext.COMMAND_CONSTRUCTION_ERROR, commandResult);
 		Assert.assertNotNull(TestCommandContext.COMMAND_CONSTRUCTION_ERROR, commandResult.getResult());
 		return commandResult.getResult().toString();
+	}
+
+	/**
+	 * Gets the current IOCommands bean
+	 *
+	 * @return The current IOCommands bean
+	 */
+	IOCommands getIOCommands()
+	{
+		return (IOCommands) this.getBean(IOCommands.class);
 	}
 
 	private CommandResult executeCommand(final String command)

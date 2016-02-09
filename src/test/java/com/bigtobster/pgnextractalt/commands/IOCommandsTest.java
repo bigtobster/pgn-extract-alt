@@ -10,6 +10,7 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
+import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.core.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,9 +30,10 @@ import java.util.logging.Logger;
 
 public class IOCommandsTest
 {
+	private static final String COMMAND_UNAVAILABLE_ERROR = "Command unavailable when should be available";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger LOGGER = Logger.getLogger(IOCommandsTest.class.getName());
-	private static final char   SPACE  = ' ';
+	private static final Logger LOGGER                    = Logger.getLogger(IOCommandsTest.class.getName());
+	private static final String SPACE                     = " ";
 
 	private static String buildExportCommand(final File file)
 	{
@@ -313,6 +315,22 @@ public class IOCommandsTest
 	}
 
 	/**
+	 * Tests the status command is available when expected
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	@Test
+	public void isStatusCommandAvailableTest()
+	{
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		final IOCommands ioCommands = testCommandContext.getIOCommands();
+		Assert.assertTrue(IOCommandsTest.COMMAND_UNAVAILABLE_ERROR, ioCommands.isStatusAvailable());
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		Assert.assertTrue(IOCommandsTest.COMMAND_UNAVAILABLE_ERROR, ioCommands.isStatusAvailable());
+		testCommandContext.getChessIO().reset();
+		Assert.assertTrue(IOCommandsTest.COMMAND_UNAVAILABLE_ERROR, ioCommands.isStatusAvailable());
+	}
+
+	/**
 	 * Tests Reset functionality
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
@@ -325,5 +343,28 @@ public class IOCommandsTest
 		final String command = IOCommands.getResetCommand();
 		final String actualOutput = testCommandContext.executeValidCommand(command);
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, IOCommands.SUCCESSFUL_RESET);
+	}
+
+	/**
+	 * Tests the status command performs as expected
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void statusTest()
+	{
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		final String command = TestCommandContext.buildCommand(IOCommands.getStatusCommand());
+		String actualOutput = testCommandContext.executeValidCommand(command);
+		final ChessIO chessIO = testCommandContext.getChessIO();
+		String expectedOutput = chessIO.getGames().size() + IOCommandsTest.SPACE + IOCommands.GAMES_LOADED;
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
+		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		expectedOutput = chessIO.getGames().size() + IOCommandsTest.SPACE + IOCommands.GAMES_LOADED;
+		actualOutput = testCommandContext.executeValidCommand(command);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
+		chessIO.reset();
+		expectedOutput = chessIO.getGames().size() + IOCommandsTest.SPACE + IOCommands.GAMES_LOADED;
+		actualOutput = testCommandContext.executeValidCommand(command);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
 	}
 }

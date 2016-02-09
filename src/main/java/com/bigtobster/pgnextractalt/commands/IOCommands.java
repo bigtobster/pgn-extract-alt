@@ -52,6 +52,10 @@ public class IOCommands implements CommandMarker
 	 */
 	static final         String GAMES_IMPORTED       = "games imported";
 	/**
+	 * Sub-string of status message
+	 */
+	static final         String GAMES_LOADED         = "games currently loaded";
+	/**
 	 * Message on PGN parse syntax failure
 	 */
 	static final         String INVALID_SYNTAX       = "PGN file has invalid syntax";
@@ -93,7 +97,9 @@ public class IOCommands implements CommandMarker
 	private static final String NO_CHESS_GAMES       = "Imported file appears to contain 0 chess games";
 	private static final String RESET_COMMAND        = "reset";
 	private static final String RESET_COMMAND_HELP   = "Reset PGN-Extract-Alt - WARNING: Will lose all changes. Available on successful import.";
-	private static final char   SPACE                = ' ';
+	private static final String SPACE                = " ";
+	private static final String STATUS_COMMAND       = "status";
+	private static final String STATUS_COMMAND_HELP  = "Displays the number of currently loaded games";
 	private static final String UNKNOWN_IMPORT_ERROR = "Unknown Import Error ";
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
@@ -130,6 +136,17 @@ public class IOCommands implements CommandMarker
 	public static String getResetCommand()
 	{
 		return IOCommands.RESET_COMMAND;
+	}
+
+	/**
+	 * Getter for Status Command String
+	 *
+	 * @return String Status Command
+	 */
+	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
+	public static String getStatusCommand()
+	{
+		return IOCommands.STATUS_COMMAND;
 	}
 
 	/**
@@ -306,6 +323,18 @@ public class IOCommands implements CommandMarker
 	}
 
 	/**
+	 * Describes when "reset" command is available
+	 *
+	 * @return boolean Available on confirmed PGN import
+	 */
+	@SuppressWarnings({"MethodMayBeStatic", "MethodReturnAlwaysConstant", "SameReturnValue"})
+	@CliAvailabilityIndicator({IOCommands.STATUS_COMMAND})
+	public boolean isStatusAvailable()
+	{
+		return true;
+	}
+
+	/**
 	 * Reset PGN-Extract-Alt
 	 *
 	 * @return Notice that application reset
@@ -315,6 +344,17 @@ public class IOCommands implements CommandMarker
 	{
 		this.commandContext.getChessIO().reset();
 		return IOCommands.SUCCESSFUL_RESET;
+	}
+
+	/**
+	 * Prints a status message to the screen
+	 *
+	 * @return The status message
+	 */
+	@CliCommand(value = IOCommands.STATUS_COMMAND, help = IOCommands.STATUS_COMMAND_HELP)
+	public String status()
+	{
+		return this.commandContext.getChessIO().getGames().size() + IOCommands.SPACE + IOCommands.GAMES_LOADED;
 	}
 
 	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
