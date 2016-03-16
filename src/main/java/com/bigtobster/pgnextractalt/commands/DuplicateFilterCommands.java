@@ -35,14 +35,14 @@ public class DuplicateFilterCommands implements CommandMarker
 	 * Filename for duplicate games file
 	 */
 	static final         String DUPLICATE_OUT_FILENAME           = "duplicated_games.pgn";
-	/**
-	 * Message on failure to export the duplicate games PGN
-	 */
-	static final         String ERROR_ON_EXPORTING_DUPLICATE_OUT = "Error on exporting duplicate games: ";
 	private static final String DUPLICATE_FILTER_COMMAND_HELP    = "Filter duplicate games from imported games and dumps them to \"duplicates.pgn\"" +
 																   ". " +
 																   "Available on successful import";
 	private static final String DUPLICATE_FILTER_SUBCOMMAND      = "duplicate";
+	/**
+	 * Message on failure to export the duplicate games PGN
+	 */
+	private static final String ERROR_ON_EXPORTING_DUPLICATE_OUT = "Error on exporting duplicate games: ";
 	private static final String SPACE                            = " ";
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired

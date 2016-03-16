@@ -35,7 +35,13 @@ public class IOCommandsTest
 	private static final Logger LOGGER                    = Logger.getLogger(IOCommandsTest.class.getName());
 	private static final String SPACE                     = " ";
 
-	private static String buildExportCommand(final File file)
+	/**
+	 * Creates a valid export command for exporting a pgn
+	 *
+	 * @param file The file which the PGN will be exported to
+	 * @return The command
+	 */
+	static String buildExportCommand(final File file)
 	{
 		//Execute command
 		final HashMap<String, String> optionArgs = new HashMap<String, String>(1);
@@ -72,13 +78,31 @@ public class IOCommandsTest
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 	}
 
+	/**
+	 * Modifies the file permissions of an existing file
+	 *
+	 * @param pgnFile The file to be modified
+	 * @param read    Whether file can have the read flag
+	 * @param write   Whether the file can have the write flag
+	 * @param execute Whether the file can be executed
+	 */
+	private static void modifyFilePermissions(final File pgnFile, final boolean read, final boolean write, final boolean execute)
+	{
+		//noinspection ResultOfMethodCallIgnored
+		pgnFile.setReadable(read);
+		//noinspection ResultOfMethodCallIgnored
+		pgnFile.setWritable(write);
+		//noinspection ResultOfMethodCallIgnored
+		pgnFile.setExecutable(execute);
+	}
+
 	private static void successfulExportToDestination(final String pgnFilename, final boolean isDestPathExist)
 	{
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		final File pgnFile;
 		final String parentDir;
 
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 
 		if(isDestPathExist)
 		{
@@ -158,7 +182,7 @@ public class IOCommandsTest
 		final TestCommandContext testCommandContext = new TestCommandContext();
 
 		//Pre-load
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 
 		@SuppressWarnings("MagicCharacter") final
 		File pgnFile = TestCommandContext.getPGNFile(TestContext.EXPORTS_DIR, UUID.randomUUID().toString() + '-' + TestContext.PROTECTED_PGN);
@@ -172,7 +196,7 @@ public class IOCommandsTest
 		{
 			Assert.fail(e.getMessage());
 		}
-		TestCommandContext.modifyFilePermissions(pgnFile, false, false, false);
+		IOCommandsTest.modifyFilePermissions(pgnFile, false, false, false);
 		String command = IOCommandsTest.buildExportCommand(pgnFile);
 		String actualOutput = testCommandContext.executeValidCommand(command);
 		String predictedOutput = IOCommands.FAILED_EXPORT +
@@ -182,13 +206,13 @@ public class IOCommandsTest
 								 pgnFile.getPath();
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
-		TestCommandContext.modifyFilePermissions(pgnFile, true, false, false);
+		IOCommandsTest.modifyFilePermissions(pgnFile, true, false, false);
 		command = IOCommandsTest.buildExportCommand(pgnFile);
 		actualOutput = testCommandContext.executeValidCommand(command);
 		predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnFile.getPath();
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
 
-		TestCommandContext.modifyFilePermissions(pgnFile, false, true, false);
+		IOCommandsTest.modifyFilePermissions(pgnFile, false, true, false);
 		command = IOCommandsTest.buildExportCommand(pgnFile);
 		actualOutput = testCommandContext.executeValidCommand(command);
 		predictedOutput = IOCommands.FAILED_EXPORT + IOCommandsTest.SPACE + IOCommands.PGN_NOT_WRITABLE + IOCommandsTest.SPACE + pgnFile.getPath();
@@ -284,7 +308,7 @@ public class IOCommandsTest
 	public void importProtectedPGNTest()
 	{
 		final File pgnFile = TestCommandContext.getPGNFile(TestContext.IMPORTS_DIR, TestContext.PROTECTED_PGN);
-		TestCommandContext.modifyFilePermissions(pgnFile, false, false, false);
+		IOCommandsTest.modifyFilePermissions(pgnFile, false, false, false);
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		final String command = TestCommandContext.buildImportCommand(pgnFile);
@@ -324,7 +348,7 @@ public class IOCommandsTest
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		final IOCommands ioCommands = testCommandContext.getIOCommands();
 		Assert.assertTrue(IOCommandsTest.COMMAND_UNAVAILABLE_ERROR, ioCommands.isStatusAvailable());
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertTrue(IOCommandsTest.COMMAND_UNAVAILABLE_ERROR, ioCommands.isStatusAvailable());
 		testCommandContext.getChessIO().reset();
 		Assert.assertTrue(IOCommandsTest.COMMAND_UNAVAILABLE_ERROR, ioCommands.isStatusAvailable());
@@ -339,7 +363,7 @@ public class IOCommandsTest
 	{
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		testCommandContext.assertCommandFails(IOCommands.getResetCommand());
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		final String command = IOCommands.getResetCommand();
 		final String actualOutput = testCommandContext.executeValidCommand(command);
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, IOCommands.SUCCESSFUL_RESET);
@@ -358,7 +382,7 @@ public class IOCommandsTest
 		final ChessIO chessIO = testCommandContext.getChessIO();
 		String expectedOutput = chessIO.getGames().size() + IOCommandsTest.SPACE + IOCommands.GAMES_LOADED;
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		expectedOutput = chessIO.getGames().size() + IOCommandsTest.SPACE + IOCommands.GAMES_LOADED;
 		actualOutput = testCommandContext.executeValidCommand(command);
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);

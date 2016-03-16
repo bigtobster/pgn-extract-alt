@@ -34,73 +34,72 @@ public class IOCommands implements CommandMarker
 	/**
 	 * The substring in console on any import failure
 	 */
-	static final         String FAILED_EXPORT        = "Failed to export to PGN!";
+	static final         String FAILED_EXPORT       = "Failed to export to PGN!";
 	/**
 	 * The substring in console on any import failure
 	 */
-	static final         String FAILED_IMPORT        = "Failed to import PGN!";
+	static final         String FAILED_IMPORT       = "Failed to import PGN!";
 	/**
 	 * The string for the FilePath option of Import
 	 */
-	static final         String FILE_PATH_OPTION     = "FilePath";
+	static final         String FILE_PATH_OPTION    = "FilePath";
 	/**
 	 * The substring for successful export and count of number of imported games
 	 */
-	static final         String GAMES_EXPORTED       = "games exported";
+	static final         String GAMES_EXPORTED      = "games exported";
 	/**
 	 * The substring for successful import and count of number of imported games
 	 */
-	static final         String GAMES_IMPORTED       = "games imported";
+	static final         String GAMES_IMPORTED      = "games imported";
 	/**
 	 * Sub-string of status message
 	 */
-	static final         String GAMES_LOADED         = "games currently loaded";
+	static final         String GAMES_LOADED        = "games currently loaded";
 	/**
 	 * Message on PGN parse syntax failure
 	 */
-	static final         String INVALID_SYNTAX       = "PGN file has invalid syntax";
+	static final         String INVALID_SYNTAX      = "PGN file has invalid syntax";
 	/**
 	 * The substring in console on input not being PGN
 	 */
-	static final         String NOT_A_PGN_FILE       = "Input is not a PGN file!";
+	static final         String NOT_A_PGN_FILE      = "Input is not a PGN file!";
 	/**
 	 * The substring in console on file not found error
 	 */
-	static final         String NO_FILE_AT           = "No file at";
+	static final         String NO_FILE_AT          = "No file at";
 	/**
 	 * The substring for importing a PGN with no read permission
 	 */
-	static final         String PGN_NOT_READABLE     = "PGN file not readable. Check file permissions at";
+	static final         String PGN_NOT_READABLE    = "PGN file not readable. Check file permissions at";
 	/**
 	 * The substring for export  a PGN with no read or write permission
 	 */
-	static final         String PGN_NOT_WRITABLE     = "PGN file is either not readable or not writable. Check file permissions at";
+	static final         String PGN_NOT_WRITABLE    = "PGN file is either not readable or not writable. Check file permissions at";
 	/**
 	 * The substring in console on any successful export
 	 */
-	static final         String SUCCESSFUL_EXPORT    = "Successfully exported PGN file!";
+	static final         String SUCCESSFUL_EXPORT   = "Successfully exported PGN file!";
 	/**
 	 * The substring in console on any successful import
 	 */
-	static final         String SUCCESSFUL_IMPORT    = "Successfully imported PGN file!";
+	static final         String SUCCESSFUL_IMPORT   = "Successfully imported PGN file!";
 	/**
 	 * The string in console on successful reset of PGN-Extract-Alt
 	 */
-	static final         String SUCCESSFUL_RESET     = "PGN-Extract-Alt Successfully Reset!";
-	private static final String CANNOT_CREATE_FILE   = "Cannot write to file at";
-	private static final String EXPORT_COMMAND       = "export";
-	private static final String EXPORT_COMMAND_HELP  = "Export loaded data as a PGN file. Available on successful import.";
-	private static final String IMPORT_COMMAND       = "import";
-	private static final String IMPORT_COMMAND_HELP  = "Import a PGN file for processing";
-	private static final Logger LOGGER               = Logger.getLogger(IOCommands.class.getName());
-	private static final String NOTIFY_DEV           = "Please notify PGN-Extract-Alt Developer";
-	private static final String NO_CHESS_GAMES       = "Imported file appears to contain 0 chess games";
-	private static final String RESET_COMMAND        = "reset";
-	private static final String RESET_COMMAND_HELP   = "Reset PGN-Extract-Alt - WARNING: Will lose all changes. Available on successful import.";
-	private static final String SPACE                = " ";
-	private static final String STATUS_COMMAND       = "status";
-	private static final String STATUS_COMMAND_HELP  = "Displays the number of currently loaded games";
-	private static final String UNKNOWN_IMPORT_ERROR = "Unknown Import Error ";
+	static final         String SUCCESSFUL_RESET    = "PGN-Extract-Alt Successfully Reset!";
+	private static final String CANNOT_CREATE_FILE  = "Cannot write to file at";
+	private static final String EXPORT_COMMAND      = "export";
+	private static final String EXPORT_COMMAND_HELP = "Export loaded data as a PGN file. Available on successful import.";
+	private static final String IMPORT_COMMAND      = "import";
+	private static final String IMPORT_COMMAND_HELP = "Import a PGN file for processing";
+	@SuppressWarnings("UnusedDeclaration")
+	private static final Logger LOGGER              = Logger.getLogger(IOCommands.class.getName());
+	private static final String NO_CHESS_GAMES      = "Imported file appears to contain 0 chess games";
+	private static final String RESET_COMMAND       = "reset";
+	private static final String RESET_COMMAND_HELP  = "Reset PGN-Extract-Alt - WARNING: Will lose all changes. Available on successful import.";
+	private static final String SPACE               = " ";
+	private static final String STATUS_COMMAND      = "status";
+	private static final String STATUS_COMMAND_HELP = "Displays the number of currently loaded games";
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private CommandContext commandContext;
@@ -160,18 +159,6 @@ public class IOCommands implements CommandMarker
 	{
 		//always available
 		return true;
-	}
-
-	/**
-	 * Takes a severe IO error, forms a coherent bundle of failure data and reports to user
-	 * @param ioException The exception that's caused the issue
-	 * @throws IOException The original exception rethrown
-	 */
-	private static void handleAndThrowIOPGNError(final IOException ioException) throws IOException
-	{
-		final String failureDetails = IOCommands.UNKNOWN_IMPORT_ERROR + OsUtils.LINE_SEPARATOR + IOCommands.NOTIFY_DEV;
-		CommandContext.logSevereError(IOCommands.LOGGER, failureDetails, ioException);
-		throw ioException;
 	}
 
 	/**
@@ -243,11 +230,11 @@ public class IOCommands implements CommandMarker
 	 * @return Successful import of PGN file
 	 * @throws java.io.IOException Crashes on unknown failure to open PGN file
 	 */
-	@SuppressWarnings("FeatureEnvy")
+	@SuppressWarnings({"FeatureEnvy", "ProhibitedExceptionDeclared"})
 	@CliCommand(value = IOCommands.IMPORT_COMMAND, help = IOCommands.IMPORT_COMMAND_HELP)
 	public String importPGN(
 			@CliOption(key = {IOCommands.FILE_PATH_OPTION}, help = "Path to the PGN file to be imported", mandatory = true) final File file
-						   ) throws IOException
+						   ) throws Exception
 	{
 		String failureDetails = null;
 		final String filePath = file.getPath();
@@ -268,7 +255,8 @@ public class IOCommands implements CommandMarker
 			}
 			catch(final IOException ioe)
 			{
-				IOCommands.handleAndThrowIOPGNError(ioe);
+				failureDetails = CommandContext.UNKNOWN_IMPORT_ERROR + OsUtils.LINE_SEPARATOR + CommandContext.NOTIFY_DEV;
+				CommandContext.handleAndThrowSevereError(ioe, failureDetails);
 			}
 			catch(final PGNSyntaxError ignored)
 			{

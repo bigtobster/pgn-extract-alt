@@ -12,6 +12,8 @@ package com.bigtobster.pgnextractalt.chess;
 
 import chesspresso.game.Game;
 
+import javax.naming.OperationNotSupportedException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -24,36 +26,75 @@ import java.util.logging.Logger;
 class ChessContext
 {
 	/**
+	 * Key for Black tag
+	 */
+	static final         String          BLACK_KEY                = "Black";
+	/**
 	 * String for a Black Win
 	 */
-	static final         String          BLACK_WIN_RESULT    = "0-1";
+	static final         String          BLACK_WIN_RESULT         = "0-1";
 	/**
 	 * String for a Draw
 	 */
-	static final         String          DRAW_RESULT         = "1/2-1/2";
+	static final         String          DRAW_RESULT              = "1/2-1/2";
+	/**
+	 * Detection string for Linux operating systems
+	 */
+	@SuppressWarnings("DuplicateStringLiteralInspection")
+	static final         String          OS_LINUX                 = "linux";
+	/**
+	 * Detection string for Apple Mac operating systems
+	 */
+	static final         String          OS_MAC                   = "mac";
+	/**
+	 * Detection string for Microsoft Windows operating systems
+	 */
+	@SuppressWarnings("DuplicateStringLiteralInspection")
+	static final         String          OS_WINDOWS               = "windows";
 	/**
 	 * Key for the Result Tag
 	 */
-	static final         String          RESULT_KEY          = "Result";
+	static final         String          RESULT_KEY               = "Result";
+	/**
+	 * The string that the path to the engine should contain for Linux OSs
+	 */
+	@SuppressWarnings("DuplicateStringLiteralInspection")
+	static final         String          STOCKFISH_LINUX_SUBSTR   = "linux";
+	/**
+	 * The string that the path to the engine should contain for Apple Mac OSs
+	 */
+	static final         String          STOCKFISH_MAC_SUBSTR     = "mac";
+	/**
+	 * The incomplete os-independent pathname to the stockfish executable
+	 */
+	@SuppressWarnings("DuplicateStringLiteralInspection")
+	static final         String          STOCKFISH_PATH           = "stockfish" + File.separator + "stockfish-7-x64-";
+	/**
+	 * The string that the path to the engine should contain for Microsoft Windows OSs
+	 */
+	static final         String          STOCKFISH_WINDOWS_SUBSTR = "win.exe";
+	/**
+	 * Key for white tag
+	 */
+	static final         String          WHITE_KEY                = "White";
 	/**
 	 * String for a White Win
 	 */
-	static final         String          WHITE_WIN_RESULT    = "1-0";
-	private static final String          BLACK_ELO_KEY       = "BlackElo";
-	private static final String          BLACK_KEY           = "Black";
-	private static final String          DATE_KEY            = "Date";
-	private static final String          ECO_KEY             = "ECO";
-	private static final String          EVENT_DATE_KEY      = "EventDate";
+	static final         String          WHITE_WIN_RESULT         = "1-0";
+	private static final String          ARCH_X64                 = "64";
+	private static final String          BLACK_ELO_KEY            = "BlackElo";
+	private static final String          DATE_KEY                 = "Date";
+	private static final String          ECO_KEY                  = "ECO";
+	private static final String          EVENT_DATE_KEY           = "EventDate";
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	private static final String          EVENT_KEY           = "Event";
+	private static final String          EVENT_KEY                = "Event";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger          LOGGER              = Logger.getLogger(ChessContext.class.getName());
-	private static final int             NO_OF_EDITABLE_TAGS = 11;
-	private static final String          ROUND_KEY           = "Round";
-	private static final String          SITE_KEY            = "Site";
-	private static final String          WHITE_ELO_KEY       = "WhiteElo";
-	private static final String          WHITE_KEY           = "White";
-	private final        ArrayList<Game> games               = new ArrayList<Game>(10);
+	private static final Logger          LOGGER                   = Logger.getLogger(ChessContext.class.getName());
+	private static final int             NO_OF_EDITABLE_TAGS      = 11;
+	private static final String          ROUND_KEY                = "Round";
+	private static final String          SITE_KEY                 = "Site";
+	private static final String          WHITE_ELO_KEY            = "WhiteElo";
+	private final        ArrayList<Game> games                    = new ArrayList<Game>(10);
 	private final String[] tagKeys;
 
 	/**
@@ -73,6 +114,42 @@ class ChessContext
 		this.tagKeys[8] = ChessContext.BLACK_ELO_KEY;
 		this.tagKeys[9] = ChessContext.EVENT_DATE_KEY;
 		this.tagKeys[10] = ChessContext.ECO_KEY;
+	}
+
+	/**
+	 * Fully resolves the URI to the Stockfish chess engine
+	 *
+	 * @return The full path to the Stockfish chess engine
+	 * @throws OperationNotSupportedException Thrown on the operating system not being supported
+	 */
+	static String resolveStockfishPath() throws OperationNotSupportedException
+	{
+		final String operatingSystem = System.getProperty("os.name").toLowerCase();
+		final String arch = System.getProperty("os.arch").toLowerCase();
+		String fullStockfishPath = ChessContext.STOCKFISH_PATH;
+		if(! arch.contains(ChessContext.ARCH_X64))
+		{
+			//noinspection DuplicateStringLiteralInspection
+			throw new OperationNotSupportedException(arch + " Architecture not supported");
+		}
+		if(operatingSystem.contains(ChessContext.OS_LINUX))
+		{
+			fullStockfishPath += ChessContext.STOCKFISH_LINUX_SUBSTR;
+		}
+		else if(operatingSystem.contains(ChessContext.OS_WINDOWS))
+		{
+			fullStockfishPath += ChessContext.STOCKFISH_WINDOWS_SUBSTR;
+		}
+		else if(operatingSystem.contains(ChessContext.OS_MAC))
+		{
+			fullStockfishPath += ChessContext.STOCKFISH_MAC_SUBSTR;
+		}
+		else
+		{
+			//noinspection DuplicateStringLiteralInspection
+			throw new OperationNotSupportedException("Operating system not supported: " + operatingSystem);
+		}
+		return fullStockfishPath;
 	}
 
 	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})

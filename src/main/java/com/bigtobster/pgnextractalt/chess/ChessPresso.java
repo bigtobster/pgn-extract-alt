@@ -15,6 +15,8 @@ import chesspresso.move.Move;
 import chesspresso.position.Position;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * This class is for all the functionality that should be in Chesspresso but isn't In the longer term, everything in the class should be pushed into
@@ -25,16 +27,23 @@ import java.util.ArrayList;
  */
 public class ChessPresso
 {
-	private static final int MAX_MOVE_CLOCK = 50;
+	/**
+	 * The prefix for Machine Correlation score
+	 */
+	public static final  String  MC_TAG_PREFIX  = "MC:";
+	@SuppressWarnings("UnusedDeclaration")
+	private static final Logger  LOGGER         = Logger.getLogger(ChessPresso.class.getName());
+	private static final int     MAX_MOVE_CLOCK = 50;
+	private static final Pattern SPACE_PATTERN  = Pattern.compile(" ");
 
 	/**
-	 * Inserts the correct result, if calculable, into a chess game Works on confirmed mates and draws In most cases it will not be able to work it
+	 * Inserts the correct result, if evaluate-able, into a chess game Works on confirmed mates and draws In most cases it will not be able to work it
 	 * out
 	 *
-	 * @param games The list of games to calculate
+	 * @param games The list of games to evaluate
 	 * @return Number of inserted tags
 	 */
-	public static int calculateGameResults(final ArrayList<Game> games)
+	public static int evaluateGameResults(final ArrayList<Game> games)
 	{
 		int counter = 0;
 		for(final Game game : games)
@@ -68,6 +77,47 @@ public class ChessPresso
 			}
 		}
 		return counter;
+	}
+
+	/**
+	 * Gets a given player's machine correlation score. Throws an error if this hasn't been calculated for that player
+	 *
+	 * @param player The player which the MC score is to be retrieved
+	 * @return The MC score
+	 */
+	public static float getMachineCorrelationScore(final String player)
+	{
+		final String[] words = ChessPresso.SPACE_PATTERN.split(player);
+		return Float.parseFloat(words[words.length - 1]);
+	}
+
+	/**
+	 * Calculates if a player tag instance has a machine correlation score in it
+	 *
+	 * @param player The player tag string to be analysed
+	 * @return Boolean Whether a valid score is present or not
+	 */
+	public static boolean isMachineCorrelationEvaluated(final String player)
+	{
+		if((player == null) || player.isEmpty())
+		{
+			return false;
+		}
+		final String[] words = ChessPresso.SPACE_PATTERN.split(player);
+		if((words.length < 2) || ! words[words.length - 2].equals(ChessPresso.MC_TAG_PREFIX))
+		{
+			return false;
+		}
+		try
+		{
+			//noinspection ResultOfMethodCallIgnored
+			Float.parseFloat(words[words.length - 1]);
+		}
+		catch(final NumberFormatException ignored)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	@SuppressWarnings({"HardCodedStringLiteral", "MethodReturnAlwaysConstant"})

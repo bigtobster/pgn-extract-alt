@@ -42,7 +42,7 @@ public class ResultFilterCommandsTest
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		final String command = TestCommandContext.buildCommand(ResultFilterCommands.getFilterByResultCommand());
 		testCommandContext.assertCommandFails(command);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertNotNull(TestCommandContext.COMMAND_FAILS_UNEXPECTEDLY, testCommandContext.executeValidCommand(command));
 	}
 
@@ -54,7 +54,7 @@ public class ResultFilterCommandsTest
 	public void testFilterByResult()
 	{
 		final TestCommandContext testCommandContext = new TestCommandContext();
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		final HashMap<String, String> options = new HashMap<String, String>(4);
 		options.put(ResultFilterCommands.FILTER_BLACK_WINS_OPTION, Boolean.toString(true));
 		options.put(ResultFilterCommands.FILTER_WHITE_WINS_OPTION, Boolean.toString(true));

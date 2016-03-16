@@ -45,7 +45,7 @@ public class PlycountFilterCommandsTest
 		options.put(PlycountFilterCommands.LESS_THAN_OPTION, String.valueOf(Integer.MAX_VALUE));
 		final String command = TestCommandContext.buildCommand(PlycountFilterCommands.getFilterByPlycountCommand(), options);
 		testCommandContext.assertCommandFails(command);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertNotNull(TestCommandContext.COMMAND_FAILS_UNEXPECTEDLY, testCommandContext.executeValidCommand(command));
 	}
 
@@ -57,7 +57,7 @@ public class PlycountFilterCommandsTest
 	public void testFilterByPlycount()
 	{
 		final TestCommandContext testCommandContext = new TestCommandContext();
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		final HashMap<String, String> options = new HashMap<String, String>(2);
 		options.put(PlycountFilterCommands.GREATER_THAN_OPTION, String.valueOf(Integer.MIN_VALUE));
 		options.put(PlycountFilterCommands.LESS_THAN_OPTION, String.valueOf(Integer.MAX_VALUE));

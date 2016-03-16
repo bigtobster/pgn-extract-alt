@@ -27,13 +27,33 @@ import java.util.logging.Logger;
 class CommandContext
 {
 	/**
+	 * Message on failure to insert tags
+	 */
+	static final         String FAILED_TO_INSERT_TAGS       = "Failed to insert tags.";
+	/**
 	 * The subcommand for all filter commands
 	 */
 	static final         String FILTER_SUBCOMMAND           = "-filter";
 	/**
+	 * Message for user to notify developer
+	 */
+	static final         String NOTIFY_DEV                  = "Please notify PGN-Extract-Alt Developer";
+	/**
 	 * Partial Message on successfully filtering out games
 	 */
 	static final         String SUCCESSFULLY_FILTERED_GAMES = "games filtered";
+	/**
+	 * The message substring on successfully inserting tags
+	 */
+	static final         String SUCCESSFULLY_INSERTED_TAGS  = "Successfully inserted tags!";
+	/**
+	 * The message tail substring on successfully inserting tags
+	 */
+	static final         String TAGS_INSERTED               = "tags inserted.";
+	/**
+	 * Message for user that something bad has happened
+	 */
+	static final         String UNKNOWN_IMPORT_ERROR        = "Unknown Import Error ";
 	@SuppressWarnings("UnusedDeclaration")
 	private static final Logger LOGGER                      = Logger.getLogger(CommandContext.class.getName());
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
@@ -47,14 +67,28 @@ class CommandContext
 	private ChessTagModder chessTagModder;
 
 	/**
+	 * Takes a severe IO error, forms a coherent bundle of failure data and reports to user
+	 *
+	 * @param exception      The exception that's caused the issue
+	 * @param failureDetails Further details of the failure
+	 * @throws java.lang.Exception The original exception rethrown
+	 */
+	@SuppressWarnings("ProhibitedExceptionDeclared")
+	static void handleAndThrowSevereError(final Exception exception, final String failureDetails) throws Exception
+	{
+		CommandContext.logSevereError(CommandContext.LOGGER, failureDetails, exception);
+		//noinspection ProhibitedExceptionThrown
+		throw exception;
+	}
+
+	/**
 	 * Logs a severe error in logs
 	 *
 	 * @param logger    The erring class's Logger
 	 * @param message   The message to be logged
 	 * @param exception The exception causing the error
 	 */
-	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
-	static void logSevereError(@SuppressWarnings("SameParameterValue") final Logger logger, final String message, final Exception exception)
+	private static void logSevereError(@SuppressWarnings("SameParameterValue") final Logger logger, final String message, final Exception exception)
 	{
 		logger.log(Level.SEVERE, message);
 		logger.log(Level.SEVERE, exception.getMessage());

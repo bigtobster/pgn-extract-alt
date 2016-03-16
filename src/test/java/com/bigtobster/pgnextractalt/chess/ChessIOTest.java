@@ -13,6 +13,7 @@ package com.bigtobster.pgnextractalt.chess;
 import chesspresso.pgn.PGNSyntaxError;
 import com.bigtobster.pgnextractalt.core.TestContext;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.activation.UnsupportedDataTypeException;
@@ -36,6 +37,22 @@ public class ChessIOTest
 	private static final String INTENDED_PGN_IMPORT_FAILURE = "PGN should not have been successfully imported";
 	private static final String INTENDED_SUCCESSFUL_IMPORT  = "PGN should have imported successfully";
 	private static final Logger LOGGER                      = Logger.getLogger(ChessIOTest.class.getName());
+
+	/**
+	 * Creates the dump directory for us in the following test methods
+	 *
+	 * @throws IOException Failure to create the directory
+	 */
+	@BeforeClass
+	public static void initDump() throws IOException
+	{
+		final File exportFile = TestChessContext.getPGNFile(TestContext.DUMP_DIR, TestContext.EMPTY_PGN);
+		if(! exportFile.getParentFile().exists())
+		{
+			createDirectory(exportFile.getParentFile().toPath());
+		}
+
+	}
 
 	private static void assertImportFailure(final ChessIO chessIO)
 	{
@@ -61,10 +78,6 @@ public class ChessIOTest
 		//Need a unique identifier to avoid overwriting other tests
 		// noinspection MagicCharacter
 		final File exportFile = TestChessContext.getPGNFile(TestContext.DUMP_DIR, UUID.randomUUID().toString() + '-' + importFile.getName());
-		if(! exportFile.getParentFile().exists())
-		{
-			createDirectory(exportFile.getParentFile().toPath());
-		}
 		//noinspection ResultOfMethodCallIgnored
 		exportFile.createNewFile();
 		final PrintWriter printWriter = new PrintWriter(exportFile);

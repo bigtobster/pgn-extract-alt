@@ -10,8 +10,6 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
-import chesspresso.game.Game;
-import com.bigtobster.pgnextractalt.chess.ChessPresso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
@@ -30,29 +28,14 @@ import java.util.logging.Logger;
 public class TagCommands implements CommandMarker
 {
 	/**
-	 * Message when all games have a completed results tag
-	 */
-	static final         String ALL_GAMES_COMPLETED_RESULT_TAG  = "All loaded games have a completed Result tag.";
-	/**
-	 * Message on failure to insert tags
-	 */
-	static final         String FAILED_TO_INSERT_TAGS           = "Failed to insert tags.";
-	/**
 	 * The force option
 	 */
+	@SuppressWarnings("DuplicateStringLiteralInspection")
 	static final         String FORCE                           = "Force";
 	/**
 	 * Info to user that key has already been fully used
 	 */
 	static final         String KEY_ALREADY_USED                = "Key already used by all games. Using --Force to overwrite.";
-	/**
-	 * The message substring on successfully inserting tags
-	 */
-	static final         String SUCCESSFULLY_INSERTED_TAGS      = "Successfully inserted tags!";
-	/**
-	 * The message tail substring on successfully inserting tags
-	 */
-	static final         String TAGS_INSERTED                   = "tags inserted.";
 	/**
 	 * The TagKey option
 	 */
@@ -61,14 +44,6 @@ public class TagCommands implements CommandMarker
 	 * The TagValue option
 	 */
 	static final         String TAG_VALUE                       = "TagValue";
-	/**
-	 * Message when results cannot be ascertained
-	 */
-	static final         String UNABLE_TO_ASCERTAIN_ANY_RESULTS = "Unable to ascertain any results.";
-	private static final String CALCULATE_RESULT_COMMAND        = "calculate-result";
-	private static final String CALCULATE_RESULT_COMMAND_HELP   = "For all games without a result tag, " +
-																  "will attempt to calculate the result and add it as a tag. Available when" +
-																  " games imported.";
 	private static final String INSERT_TAG_COMMAND              = "insert-tag";
 	private static final String INSERT_TAG_COMMAND_HELP         =
 			"Insert a tag into list of games. Available when games imported. New tag " +
@@ -81,17 +56,6 @@ public class TagCommands implements CommandMarker
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private CommandContext commandContext;
-
-	/**
-	 * Getter for List Writable Tags Command String
-	 *
-	 * @return String List Writable Tags Command String
-	 */
-	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
-	public static String getCalculateResultCommand()
-	{
-		return TagCommands.CALCULATE_RESULT_COMMAND;
-	}
 
 	/**
 	 * Getter for Insert Tag Command String
@@ -128,36 +92,6 @@ public class TagCommands implements CommandMarker
 	}
 
 	/**
-	 * Handle the interface for calculating the result of a game and inserting the calculated value into the tag for that game
-	 *
-	 * @return Success message
-	 */
-	@CliCommand(value = TagCommands.CALCULATE_RESULT_COMMAND, help = TagCommands.CALCULATE_RESULT_COMMAND_HELP)
-	public String calculateResultTag()
-	{
-		final int tagsInsertedNo = ChessPresso.calculateGameResults(this.commandContext.getChessIO().getGames());
-		boolean allResultsCalculated = true;
-		for(final Game game : this.commandContext.getChessIO().getGames())
-		{
-			if((game.getResultStr() == null) || game.getResultStr().isEmpty())
-			{
-				allResultsCalculated = false;
-				//noinspection BreakStatement
-				break;
-			}
-		}
-		if(allResultsCalculated)
-		{
-			return TagCommands.FAILED_TO_INSERT_TAGS + TagCommands.SPACE + TagCommands.ALL_GAMES_COMPLETED_RESULT_TAG;
-		}
-		if(tagsInsertedNo == 0)
-		{
-			return TagCommands.FAILED_TO_INSERT_TAGS + TagCommands.SPACE + TagCommands.UNABLE_TO_ASCERTAIN_ANY_RESULTS;
-		}
-		return TagCommands.SUCCESSFULLY_INSERTED_TAGS + TagCommands.SPACE + tagsInsertedNo + TagCommands.SPACE + TagCommands.TAGS_INSERTED;
-	}
-
-	/**
 	 * Handle the interface for inserting a tag into a list of games
 	 *
 	 * @param tagKey      The key of the tag to be inserted
@@ -172,28 +106,19 @@ public class TagCommands implements CommandMarker
 			final String tagKey,
 			@CliOption(key = {TagCommands.TAG_VALUE}, mandatory = true, help = "The value of the tag to be inserted.")
 			final String tagValue,
-			@SuppressWarnings("DuplicateStringLiteralInspection") @CliOption(key = {TagCommands.FORCE}, mandatory = false, help = "\"true\" to overwrite any existing tags with this key",
-					   unspecifiedDefaultValue = "false")
+			@SuppressWarnings("DuplicateStringLiteralInspection") @CliOption(key = {TagCommands.FORCE},
+																			 mandatory = false,
+																			 help = "\"true\" to overwrite any existing tags with this key",
+																			 unspecifiedDefaultValue = "false")
 			final boolean forceInsert
 						   )
 	{
 		final int tagsInsertedNo = this.commandContext.getChessTagModder().insertTag(tagKey, tagValue, forceInsert);
 		if(tagsInsertedNo == 0)
 		{
-			return TagCommands.FAILED_TO_INSERT_TAGS + TagCommands.SPACE + TagCommands.KEY_ALREADY_USED;
+			return CommandContext.FAILED_TO_INSERT_TAGS + TagCommands.SPACE + TagCommands.KEY_ALREADY_USED;
 		}
-		return TagCommands.SUCCESSFULLY_INSERTED_TAGS + TagCommands.SPACE + tagsInsertedNo + TagCommands.SPACE + TagCommands.TAGS_INSERTED;
-	}
-
-	/**
-	 * Describes when "Calculate Results" command is available
-	 *
-	 * @return boolean Availability (Available on successful import of at least 1 game)
-	 */
-	@CliAvailabilityIndicator({TagCommands.CALCULATE_RESULT_COMMAND})
-	public boolean isCalculateResultsAvailable()
-	{
-		return this.commandContext.getChessIO().isPGNImported();
+		return CommandContext.SUCCESSFULLY_INSERTED_TAGS + TagCommands.SPACE + tagsInsertedNo + TagCommands.SPACE + CommandContext.TAGS_INSERTED;
 	}
 
 	/**

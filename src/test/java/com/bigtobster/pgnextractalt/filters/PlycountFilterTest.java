@@ -45,7 +45,7 @@ public class PlycountFilterTest
 	public void filterAllGamesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final PlycountFilter plycountFilter = new PlycountFilter();
 		plycountFilter.setGreaterThan(0);
 		plycountFilter.setLessThan(Integer.MAX_VALUE);
@@ -67,7 +67,7 @@ public class PlycountFilterTest
 	{
 		final int threshold = 70;
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final PlycountFilter plycountFilter = new PlycountFilter();
 		plycountFilter.setGreaterThan(threshold);
 		plycountFilter.setLessThan(Integer.MAX_VALUE);
@@ -85,7 +85,7 @@ public class PlycountFilterTest
 	{
 		final int threshold = 71;
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final PlycountFilter plycountFilter = new PlycountFilter();
 		plycountFilter.setGreaterThan(Integer.MIN_VALUE);
 		plycountFilter.setLessThan(threshold);
@@ -103,7 +103,7 @@ public class PlycountFilterTest
 	public void filterNoGamesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final PlycountFilter plycountFilter = new PlycountFilter();
 		plycountFilter.setGreaterThan(Integer.MAX_VALUE);
 		plycountFilter.setLessThan(Integer.MIN_VALUE);

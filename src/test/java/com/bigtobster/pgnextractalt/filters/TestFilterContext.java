@@ -11,6 +11,7 @@
 package com.bigtobster.pgnextractalt.filters;
 
 import chesspresso.pgn.PGNSyntaxError;
+import com.bigtobster.pgnextractalt.chess.ChessEvaluator;
 import com.bigtobster.pgnextractalt.chess.ChessFilterer;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
@@ -41,6 +42,12 @@ class TestFilterContext extends TestContext
 	static final String GAMES_FILTERED_DIFFERENT_EXP = "Number of games filtered is different from expected";
 
 	@Override
+	protected ChessEvaluator getChessEvaluator()
+	{
+		return (ChessEvaluator) this.getBean(ChessEvaluator.class);
+	}
+
+	@Override
 	protected ChessFilterer getChessFilterer()
 	{
 		return (ChessFilterer) this.getBean(ChessFilterer.class);
@@ -59,7 +66,7 @@ class TestFilterContext extends TestContext
 	}
 
 	@Override
-	protected void preloadPGN(final String pgn)
+	protected void loadPGN(final String pgn)
 	{
 		final File pgnFile = TestContext.pgnToPGNFile(pgn);
 

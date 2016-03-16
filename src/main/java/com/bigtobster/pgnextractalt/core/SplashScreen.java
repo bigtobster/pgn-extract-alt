@@ -35,6 +35,7 @@ public class SplashScreen extends DefaultBannerProvider
 
 	private static final String PGNEXTRACTALT_DESCRIPTION = "                                           A modular PGN processing application";
 	private static final String PGNEXTRACTALT_URL         = "                                  https://github.com/bigtobster/pgn-extract-alt";
+	@SuppressWarnings("DuplicateStringLiteralInspection")
 	private static final String PROPERTIES_FILE           = "pgn-extract-alt.properties";
 	private static final String PROPERTIES_FILE_NOT_FOUND = "pgn-extract-alt.properties file not found";
 	private static final String VERSION                   = "Version: ";

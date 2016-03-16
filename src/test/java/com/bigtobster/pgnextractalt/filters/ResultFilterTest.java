@@ -18,8 +18,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests that ResultFilter filters games correctly
- * Created by Toby Leheup on 05/02/16 for pgn-extract-alt.
+ * Tests that ResultFilter filters games correctly Created by Toby Leheup on 05/02/16 for pgn-extract-alt.
+ *
  * @author Toby Leheup (Bigtobster)
  */
 public class ResultFilterTest
@@ -32,7 +32,7 @@ public class ResultFilterTest
 	public void filterAllGamesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setWhiteWinFiltered(true);
 		resultFilter.setBlackWinFiltered(true);
@@ -53,7 +53,7 @@ public class ResultFilterTest
 	public void filterBlackWinTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setBlackWinFiltered(true);
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
@@ -73,7 +73,7 @@ public class ResultFilterTest
 	public void filterDrawTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.LARGE_PGN);
+		testFilterContext.loadPGN(TestContext.LARGE_PGN);
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setDrawFiltered(true);
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
@@ -93,7 +93,7 @@ public class ResultFilterTest
 	public void filterNoGamesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setDrawFiltered(true);
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
@@ -112,7 +112,7 @@ public class ResultFilterTest
 	public void filterUnresolvedTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.DRAW_HEADLESS_PGN);
+		testFilterContext.loadPGN(TestContext.DRAW_HEADLESS_PGN);
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setUnresolvedFiltered(true);
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
@@ -133,7 +133,7 @@ public class ResultFilterTest
 	public void filterWhiteWinTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setWhiteWinFiltered(true);
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();

@@ -5,6 +5,7 @@ A highly extensible modular rewrite of the PGN processing application pgn-extrac
  <ul>
  	<li>Project Started! - 19/11/2015</li>
  	<li>PGN-Extract-Alt Released! - 28/01/201</li>
+ 	<li>Major enhancements including Machine Correlation! - 16/03/2016</li>
  </ul>
 
 ##Overview##
@@ -15,6 +16,7 @@ PGN-extract is a popular and useful PGN processing application written by David 
 PGN-extract-alt aims to provide a modular alternative to PGN-extract using modern tools and languages. It is not intended to reproduce all of the features currently available in PGN-extract but instead provide a framework and accompanying documentation for the community to add whatever features they desire. PGN-extract-alt's core will be released with the following features:
 
 <ul>
+	<li>Player Chess Engine Correlation</li>
 	<li>Tag Insertion</li>
 	<li>Tag Editing</li>
 	<li>Result Calculator</li>
@@ -33,6 +35,13 @@ Installation is via Maven. You will need to install Maven if you have not alread
 * Extract
 * Open directory with "POM.xml" in a CLI
 * Run "mvn install"
+
+Note that currently only 64-bit architecture systems are supported. (If you have a desperate need to use the software in 32-bit, 
+remove the Machine Correlation classes from the Chess and Commands packages as well as the whole uciEngine package and then rebuild.)
+
+Installation takes quite a long time - around 5-10 minutes on reasonable hardware. This is due to the thorough and computationally intensive 
+testing. To reduce the installation time, either skip the tests ("mvn install -DskipTests") or remove the Machine Correlation functionality (see 
+paragraph above).
 
 ##Usage##
 The binary is deployed to [pgn-extract-alt]/target and will have the filename pgn-extract-alt-[version].jar
@@ -59,6 +68,32 @@ Other than further modules, two considerable fundamental extensions are being co
 1. Dependency on an improved version of Chesspresso. This will involve creating a new Chesspresso repo (original source available), depending on that and then extending accordingly. This would mean the maintenance of a second project but would significantly enhance the potential for further PGN-Extract-Alt enhancements.
 
 2. Improving the concurrency model. This will be a particular issue with computationally intense modules. There are various concurrency models available (further details to be referenced). It would be useful to queue operations on data and then execute them in a concurrent fashion that tends towards optimal.
+
+##Machine Correlation##
+PGN-Extract-Alt is packaged with Stockfish 7 which is an open-source, strong UCI-compliant chess engine. The full usage specification for Stockfish
+ can be found here: http://download.shredderchess.com/div/uci.zip. PGN-Extract-Alt calculates the degree of machine correlation by comparing the 
+ quality of a player's move against the quality of the engine's move. The engine will always try to find the strongest move it can.
+ 
+The Machine Correlation functionality is parameterised by 2 values:
+ 
+ * Depth - The number of players ahead that the engine will assess. Higher values produce stronger play from the engine but are more 
+ computationally intensive. The default is 13 which is moderately intensive. Very strong players will find an engine playing at depth 20 challenging.
+ * Wait - The amount of time the machine should sleep whilst waiting for the engine to calculate. Increase for higher depths. Note that this value 
+ is adjusted over time so don't fret over it. The default is usually fine except for high depths (18+).
+ 
+The engine is configured as follows:
+
+* MultiPV = 1
+* Ponder = False
+* Threads = 4
+* Hash Size = 1024 Mb
+	
+These settings are not parameterised but are easily reconfigurable from the UCIEngine class in the uciEngine package.
+
+The score is appended to the player's name in the output. The closer the score is to 0, the greater the correlation is with engine use.
+
+Note that this functionality is very computationally intensive - even on modest depths and on strong hardware. Also note that the depth parameter 
+should increase proportionally to the skill of the player being assessed. 
 
 ##Documentation##
 Extensive technical documentation is available in <pgn-extract-alt>/target/site. Open index.html in a web browser. The following artifacts are 
@@ -93,7 +128,7 @@ Tab completion is available to help you with parameters.
 PGN processing has the following patterns
 
 1. Import: import --FilePath [pathToPGN]
-2. [Processing Commands] e.g: calculate-result
+2. [Processing Commands] e.g: evaluate-result
 3. Export: export --FilePath [pathToNewPGN]
 
 A full user guide is currently under consideration.
@@ -108,6 +143,7 @@ Note that the source code is divided into 4 distinct packages:
 * commands - For Spring Shell Commands logic
 * filters - For logic that removes chess games
 * core - For project dependent classes
+* uciEngine - For engine classes
 
 ##Contact##
 Developer: Toby Leheup - toby.leheup@googlemail.com
@@ -118,6 +154,6 @@ Supervisor: Dr David Barnes - D.J.Barnes@kent.ac.uk
 
 Code and documentation copyright 2015 Toby Leheup.
 
-Code released under the MIT license.
+Code released under the GPL v3.0 license.
 
 Documentation released under the Creative Commons license.

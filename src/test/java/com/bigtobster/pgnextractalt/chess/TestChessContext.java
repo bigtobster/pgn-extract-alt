@@ -36,11 +36,12 @@ class TestChessContext extends TestContext
 		return (ChessContext) this.getBean(ChessContext.class);
 	}
 
-	/**
-	 * Returns the ChessFilterer for the current context
-	 *
-	 * @return The current context's ChessFilterer instance
-	 */
+	@Override
+	protected ChessEvaluator getChessEvaluator()
+	{
+		return (ChessEvaluator) this.getBean(ChessEvaluator.class);
+	}
+
 	@SuppressWarnings("UnusedDeclaration")
 	@Override
 	protected ChessFilterer getChessFilterer()
@@ -48,22 +49,12 @@ class TestChessContext extends TestContext
 		return (ChessFilterer) this.getBean(ChessFilterer.class);
 	}
 
-	/**
-	 * Returns the ChessIO for the current context
-	 *
-	 * @return The current context's ChessIO instance
-	 */
 	@Override
 	protected ChessIO getChessIO()
 	{
 		return (ChessIO) this.getBean(ChessIO.class);
 	}
 
-	/**
-	 * Returns the ChessTagModder for the current context
-	 *
-	 * @return The current context's ChessTagModder instance
-	 */
 	@SuppressWarnings("UnusedDeclaration")
 	@Override
 	protected ChessTagModder getChessTagModder()
@@ -77,7 +68,7 @@ class TestChessContext extends TestContext
 	 * @param pgn Path to a PGN file to import
 	 */
 	@Override
-	protected void preloadPGN(final String pgn)
+	protected void loadPGN(final String pgn)
 	{
 		final File pgnFile = TestContext.pgnToPGNFile(pgn);
 

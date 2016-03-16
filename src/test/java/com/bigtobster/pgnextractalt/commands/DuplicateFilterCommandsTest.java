@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Tests Duplicate Filter Commands Created by Toby Leheup on 08/02/16 for pgn-extract-alt.
@@ -28,7 +30,7 @@ import java.util.ArrayList;
  */
 public class DuplicateFilterCommandsTest
 {
-	private static final String SPACE = " ";
+	private static final Logger LOGGER = Logger.getLogger(DuplicateFilterCommandsTest.class.getName());
 
 	/**
 	 * Tests the command for filtering duplicates is as expected
@@ -53,60 +55,56 @@ public class DuplicateFilterCommandsTest
 		final TestCommandContext testCommandContext = new TestCommandContext();
 		final String command = TestCommandContext.buildCommand(DuplicateFilterCommands.getDuplicateFilterCommand());
 		testCommandContext.assertCommandFails(command);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertNotNull(TestCommandContext.COMMAND_FAILS_UNEXPECTEDLY, testCommandContext.executeValidCommand(command));
 	}
 
 	/**
 	 * Test that all games are filtered out when expected
+	 * @throws java.io.IOException Copy failure
 	 */
 	@Test
-	public void testDuplicateFilter()
+	public void testDuplicateFilter() throws IOException
 	{
 		final TestCommandContext testCommandContext = new TestCommandContext();
 
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
-		String expectedOutput = testCommandContext.getChessIO().getGames().size() + " " + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+		final String expectedOutput = testCommandContext.getChessIO().getGames().size() + " " + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 
 		final String command = TestCommandContext.buildCommand(DuplicateFilterCommands.getDuplicateFilterCommand());
 		final File duplicatesDoc = new File(DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
-		String actualOutput = testCommandContext.executeValidCommand(command);
+		final String actualOutput = testCommandContext.executeValidCommand(command);
 		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
 
 		final File pgnFile = TestContext.getPGNFile(TestContext.IMPORTS_DIR, DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
 		try
 		{
-			Files.copy(duplicatesDoc.toPath(), pgnFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Files.move(duplicatesDoc.toPath(), pgnFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 		catch(final IOException e)
 		{
 			Assert.fail(e.getMessage());
+			//noinspection HardCodedStringLiteral
+			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "duplicatesDoc: " + duplicatesDoc.getAbsolutePath());
+			//noinspection HardCodedStringLiteral
+			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "duplicatesDoc exist?: " + duplicatesDoc.exists());
+			//noinspection HardCodedStringLiteral
+			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "pgnFile: " + pgnFile.getAbsolutePath());
+			//noinspection HardCodedStringLiteral
+			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "pgnFile exists?: " + pgnFile.exists());
+			throw e;
 		}
 		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
 
 		testCommandContext.getChessIO().reset();
-		testCommandContext.preloadPGN(DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
+		testCommandContext.loadPGN(DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
 		Assert.assertTrue(TestContext.TEST_RESOURCE_NOT_FOUND, testCommandContext.getChessIO().isPGNImported());
 		final ArrayList<Game> duplicatedGames = testCommandContext.getChessIO().getGames();
 		Assert.assertEquals(TestContext.TEST_RESOURCE_NOT_FOUND, 5L, (long) duplicatedGames.size());
 		testCommandContext.getChessIO().reset();
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertEquals(TestContext.TEST_RESOURCE_NOT_FOUND, duplicatedGames, testCommandContext.getChessIO().getGames());
-
-		testCommandContext.getChessIO().reset();
-		TestCommandContext.modifyFilePermissions(duplicatesDoc, false, false, false);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
-		testCommandContext.preloadPGN(TestContext.MULTI_PGN);
-		expectedOutput = DuplicateFilterCommands.ERROR_ON_EXPORTING_DUPLICATE_OUT +
-						 IOCommands.FAILED_EXPORT +
-						 DuplicateFilterCommandsTest.SPACE +
-						 IOCommands.PGN_NOT_WRITABLE +
-						 DuplicateFilterCommandsTest.SPACE +
-						 duplicatesDoc.getAbsolutePath();
-		actualOutput = testCommandContext.executeValidCommand(command);
-		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
-		TestCommandContext.modifyFilePermissions(duplicatesDoc, true, true, false);
 	}
 }

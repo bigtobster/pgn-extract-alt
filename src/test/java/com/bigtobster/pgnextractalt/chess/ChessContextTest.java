@@ -14,6 +14,7 @@ import chesspresso.game.Game;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -100,5 +101,31 @@ public class ChessContextTest
 
 		Assert.assertTrue(ChessContextTest.SUCCESSFUL_IMPORT, chessContext.isPGNImported());
 		Assert.assertFalse(ChessContextTest.NON_EMPTY_GAME_LIST, chessContext.getGames().isEmpty());
+	}
+
+	/**
+	 * Tests that path to Stockfish engine resolves properly
+	 *
+	 * @throws OperationNotSupportedException Thrown on attempt to resolve a path on an OS that is not supported
+	 */
+	@Test
+	public void resolveStockfishPathTest() throws OperationNotSupportedException
+	{
+		final String stockfishPath = ChessContext.resolveStockfishPath();
+		final String operatingSystem = System.getProperty("os.name").toLowerCase();
+		String pathSubstr = ChessContext.STOCKFISH_PATH;
+		if(operatingSystem.contains(ChessContext.OS_LINUX))
+		{
+			pathSubstr += ChessContext.STOCKFISH_LINUX_SUBSTR;
+		}
+		else if(operatingSystem.contains(ChessContext.OS_WINDOWS))
+		{
+			pathSubstr += ChessContext.STOCKFISH_WINDOWS_SUBSTR;
+		}
+		else if(operatingSystem.contains(ChessContext.OS_MAC))
+		{
+			pathSubstr += ChessContext.STOCKFISH_MAC_SUBSTR;
+		}
+		Assert.assertTrue("Path to engine is not a valid path", stockfishPath.contains(pathSubstr));
 	}
 }

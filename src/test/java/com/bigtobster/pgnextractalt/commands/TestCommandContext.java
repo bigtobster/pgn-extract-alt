@@ -10,6 +10,7 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
+import com.bigtobster.pgnextractalt.chess.ChessEvaluator;
 import com.bigtobster.pgnextractalt.chess.ChessFilterer;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
@@ -115,22 +116,10 @@ class TestCommandContext extends TestContext
 		return TestCommandContext.buildCommand(IOCommands.getImportCommand(), optionArgs);
 	}
 
-	/**
-	 * Modifies the file permissions of an existing file
-	 *
-	 * @param pgnFile The file to be modified
-	 * @param read    Whether file can have the read flag
-	 * @param write   Whether the file can have the write flag
-	 * @param execute Whether the file can be executed
-	 */
-	static void modifyFilePermissions(final File pgnFile, final boolean read, final boolean write, final boolean execute)
+	@Override
+	protected ChessEvaluator getChessEvaluator()
 	{
-		//noinspection ResultOfMethodCallIgnored
-		pgnFile.setReadable(read);
-		//noinspection ResultOfMethodCallIgnored
-		pgnFile.setWritable(write);
-		//noinspection ResultOfMethodCallIgnored
-		pgnFile.setExecutable(execute);
+		return (ChessEvaluator) this.getBean(ChessEvaluator.class);
 	}
 
 	/**
@@ -174,7 +163,7 @@ class TestCommandContext extends TestContext
 	 * @param pgn Path to a PGN file to import
 	 */
 	@Override
-	protected void preloadPGN(final String pgn)
+	protected void loadPGN(final String pgn)
 	{
 		final File pgnFile = TestContext.pgnToPGNFile(pgn);
 		final String command = TestCommandContext.buildImportCommand(pgnFile);

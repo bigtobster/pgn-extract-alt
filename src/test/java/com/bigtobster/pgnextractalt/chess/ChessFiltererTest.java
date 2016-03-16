@@ -18,8 +18,8 @@ import org.junit.Test;
 import java.util.MissingResourceException;
 
 /**
- * Tests ChessFilterer performs as expected
- * Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ * Tests ChessFilterer performs as expected Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ *
  * @author Toby Leheup (Bigtobster)
  */
 public class ChessFiltererTest
@@ -47,7 +47,7 @@ public class ChessFiltererTest
 	public void normalRunTest()
 	{
 		final TestChessContext testChessContext = new TestChessContext();
-		testChessContext.preloadPGN(TestContext.MULTI_PGN);
+		testChessContext.loadPGN(TestContext.MULTI_PGN);
 		final ChessFilterer chessFilterer = testChessContext.getChessFilterer();
 		final ResultFilter resultFilter = new ResultFilter();
 		resultFilter.setBlackWinFiltered(true);

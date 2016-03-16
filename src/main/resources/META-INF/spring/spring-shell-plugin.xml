@@ -29,4 +29,5 @@
 	<bean id="chessIO" class="com.bigtobster.pgnextractalt.chess.ChessIO"/>
 	<bean id="chessTagModder" class="com.bigtobster.pgnextractalt.chess.ChessTagModder"/>
 	<bean id="chessFilter" class="com.bigtobster.pgnextractalt.chess.ChessFilterer"/>
+	<bean id="chessEvaluator" class="com.bigtobster.pgnextractalt.chess.ChessEvaluator"/>
 </beans>

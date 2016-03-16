@@ -32,9 +32,9 @@ public class DuplicateFilterTest
 	public void allDuplicatesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final int testImportGamesNo = testFilterContext.getChessIO().getGames().size();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final DuplicateFilter duplicatesFilter = new DuplicateFilter();
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
 		chessFilterer.loadFilter(duplicatesFilter);
@@ -46,7 +46,7 @@ public class DuplicateFilterTest
 						   );
 		final ArrayList<Game> remainingGames = testFilterContext.getChessIO().getGames();
 		testFilterContext.getChessIO().reset();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, testFilterContext.getChessIO().getGames(), remainingGames);
 	}
 
@@ -57,7 +57,7 @@ public class DuplicateFilterTest
 	public void noDuplicatesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		final int testImportGamesNo = testFilterContext.getChessIO().getGames().size();
 		final DuplicateFilter duplicatesFilter = new DuplicateFilter();
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
@@ -70,7 +70,7 @@ public class DuplicateFilterTest
 						   );
 		final ArrayList<Game> remainingGames = testFilterContext.getChessIO().getGames();
 		testFilterContext.getChessIO().reset();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
 		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, testFilterContext.getChessIO().getGames(), remainingGames);
 	}
 
@@ -81,11 +81,11 @@ public class DuplicateFilterTest
 	public void someDuplicatesTest()
 	{
 		final TestFilterContext testFilterContext = new TestFilterContext();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
-		testFilterContext.preloadPGN(TestContext.SINGLE_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.SINGLE_PGN);
 		final int testImportGamesNo = testFilterContext.getChessIO().getGames().size();
-		testFilterContext.preloadPGN(TestContext.SINGLE_PGN);
-		testFilterContext.preloadPGN(TestContext.SINGLE_PGN);
+		testFilterContext.loadPGN(TestContext.SINGLE_PGN);
+		testFilterContext.loadPGN(TestContext.SINGLE_PGN);
 
 		final DuplicateFilter duplicatesFilter = new DuplicateFilter();
 		final ChessFilterer chessFilterer = testFilterContext.getChessFilterer();
@@ -98,8 +98,8 @@ public class DuplicateFilterTest
 						   );
 		final ArrayList<Game> remainingGames = testFilterContext.getChessIO().getGames();
 		testFilterContext.getChessIO().reset();
-		testFilterContext.preloadPGN(TestContext.MULTI_PGN);
-		testFilterContext.preloadPGN(TestContext.SINGLE_PGN);
+		testFilterContext.loadPGN(TestContext.MULTI_PGN);
+		testFilterContext.loadPGN(TestContext.SINGLE_PGN);
 		Assert.assertEquals(TestFilterContext.GAMES_FILTERED_DIFFERENT_EXP, testFilterContext.getChessIO().getGames(), remainingGames);
 	}
 }

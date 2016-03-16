@@ -85,9 +85,17 @@ public abstract class TestContext
 	 */
 	public static final    String              SINGLE_INVALID_PGN           = "invalid_single.pgn";
 	/**
+	 * Name of a PGN file with a single valid game which has been assessed for Machine Correlation
+	 */
+	public static final    String              SINGLE_MC_PGN                = "single_mc.pgn";
+	/**
 	 * Name of PGN file with a single valid game
 	 */
 	public static final    String              SINGLE_PGN                   = "single.pgn";
+	/**
+	 * Name of a smaller PGN file with games where a machine was likely used to help player Ivanov
+	 */
+	public static final    String              SMALL_IVANOV_PGN             = "small_ivanov.pgn";
 	/**
 	 * Error message for assertions on null resources
 	 */
@@ -134,6 +142,14 @@ public abstract class TestContext
 	}
 
 	/**
+	 * Returns the ChessEvaluator for the current context
+	 *
+	 * @return The current context's ChessEvaluator instance
+	 */
+	@SuppressWarnings("UnusedDeclaration")
+	abstract protected Object getChessEvaluator();
+
+	/**
 	 * Returns the ChessFilterer for the current context
 	 *
 	 * @return The current context's ChessFilterer instance
@@ -160,16 +176,17 @@ public abstract class TestContext
 	/**
 	 * Loads any given context with files located at a given path
 	 *
-	 * @param pgn         Path to a PGN file to import
+	 * @param pgn Path to a PGN file to import
 	 */
 	@SuppressWarnings("UnusedDeclaration")
-	abstract protected void preloadPGN(final String pgn);
+	abstract protected void loadPGN(final String pgn);
 
 	/**
-	 * Attempts to find a PGN file and returns a File pointing to curWorkDir/target/test-classes/directory/filename
-	 * Note that this function makes no guarantee that the File points to anything that actually exists!
+	 * Attempts to find a PGN file and returns a File pointing to curWorkDir/target/test-classes/directory/filename Note that this function makes no
+	 * guarantee that the File points to anything that actually exists!
+	 *
 	 * @param directory The parent directory of filename
-	 * @param filename The filename of the PGN file including the extension
+	 * @param filename  The filename of the PGN file including the extension
 	 * @return A file pointer to a PGN file
 	 */
 	public static File getPGNFile(final String directory, final String filename)
@@ -225,6 +242,7 @@ public abstract class TestContext
 
 	/**
 	 * Returns a bean, if created, of type beanClass, else asserts a failure
+	 *
 	 * @param beanClass Class of bean to be retrieved
 	 * @return The retrieved bean
 	 */
@@ -237,6 +255,7 @@ public abstract class TestContext
 
 	/**
 	 * Getter for the current shell
+	 *
 	 * @return The current shell
 	 */
 	protected JLineShellComponent getShell()
