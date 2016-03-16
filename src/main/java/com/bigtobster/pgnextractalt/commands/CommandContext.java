@@ -88,6 +88,7 @@ class CommandContext
 	 * @param message   The message to be logged
 	 * @param exception The exception causing the error
 	 */
+	@SuppressWarnings("SameParameterValue")
 	private static void logSevereError(@SuppressWarnings("SameParameterValue") final Logger logger, final String message, final Exception exception)
 	{
 		logger.log(Level.SEVERE, message);

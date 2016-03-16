@@ -33,7 +33,11 @@ public class EvaluateCommandsTest
 		return TestCommandContext.buildCommand(command);
 	}
 
-	private static String buildEvaluateMachineCorrelationCommand(final Integer depth, final Integer wait, final Boolean force)
+	private static String buildEvaluateMachineCorrelationCommand(
+			final Integer depth,
+			final Integer wait,
+			@SuppressWarnings("SameParameterValue") final Boolean force
+																)
 	{
 		final String command = EvaluateCommands.getEvaluateMachineCorrelationCommand();
 		final HashMap<String, String> args = new HashMap<String, String>(3);

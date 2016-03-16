@@ -94,8 +94,8 @@ class ChessContext
 	private static final String          ROUND_KEY                = "Round";
 	private static final String          SITE_KEY                 = "Site";
 	private static final String          WHITE_ELO_KEY            = "WhiteElo";
-	private final        ArrayList<Game> games                    = new ArrayList<Game>(10);
 	private final String[] tagKeys;
+	private ArrayList<Game> games = new ArrayList<Game>(10);
 
 	/**
 	 * Initialises the chess context
@@ -162,7 +162,7 @@ class ChessContext
 	}
 
 	/**
-	 * Setter for the list of parsed games
+	 * Adds a list of games to the existing list of games
 	 *
 	 * @param newGames New list of parsed games
 	 */
@@ -179,6 +179,17 @@ class ChessContext
 	ArrayList<Game> getGames()
 	{
 		return this.games;
+	}
+
+	/**
+	 * Setter for the list of parsed games
+	 *
+	 * @param newGames New list of parsed games
+	 */
+	void setGames(final ArrayList<Game> newGames)
+	{
+		//noinspection AssignmentToCollectionOrArrayFieldFromParameter
+		this.games = newGames;
 	}
 
 	/**

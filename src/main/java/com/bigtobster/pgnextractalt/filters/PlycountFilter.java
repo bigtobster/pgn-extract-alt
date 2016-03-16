@@ -32,7 +32,7 @@ public class PlycountFilter implements Filter
 	 * @param games The games to be filtered
 	 */
 	@Override
-	public void filter(final ArrayList<Game> games)
+	public ArrayList<Game> filter(final ArrayList<Game> games)
 	{
 		final ArrayList<Game> newGames = new ArrayList<Game>(games.size());
 		for(final Game game : games)
@@ -42,8 +42,7 @@ public class PlycountFilter implements Filter
 				newGames.add(game);
 			}
 		}
-		games.clear();
-		games.addAll(newGames);
+		return newGames;
 	}
 
 	/**

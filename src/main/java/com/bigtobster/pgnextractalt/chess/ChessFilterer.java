@@ -56,7 +56,7 @@ public class ChessFilterer
 		}
 		final ArrayList<Game> games = this.chessContext.getGames();
 		final int preGameCount = games.size();
-		this.filter.filter(games);
+		this.chessContext.setGames(this.filter.filter(games));
 		final int postGameCount = games.size();
 		return preGameCount - postGameCount;
 	}

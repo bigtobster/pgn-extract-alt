@@ -30,7 +30,7 @@ public class DuplicateFilter implements Filter
 	 * @param games The list of games to be filtered
 	 */
 	@Override
-	public void filter(final ArrayList<Game> games)
+	public ArrayList<Game> filter(final ArrayList<Game> games)
 	{
 		this.duplicateGames = new ArrayList<Game>(games.size() / 2);
 		final ArrayList<Game> newGames = new ArrayList<Game>(games.size());
@@ -54,8 +54,7 @@ public class DuplicateFilter implements Filter
 				this.duplicateGames.add(games.get(i));
 			}
 		}
-		games.clear();
-		games.addAll(newGames);
+		return newGames;
 	}
 
 	/**

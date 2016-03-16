@@ -15,8 +15,8 @@ import chesspresso.game.Game;
 import java.util.ArrayList;
 
 /**
- * A filter interface that all Filters must implement
- * Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ * A filter interface that all Filters must implement Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ *
  * @author Toby Leheup (Bigtobster)
  */
 @SuppressWarnings("ClassUnconnectedToPackage")
@@ -24,7 +24,9 @@ public interface Filter
 {
 	/**
 	 * Filters a list of games for some value or property (implementation dependent)
+	 *
 	 * @param games The list of games to be filtered
+	 * @return The list of post-filtered games
 	 */
-	public void filter(final ArrayList<Game> games);
+	public ArrayList<Game> filter(final ArrayList<Game> games);
 }
