@@ -137,6 +137,7 @@ final class JarExtractor
 	 * @return The URI for the current JAR
 	 * @throws URISyntaxException Thrown on issue converting between URL and URI
 	 */
+	@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
 	static URI getJarURI()
 			throws URISyntaxException
 	{
