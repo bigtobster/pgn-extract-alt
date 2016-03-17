@@ -19,7 +19,7 @@
 	<packaging>jar</packaging>
 	<name>pgn-extract-alt</name>
 	<description>A modular PGN processing application</description>
-	<url>https://github.com/bigtobster/pgn-extract-alt</url>
+	<url>https://bigtobster.github.io/pgn-extract-alt/</url>
 	<inceptionYear>2015</inceptionYear>
 	<licenses>
 		<license>

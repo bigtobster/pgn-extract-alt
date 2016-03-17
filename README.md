@@ -1,4 +1,4 @@
-# PGN-extract-alt
+# PGN-Extract-Alt
 A highly extensible modular rewrite of the PGN processing application pgn-extract written in Java and available on Windows, Mac and Linux.
 
 ##Latest##
@@ -35,20 +35,20 @@ Installation is via Maven. You will need to install Maven if you have not alread
 
 * Download Repo
 * Extract
-* Open directory with "POM.xml" in a CLI
-* Run "mvn install"
+* Open directory with ``POM.xml`` in a CLI
+* Run ``mvn install``
 
 Note that currently only 64-bit architecture systems are supported. (If you have a desperate need to use the software in 32-bit, 
 remove the Machine Correlation classes from the Chess and Commands packages as well as the whole uciEngine package and then rebuild.)
 
 Installation takes quite a long time - around 5-10 minutes on reasonable hardware. This is due to the thorough and computationally intensive 
-testing. To reduce the installation time, either skip the tests ("mvn install -DskipTests") or remove the Machine Correlation functionality (see 
+testing. To reduce the installation time, either skip the tests (``mvn install -DskipTests``) or remove the Machine Correlation functionality (see 
 paragraph above).
 
 ##Usage##
-The binary is deployed to [pgn-extract-alt]/target and will have the filename pgn-extract-alt-[version].jar
+The binary is deployed to ``[pgn-extract-alt]/target`` and will have the filename ``pgn-extract-alt-[version].jar``
 
-To run the binary, open a CLI in the same directory as the binary and type: java -jar [filename]
+To run the binary, open a CLI in the same directory as the binary and type: ``java -jar [filename]``
 
 Currently, only the following tags are supported for insertion:
 
@@ -63,13 +63,6 @@ WhiteElo
 BlackElo
 EventDate
 ECO
-
-##Extension##
-Other than further modules, two considerable fundamental extensions are being considered:
-
-1. Dependency on an improved version of Chesspresso. This will involve creating a new Chesspresso repo (original source available), depending on that and then extending accordingly. This would mean the maintenance of a second project but would significantly enhance the potential for further PGN-Extract-Alt enhancements.
-
-2. Improving the concurrency model. This will be a particular issue with computationally intense modules. There are various concurrency models available (further details to be referenced). It would be useful to queue operations on data and then execute them in a concurrent fashion that tends towards optimal.
 
 ##Machine Correlation##
 PGN-Extract-Alt is packaged with Stockfish 7 which is an open-source, strong UCI-compliant chess engine. The full usage specification for Stockfish
@@ -98,7 +91,7 @@ Note that this functionality is very computationally intensive - even on modest 
 should increase proportionally to the skill of the player being assessed. 
 
 ##Documentation##
-Extensive technical documentation is available in <pgn-extract-alt>/target/site. Open index.html in a web browser. The following artifacts are 
+Extensive technical documentation is available in ``<pgn-extract-alt>/target/site``. Open index.html in a web browser. The following artifacts are 
 available:
  
  * Technical Summary
@@ -123,15 +116,15 @@ In order to extend PGN-Extract-Alt:
 6. Rebuild (mvn install)
  
 ##Tutorial##
-Once running, type "help" to get a full list of commands.
+Once running, type ``help`` to get a full list of commands.
 
 Tab completion is available to help you with parameters.
 
 PGN processing has the following patterns
 
-1. Import: import --FilePath [pathToPGN]
-2. [Processing Commands] e.g: evaluate-result
-3. Export: export --FilePath [pathToNewPGN]
+1. Import: ``import --FilePath [pathToPGN]``
+2. [Processing Commands] e.g: ``evaluate-result``
+3. Export: ``export --FilePath [pathToNewPGN]``
 
 A full user guide is currently under consideration.
 
@@ -141,11 +134,11 @@ The core of PGN-extract-alt is based on Chesspresso (http://www.chesspresso.org/
 
 Note that the source code is divided into 4 distinct packages:
 
-* chess - For chess logic
-* commands - For Spring Shell Commands logic
-* filters - For logic that removes chess games
-* core - For project dependent classes
-* uciEngine - For engine classes
+* ``chess`` - For chess logic
+* ``commands`` - For Spring Shell Commands logic
+* ``filters`` - For logic that removes chess games
+* ``core`` - For project dependent classes
+* ``uciEngine`` - For engine classes
 
 ##Contact##
 Developer: Toby Leheup - toby.leheup@googlemail.com
