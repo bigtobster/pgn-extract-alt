@@ -10,15 +10,15 @@
 
 package com.bigtobster.pgnextractalt.chess;
 
-import com.bigtobster.pgnextractalt.core.TestContext;
 import com.bigtobster.pgnextractalt.filters.ResultFilter;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.MissingResourceException;
 
 /**
- * Tests ChessFilterer performs as expected Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ * Tests ChessFilterer performs as expected. Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

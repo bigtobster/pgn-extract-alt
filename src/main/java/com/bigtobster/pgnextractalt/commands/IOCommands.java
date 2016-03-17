@@ -24,7 +24,7 @@ import java.io.*;
 import java.util.logging.Logger;
 
 /**
- * Spring Shell Command class for PGN (Import and Export) Created by Toby Leheup on 06/01/16 for pgn-extract-alt.
+ * Spring Shell Command class for PGN Import and Export. Created by Toby Leheup on 06/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster) Controls Input and Output of PGN files
  */
@@ -162,7 +162,7 @@ public class IOCommands implements CommandMarker
 	}
 
 	/**
-	 * Attempt to export a PGN file
+	 * Exports the currently loaded list of games to a text PGN file
 	 *
 	 * @param file File to be imported
 	 * @return Successful export of PGN file
@@ -224,7 +224,7 @@ public class IOCommands implements CommandMarker
 	}
 
 	/**
-	 * Attempt to import a PGN file
+	 * Imports a text PGN file to a list of Chesspresso games
 	 *
 	 * @param file The file to be imported
 	 * @return Successful import of PGN file
@@ -323,7 +323,7 @@ public class IOCommands implements CommandMarker
 	}
 
 	/**
-	 * Reset PGN-Extract-Alt
+	 * Command to reset PGN-Extract-Alt
 	 *
 	 * @return Notice that application reset
 	 */

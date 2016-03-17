@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
- * A simple and efficient client to run a UCI Chess engine from Java Derived from the implementation in Chess-misc
- * (https://github.com/rahular/chess-misc)
+ * A simple and efficient client to run a UCI Chess engine from Java. Derived from the implementation in Chess-misc - see
+ * https://github.com/rahular/chess-misc.
  *
  * @author Rahul A R (https://github.com/rahular)
  * @author Toby Leheup (Bigtobster)

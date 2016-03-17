@@ -11,7 +11,7 @@
 package com.bigtobster.pgnextractalt.chess;
 
 import chesspresso.pgn.PGNSyntaxError;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import static java.nio.file.Files.createDirectory;
 
 /**
- * Tests the IO of PGNExtractAlt Created by Toby Leheup on 08/01/16 for pgn-extract-alt.
+ * Tests the IO of PGNExtractAlt. Created by Toby Leheup on 08/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

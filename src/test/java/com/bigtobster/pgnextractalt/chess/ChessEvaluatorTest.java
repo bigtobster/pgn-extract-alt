@@ -12,7 +12,7 @@ package com.bigtobster.pgnextractalt.chess;
 
 import chesspresso.game.Game;
 import chesspresso.move.IllegalMoveException;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StringUtils;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
- * Tests that the ChessEvaluator functionality works as intended Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
+ * Tests that the ChessEvaluator functionality works as intended. Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

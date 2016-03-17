@@ -14,7 +14,7 @@ import com.bigtobster.pgnextractalt.chess.ChessEvaluator;
 import com.bigtobster.pgnextractalt.chess.ChessFilterer;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.springframework.shell.core.CommandResult;
 
@@ -22,7 +22,9 @@ import java.io.File;
 import java.util.HashMap;
 
 /**
- * Testing context for commands Should only be accessible to members of commands package
+ * Testing context for commands classes.
+ * Holds common functionality and resources for Test classes in the commands package.
+ * Implements TestContext.
  *
  * @author Toby Leheup
  */

@@ -11,7 +11,7 @@
 package com.bigtobster.pgnextractalt.commands;
 
 import com.bigtobster.pgnextractalt.chess.ChessIO;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * Tests the Import/Export Commands Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
+ * Tests the Import/Export Spring Shell Commands. Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
- * Spring Shell Command class for Evaluating properties of chess games Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
+ * Spring Shell Command class for Evaluating properties of chess games. Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

@@ -15,15 +15,16 @@ import com.bigtobster.pgnextractalt.chess.ChessEvaluator;
 import com.bigtobster.pgnextractalt.chess.ChessFilterer;
 import com.bigtobster.pgnextractalt.chess.ChessIO;
 import com.bigtobster.pgnextractalt.chess.ChessTagModder;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Testing context for filters Should only be accessible to members of filters package Created by Toby Leheup on 05/02/16 for pgn-extract-alt.
- *
+ * Testing context for filter classes.
+ * Holds common functionality and resources for Test classes in the filters package.
+ * Implements TestContext.
  * @author Toby Leheup (Bigtobster)
  */
 class TestFilterContext extends TestContext

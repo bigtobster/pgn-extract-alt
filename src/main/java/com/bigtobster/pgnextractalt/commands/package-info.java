@@ -9,7 +9,8 @@
  */
 
 /**
- * * PGN-Extract-Alt Commands
- * If it's about chess, it don't belong in here
+ * * PGN-Extract-Alt Commands.
+ * The command package holds classes that deal with Spring shell commands.
+ * All actual functionality from the user's perspective is in these classes.
  */
 package com.bigtobster.pgnextractalt.commands;

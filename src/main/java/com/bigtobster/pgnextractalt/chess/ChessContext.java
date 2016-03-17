@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Chess Context for PGN-Extract-Alt Essentially an object containing useful runtime chess stuff Should only be accessible to Class in chess package
- * Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
+ * Chess Context for PGN-Extract-Alt. Class which holds common tools, resources and functionality for the chess package. Created by Toby Leheup on
+ * 07/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -28,72 +28,72 @@ class ChessContext
 	/**
 	 * Key for Black tag
 	 */
-	static final         String          BLACK_KEY                = "Black";
+	static final         String BLACK_KEY                = "Black";
 	/**
 	 * String for a Black Win
 	 */
-	static final         String          BLACK_WIN_RESULT         = "0-1";
+	static final         String BLACK_WIN_RESULT         = "0-1";
 	/**
 	 * String for a Draw
 	 */
-	static final         String          DRAW_RESULT              = "1/2-1/2";
+	static final         String DRAW_RESULT              = "1/2-1/2";
 	/**
 	 * Detection string for Linux operating systems
 	 */
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	static final         String          OS_LINUX                 = "linux";
+	static final         String OS_LINUX                 = "linux";
 	/**
 	 * Detection string for Apple Mac operating systems
 	 */
-	static final         String          OS_MAC                   = "mac";
+	static final         String OS_MAC                   = "mac";
 	/**
 	 * Detection string for Microsoft Windows operating systems
 	 */
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	static final         String          OS_WINDOWS               = "windows";
+	static final         String OS_WINDOWS               = "windows";
 	/**
 	 * Key for the Result Tag
 	 */
-	static final         String          RESULT_KEY               = "Result";
+	static final         String RESULT_KEY               = "Result";
 	/**
 	 * The string that the path to the engine should contain for Linux OSs
 	 */
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	static final         String          STOCKFISH_LINUX_SUBSTR   = "linux";
+	static final         String STOCKFISH_LINUX_SUBSTR   = "linux";
 	/**
 	 * The string that the path to the engine should contain for Apple Mac OSs
 	 */
-	static final         String          STOCKFISH_MAC_SUBSTR     = "mac";
+	static final         String STOCKFISH_MAC_SUBSTR     = "mac";
 	/**
 	 * The incomplete os-independent pathname to the stockfish executable
 	 */
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	static final         String          STOCKFISH_PATH           = "stockfish" + File.separator + "stockfish-7-x64-";
+	static final         String STOCKFISH_PATH           = "stockfish" + File.separator + "stockfish-7-x64-";
 	/**
 	 * The string that the path to the engine should contain for Microsoft Windows OSs
 	 */
-	static final         String          STOCKFISH_WINDOWS_SUBSTR = "win.exe";
+	static final         String STOCKFISH_WINDOWS_SUBSTR = "win.exe";
 	/**
 	 * Key for white tag
 	 */
-	static final         String          WHITE_KEY                = "White";
+	static final         String WHITE_KEY                = "White";
 	/**
 	 * String for a White Win
 	 */
-	static final         String          WHITE_WIN_RESULT         = "1-0";
-	private static final String          ARCH_X64                 = "64";
-	private static final String          BLACK_ELO_KEY            = "BlackElo";
-	private static final String          DATE_KEY                 = "Date";
-	private static final String          ECO_KEY                  = "ECO";
-	private static final String          EVENT_DATE_KEY           = "EventDate";
+	static final         String WHITE_WIN_RESULT         = "1-0";
+	private static final String ARCH_X64                 = "64";
+	private static final String BLACK_ELO_KEY            = "BlackElo";
+	private static final String DATE_KEY                 = "Date";
+	private static final String ECO_KEY                  = "ECO";
+	private static final String EVENT_DATE_KEY           = "EventDate";
 	@SuppressWarnings("DuplicateStringLiteralInspection")
-	private static final String          EVENT_KEY                = "Event";
+	private static final String EVENT_KEY                = "Event";
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger          LOGGER                   = Logger.getLogger(ChessContext.class.getName());
-	private static final int             NO_OF_EDITABLE_TAGS      = 11;
-	private static final String          ROUND_KEY                = "Round";
-	private static final String          SITE_KEY                 = "Site";
-	private static final String          WHITE_ELO_KEY            = "WhiteElo";
+	private static final Logger LOGGER                   = Logger.getLogger(ChessContext.class.getName());
+	private static final int    NO_OF_EDITABLE_TAGS      = 11;
+	private static final String ROUND_KEY                = "Round";
+	private static final String SITE_KEY                 = "Site";
+	private static final String WHITE_ELO_KEY            = "WhiteElo";
 	private final String[] tagKeys;
 	private ArrayList<Game> games = new ArrayList<Game>(10);
 
@@ -164,7 +164,7 @@ class ChessContext
 	/**
 	 * Adds a list of games to the existing list of games
 	 *
-	 * @param newGames New list of parsed games
+	 * @param newGames The list of games to be added to currently stored list of games
 	 */
 	void addGames(final ArrayList<Game> newGames)
 	{
@@ -172,9 +172,9 @@ class ChessContext
 	}
 
 	/**
-	 * Getter for the list of parsed games
+	 * Getter for the list of games
 	 *
-	 * @return ArrayList&lt;Game&gt; List of parsed games
+	 * @return ArrayList&lt;Game&gt; The list of current games
 	 */
 	ArrayList<Game> getGames()
 	{
@@ -182,9 +182,9 @@ class ChessContext
 	}
 
 	/**
-	 * Setter for the list of parsed games
+	 * Setter for the list of games
 	 *
-	 * @param newGames New list of parsed games
+	 * @param newGames The list of games to replace the currently stored games
 	 */
 	void setGames(final ArrayList<Game> newGames)
 	{

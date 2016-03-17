@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Handles Importing and Exporting PGN files into/out of PGN-Extract-Alt Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
+ * Handles Importing and Exporting PGN files into/out of PGN-Extract-Alt. Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -64,9 +64,7 @@ public final class ChessIO
 				Consequently, when you try to do something to, in this case export, those games,
 				you end up with errors. Those errors aren't fluffy and nice - they're NPEs...
 				As a rule, GIGO applies.
-				This is fundamentally an issue with Chesspresso that needs fixing at the Chesspresso level
-				If this isn't possible, perhaps consider having a validity scanner that validates games before export
-				and does something sensible with the invalid ones
+				This is fundamentally an issue with Chesspresso that needs fixing at the Chesspresso level.
 				 */
 				ChessIO.LOGGER.log(Level.WARNING, ChessIO.FAILED_TO_EXPORT_INVALID_GAME);
 				ChessIO.LOGGER.log(Level.WARNING, game.toString());
@@ -146,7 +144,7 @@ public final class ChessIO
 	}
 
 	/**
-	 * Interface for Commands to call ChessContext.isPGNImported()
+	 * Advises if any games are currently loaded
 	 *
 	 * @return boolean True if imported successfully else false
 	 */
@@ -156,7 +154,7 @@ public final class ChessIO
 	}
 
 	/**
-	 * Interface for Commands to reset ChessContext.isPGNImported()
+	 * Resets PGN-Extract-Alt
 	 */
 	public void reset()
 	{

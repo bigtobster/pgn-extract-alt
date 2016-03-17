@@ -8,25 +8,31 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.bigtobster.pgnextractalt.core;
+package com.bigtobster.pgnextractalt.misc;
 
-import chesspresso.game.Game;
-
-import java.util.ArrayList;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.shell.plugin.support.DefaultPromptProvider;
+import org.springframework.stereotype.Component;
 
 /**
- * A filter interface that all Filters must implement Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ * Defines prompt for Shell
  *
  * @author Toby Leheup (Bigtobster)
  */
-@SuppressWarnings("ClassUnconnectedToPackage")
-public interface Filter
+@SuppressWarnings({"RefusedBequest", "ClassUnconnectedToPackage", "ClassIndependentOfModule"})
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class PromptProvider extends DefaultPromptProvider
 {
-	/**
-	 * Filters a list of games for some value or property (implementation dependent)
-	 *
-	 * @param games The list of games to be filtered
-	 * @return The list of post-filtered games
-	 */
-	public ArrayList<Game> filter(final ArrayList<Game> games);
+
+	private static final String PROMPT = "pgn-extract-alt>";
+
+	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@Override
+	public String getPrompt()
+	{
+		return PromptProvider.PROMPT;
+	}
+
 }

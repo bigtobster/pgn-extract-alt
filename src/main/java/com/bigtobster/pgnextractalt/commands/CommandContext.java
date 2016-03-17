@@ -19,8 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Chess Context for PGN-Extract-Alt Essentially an object containing useful runtime chess stuff Should only be accessible to Class in chess package
- * Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
+ * Command Context for PGN-Extract-Alt. Class which holds common tools, resources and functionality for the commands package. Created by Toby Leheup
+ * on 07/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

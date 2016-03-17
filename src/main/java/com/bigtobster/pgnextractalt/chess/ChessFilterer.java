@@ -10,14 +10,14 @@
 
 package com.bigtobster.pgnextractalt.chess;
 
-import com.bigtobster.pgnextractalt.core.Filter;
+import com.bigtobster.pgnextractalt.filters.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.MissingResourceException;
 
 /**
- * Handles filtering of games in PGN-Extract-Alt All the filtering rules are defined by a class in the filter package Created by Toby Leheup on
- * 04/02/16 for pgn-extract-alt.
+ * Executes a filter which filters games. All the filtering rules are defined by a class in the filter package. You MUST load a filter into the
+ * filterer before filtering Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

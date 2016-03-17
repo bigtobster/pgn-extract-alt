@@ -11,7 +11,6 @@
 package com.bigtobster.pgnextractalt.filters;
 
 import chesspresso.game.Game;
-import com.bigtobster.pgnextractalt.core.Filter;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -102,6 +101,7 @@ public class DuplicateFilter implements Filter
 
 	/**
 	 * Sets the operation mode of the filter (Filter, Isolate or Purge)
+	 *
 	 * @param newMode The mode that the filter should operate in
 	 */
 	@SuppressWarnings("PublicMethodNotExposedInInterface")

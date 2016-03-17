@@ -19,9 +19,8 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
- * This class is for all the functionality that should be in Chesspresso but isn't In the longer term, everything in the class should be pushed into
- * Chesspresso Until Chesspresso is in such a place where this is do-able, use this class! Once Chesspresso has been properly sorted out, this class
- * should deleted Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ * This class is for all the functionality that should be in Chesspresso but isn't. There is an outstanding issue to push the functionality for this
+ * class into Chesspresso. Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -37,8 +36,8 @@ public class ChessPresso
 	private static final Pattern SPACE_PATTERN  = Pattern.compile(" ");
 
 	/**
-	 * Inserts the correct result, if evaluate-able, into a chess game Works on confirmed mates and draws In most cases it will not be able to work it
-	 * out
+	 * Inserts the correct result, if evaluate-able, into a chess game. Works on confirmed mates and draws. In most cases it will not be able to work
+	 * it out
 	 *
 	 * @param games The list of games to evaluate
 	 * @return Number of inserted tags
@@ -80,7 +79,7 @@ public class ChessPresso
 	}
 
 	/**
-	 * Gets a given player's machine correlation score. Throws an error if this hasn't been calculated for that player
+	 * Gets a given player's machine correlation score. Throws an error if this hasn't been calculated for that player.
 	 *
 	 * @param player The player which the MC score is to be retrieved
 	 * @return The MC score

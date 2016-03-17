@@ -8,7 +8,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.bigtobster.pgnextractalt.core;
+package com.bigtobster.pgnextractalt.misc;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 /**
- * Core context holding key common data for testing purposes
+ * Core context holding key common data and abstract methods for implementing test contexts
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -241,7 +241,7 @@ public abstract class TestContext
 	}
 
 	/**
-	 * Returns a bean, if created, of type beanClass, else asserts a failure
+	 * Returns a Spring bean, if created, of type beanClass, else asserts a failure
 	 *
 	 * @param beanClass Class of bean to be retrieved
 	 * @return The retrieved bean

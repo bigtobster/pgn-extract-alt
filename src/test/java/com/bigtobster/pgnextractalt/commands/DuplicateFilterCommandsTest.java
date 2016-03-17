@@ -10,7 +10,7 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * Tests Duplicate Filter Commands Created by Toby Leheup on 08/02/16 for pgn-extract-alt.
+ * Tests Duplicate Filter Commands. Created by Toby Leheup on 08/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -141,6 +141,7 @@ public class DuplicateFilterCommandsTest
 
 	/**
 	 * Test that all games are filtered out when expected
+	 *
 	 * @throws java.io.IOException Import failure
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")

@@ -20,7 +20,7 @@ import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.stereotype.Component;
 
 /**
- * Spring shell command class for filtering chess games by their plycount Created by Toby Leheup on 07/02/16 for pgn-extract-alt.
+ * Spring shell command class for filtering chess games by their plycount. Created by Toby Leheup on 07/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

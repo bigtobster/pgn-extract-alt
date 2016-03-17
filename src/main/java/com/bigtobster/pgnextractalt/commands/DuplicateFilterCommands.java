@@ -20,7 +20,7 @@ import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.stereotype.Component;
 
 /**
- * Spring shell command class for filtering duplicate chess games Created by Toby Leheup on 08/02/16 for pgn-extract-alt.
+ * Spring shell command class for filtering duplicate chess games. Created by Toby Leheup on 08/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

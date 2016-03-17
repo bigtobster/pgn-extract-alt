@@ -19,7 +19,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * Tests the UCIEngine class works as expected Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
+ * Tests the UCIEngine class works as expected.
+ * Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

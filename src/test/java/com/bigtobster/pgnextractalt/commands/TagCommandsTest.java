@@ -11,7 +11,7 @@
 package com.bigtobster.pgnextractalt.commands;
 
 import chesspresso.game.Game;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
- * Tests Tag Modification Commands Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
+ * Tests Tag Modification Spring Shell Commands. Created by Toby Leheup on 07/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -62,7 +62,24 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
+	 * Test inserting a tag when already exists in non force mode
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void insertExistingTag()
+	{
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+
+		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE);
+		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
+		final String predictedOutput = CommandContext.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
+
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
+	}
+
+	/**
+	 * Test forcing all tags to change on all games
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
@@ -104,7 +121,7 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
+	 * Test forcing all tags to change on all games in force mode
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
@@ -124,7 +141,7 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
+	 * Test forcing all tags to change when no games have the proposed tag
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
@@ -144,7 +161,7 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
+	 * Test forcing all tags to change when some games have the proposed tag
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
@@ -169,24 +186,7 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
-	 */
-	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
-	@Test
-	public void insertTagMissingForce()
-	{
-		final TestCommandContext testCommandContext = new TestCommandContext();
-		testCommandContext.loadPGN(TestContext.MULTI_PGN);
-
-		final String finalCommand = TagCommandsTest.buildInsertTagCommand(TagCommandsTest.EVENT_KEY, TagCommandsTest.NEW_TEST_VALUE);
-		final String actualOutput = testCommandContext.executeValidCommand(finalCommand);
-		final String predictedOutput = CommandContext.FAILED_TO_INSERT_TAGS + TagCommandsTest.SPACE + TagCommands.KEY_ALREADY_USED;
-
-		TestCommandContext.assertOutputMatchesPredicted(actualOutput, predictedOutput);
-	}
-
-	/**
-	 * Test forcing all tags to change
+	 * Test adding a tag which doesn't yet exist in non force
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
@@ -206,7 +206,7 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
+	 * Test inserting a tag when no games have been imported
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
@@ -218,7 +218,7 @@ public class TagCommandsTest
 	}
 
 	/**
-	 * Test forcing all tags to change
+	 * Test adding a tag when some of the games already have the tag
 	 */
 	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test

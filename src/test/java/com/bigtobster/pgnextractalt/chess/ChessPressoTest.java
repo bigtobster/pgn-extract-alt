@@ -13,7 +13,7 @@ package com.bigtobster.pgnextractalt.chess;
 import chesspresso.Chess;
 import chesspresso.game.Game;
 import chesspresso.move.IllegalMoveException;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
- * Tests that the ChessPresso functionality works as intended Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
+ * Tests that the additional ChessPresso functionality works as intended. Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

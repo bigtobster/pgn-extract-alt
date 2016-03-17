@@ -13,12 +13,13 @@ package com.bigtobster.pgnextractalt.filters;
 import chesspresso.Chess;
 import chesspresso.game.Game;
 import com.bigtobster.pgnextractalt.chess.ChessFilterer;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests that ResultFilter filters games correctly Created by Toby Leheup on 05/02/16 for pgn-extract-alt.
+ * Tests that ResultFilter filters games correctly.
+ * Created by Toby Leheup on 05/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

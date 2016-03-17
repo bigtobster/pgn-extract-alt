@@ -9,7 +9,7 @@
  */
 
 /**
- * Core PGN-Extract-Alt classes
- * If you're extending PGN-Extract-Alt, this is probably the wrong package
+ * Miscellaneous PGN-Extract-Alt classes.
+ * This package holds all miscellaneous functionality - typically singular initialising Spring Shell classes
  */
-package com.bigtobster.pgnextractalt.core;
+package com.bigtobster.pgnextractalt.misc;

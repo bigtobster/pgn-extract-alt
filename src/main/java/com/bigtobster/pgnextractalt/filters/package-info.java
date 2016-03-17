@@ -10,7 +10,7 @@
 
 /**
  * This package contains filter definitions that run in ChessFilterer
- * All classes in this package should implement the Filter interface from core package
+ * All classes in this package should implement the Filter interface from misc package
  * Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
  * @author Toby Leheup (Bigtobster)
  */

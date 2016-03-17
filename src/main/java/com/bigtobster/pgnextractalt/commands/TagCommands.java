@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.logging.Logger;
 
 /**
- * Spring Shell Command class for Modifying PGN Tags Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
+ * Spring Shell Command class for Modifying PGN Tags. Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

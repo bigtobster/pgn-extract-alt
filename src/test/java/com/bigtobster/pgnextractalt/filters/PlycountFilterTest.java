@@ -12,14 +12,15 @@ package com.bigtobster.pgnextractalt.filters;
 
 import chesspresso.game.Game;
 import com.bigtobster.pgnextractalt.chess.ChessFilterer;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 /**
- * Tests that PlyCountFilter filters games correctly Created by Toby Leheup on 07/02/16 for pgn-extract-alt.
+ * Tests that PlyCountFilter filters games correctly.
+ * Created by Toby Leheup on 07/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup
  */

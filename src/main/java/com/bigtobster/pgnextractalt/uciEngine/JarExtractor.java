@@ -22,8 +22,8 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
- * Extracts files from a JAR and then marks them to be cleaned up Essentially works as a per-instance installer Created by Toby Leheup on 15/02/16 for
- * pgn-extract-alt.
+ * Utility class which extracts files from a JAR and then marks them to be cleaned up. Essentially works as a per-instance installer. Created by Toby
+ * Leheup on 15/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  * @author https://stackoverflow.com/questions/600146/run-exe-which-is-packaged-inside-jar Code originally from stackoverflow post above

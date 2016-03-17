@@ -9,7 +9,8 @@
  */
 
 /**
- * PGN-Extract-Alt Chess Classes
- * If it's about the shell - it don't belong in here
+ * PGN-Extract-Alt Chess Classes.
+ * The chess package holds classes that deal with Chesspresso games of chess.
+ * It abstracts away from the Spring Shell completely.
  */
 package com.bigtobster.pgnextractalt.chess;

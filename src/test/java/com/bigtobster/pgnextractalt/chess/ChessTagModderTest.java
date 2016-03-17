@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Tests that tag modification works Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
+ * Tests that tag modification works. Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

@@ -10,14 +10,14 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
- * Tests Evaluate Commands works as expected Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
+ * Tests Evaluate Commands works as expected. Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

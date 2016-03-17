@@ -10,7 +10,7 @@
 
 package com.bigtobster.pgnextractalt.uciEngine;
 
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,7 +21,8 @@ import java.net.URISyntaxException;
 import java.util.zip.ZipException;
 
 /**
- * Tests JarExtractor and ensures the Jar Extraction is correct Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
+ * Tests JarExtractor and ensures the Jar Extraction is correct.
+ * Created by Toby Leheup on 03/03/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Handles evaluating values from games of chess Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
+ * Handles non-trivial evaluation of values from games. Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -44,9 +44,9 @@ public class ChessEvaluator
 	private ChessTagModder chessTagModder;
 
 	/**
-	 * Evaluates how closely a player correlates to a machine playing at maximum skill Inserts a number into the player's name tag The closer the
-	 * number inserted tends towards 0, the more the moves played by that player correlated to a highly skilled machine Note that this is a highly
-	 * computationally intense method - treat with caution
+	 * Evaluates how closely a player correlates to a machine playing at maximum skill. Inserts a number into the player's name tag. The closer the
+	 * number inserted tends towards 0, the more the moves played by that player correlated to a highly skilled machine. Note that this is a highly
+	 * computationally intense method - treat with caution.
 	 *
 	 * @param games The list of games the be assessed for machine correlation
 	 * @param depth The minimum depth that the engine will look for before returning a best move

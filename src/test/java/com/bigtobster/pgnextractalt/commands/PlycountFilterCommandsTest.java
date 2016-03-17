@@ -10,14 +10,14 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
 
 /**
- * Tests Plycount Filter commands Created by Toby Leheup on 07/02/16 for pgn-extract-alt.
+ * Tests Plycount Filter Spring Shell commands. Created by Toby Leheup on 07/02/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

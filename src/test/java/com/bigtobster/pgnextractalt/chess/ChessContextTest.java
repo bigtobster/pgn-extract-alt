@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Tests the Context of PGNExtractAlt Created by Toby Leheup on 08/01/16 for pgn-extract-alt.
+ * Tests the Context of PGNExtractAlt. Created by Toby Leheup on 08/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */

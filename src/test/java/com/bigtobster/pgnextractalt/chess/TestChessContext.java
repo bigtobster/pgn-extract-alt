@@ -11,14 +11,17 @@
 package com.bigtobster.pgnextractalt.chess;
 
 import chesspresso.pgn.PGNSyntaxError;
-import com.bigtobster.pgnextractalt.core.TestContext;
+import com.bigtobster.pgnextractalt.misc.TestContext;
 import org.junit.Assert;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Testing context for chess classes Should only be accessible to members of chess package
+ * Testing context for chess classes.
+ * Holds common functionality and resources for Test classes in the chess package.
+ * Implements TestContext.
+ * Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup
  */

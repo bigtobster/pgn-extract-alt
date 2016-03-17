@@ -11,7 +11,6 @@
 package com.bigtobster.pgnextractalt.filters;
 
 import chesspresso.game.Game;
-import com.bigtobster.pgnextractalt.core.Filter;
 
 import java.util.ArrayList;
 

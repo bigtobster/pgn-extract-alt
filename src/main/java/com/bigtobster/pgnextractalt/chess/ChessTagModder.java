@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Handles the modification of tags of chess games Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
+ * Handles the modification of tags of chess games. Created by Toby Leheup on 15/01/16 for pgn-extract-alt.
  *
  * @author Toby Leheup (Bigtobster)
  */
@@ -25,13 +25,13 @@ import java.util.logging.Logger;
 public class ChessTagModder
 {
 	@SuppressWarnings("UnusedDeclaration")
-	private static final Logger LOGGER         = Logger.getLogger(ChessTagModder.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ChessTagModder.class.getName());
 
 	@SuppressWarnings("InstanceVariableMayNotBeInitialized")
 	@Autowired
 	private ChessContext chessContext;
 
-		/**
+	/**
 	 * Returns an array of all the tags that can be written to a game
 	 *
 	 * @return The array of tags that can be written to a game

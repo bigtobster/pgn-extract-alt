@@ -12,8 +12,8 @@
  * Created by Toby Leheup on 15/02/16 for pgn-extract-alt.
  * @author Toby Leheup (Bigtobster)
  * @author Rahul A R (https://github.com/rahular)
- * The contents of this package depends on a UCI Chess Engine, typically Stockfish (https://stockfishchess.org/)
- * This package merely contains a thin client, originally written by Rahul A R from his Chess-misc project (https://github.com/rahular/chess-misc)
- * The thin-client is released as GPL as per the original code in Chess-Misc
+ * The contents of this package depends on a UCI Chess Engine, typically Stockfish (https://stockfishchess.org/).
+ * This package merely contains a thin client, originally written by Rahul A R from his Chess-misc project (https://github.com/rahular/chess-misc).
+ * The thin-client is released as GPL as per the original code in Chess-Misc.
  */
 package com.bigtobster.pgnextractalt.uciEngine;
