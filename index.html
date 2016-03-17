@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Pgn-extract-alt by bigtobster</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Pgn-extract-alt</h1>
+        <h2>A highly extensible modular rewrite of the chess processing application pgn-extract</h2>
+        <a href="https://github.com/bigtobster/pgn-extract-alt" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="pgn-extract-alt" class="anchor" href="#pgn-extract-alt" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PGN-extract-alt</h1>
+
+<p>A highly extensible modular rewrite of the PGN processing application pgn-extract written in Java and available on Windows, Mac and Linux.</p>
+
+<h2>
+<a id="latest" class="anchor" href="#latest" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Latest</h2>
+
+<p></p><ul>
+    <li>Project Started! - 19/11/2015</li>
+    <li>PGN-Extract-Alt Released! - 28/01/201</li>
+    <li>Major enhancements including Machine Correlation! - 16/03/2016</li>
+    <li>Added multiple Methods of splitting duplicate games! - 17/03/2016</li>
+    <li>Updates to documentation! - 17/03/2016</li>
+ </ul>
+
+<h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>This is a research project conducted at the University of Kent, UK.</p>
+
+<p>PGN-extract is a popular and useful PGN processing application written by David Barnes and can be found <a href="https://www.cs.kent.ac.uk/people/staff/djb/pgn-extract/">here</a>. Over time, it has become monolithic and difficult to extend. This has also placed limitations on optimisations such as filtering ordering and concurrency as well as community contribution. The original PGN-extract project is written in C which, whilst highly performant, does limit the project in terms of extension and compatibility. PGN-extract is feature rich and a full list of features can be found <a href="https://www.cs.kent.ac.uk/people/staff/djb/pgn-extract/help.html">here</a>.</p>
+
+<p>PGN-extract-alt aims to provide a modular alternative to PGN-extract using modern tools and languages. It is not intended to reproduce all of the features currently available in PGN-extract but instead provide a framework and accompanying documentation for the community to add whatever features they desire. PGN-extract-alt's core will be released with the following features:</p>
+
+<ul>
+    <li>Player Chess Engine Correlation</li>
+    <li>Tag Insertion</li>
+    <li>Tag Editing</li>
+    <li>Result Calculator</li>
+    <li>Duplicate Game Filter</li>
+    <li>Plycount Filter</li>
+    <li>Result Filter</li>
+    <li>Interactive CLI Interface</li>
+</ul>
+
+<p>Recommendations for future modules are welcomed. </p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Installation is via Maven. You will need to install Maven if you have not already done so.</p>
+
+<ul>
+<li>Download Repo</li>
+<li>Extract</li>
+<li>Open directory with "POM.xml" in a CLI</li>
+<li>Run "mvn install"</li>
+</ul>
+
+<p>Note that currently only 64-bit architecture systems are supported. (If you have a desperate need to use the software in 32-bit, 
+remove the Machine Correlation classes from the Chess and Commands packages as well as the whole uciEngine package and then rebuild.)</p>
+
+<p>Installation takes quite a long time - around 5-10 minutes on reasonable hardware. This is due to the thorough and computationally intensive 
+testing. To reduce the installation time, either skip the tests ("mvn install -DskipTests") or remove the Machine Correlation functionality (see 
+paragraph above).</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The binary is deployed to [pgn-extract-alt]/target and will have the filename pgn-extract-alt-[version].jar</p>
+
+<p>To run the binary, open a CLI in the same directory as the binary and type: java -jar [filename]</p>
+
+<p>Currently, only the following tags are supported for insertion:</p>
+
+<p>Event
+Site
+Date
+Round
+White
+Black
+Result
+WhiteElo
+BlackElo
+EventDate
+ECO</p>
+
+<h2>
+<a id="extension" class="anchor" href="#extension" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Extension</h2>
+
+<p>Other than further modules, two considerable fundamental extensions are being considered:</p>
+
+<ol>
+<li><p>Dependency on an improved version of Chesspresso. This will involve creating a new Chesspresso repo (original source available), depending on that and then extending accordingly. This would mean the maintenance of a second project but would significantly enhance the potential for further PGN-Extract-Alt enhancements.</p></li>
+<li><p>Improving the concurrency model. This will be a particular issue with computationally intense modules. There are various concurrency models available (further details to be referenced). It would be useful to queue operations on data and then execute them in a concurrent fashion that tends towards optimal.</p></li>
+</ol>
+
+<h2>
+<a id="machine-correlation" class="anchor" href="#machine-correlation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Machine Correlation</h2>
+
+<p>PGN-Extract-Alt is packaged with Stockfish 7 which is an open-source, strong UCI-compliant chess engine. The full usage specification for Stockfish
+ can be found here: <a href="http://download.shredderchess.com/div/uci.zip">http://download.shredderchess.com/div/uci.zip</a>. PGN-Extract-Alt calculates the degree of machine correlation by comparing the 
+ quality of a player's move against the quality of the engine's move. The engine will always try to find the strongest move it can.</p>
+
+<p>The Machine Correlation functionality is parameterised by 2 values:</p>
+
+<ul>
+<li>Depth - The number of players ahead that the engine will assess. Higher values produce stronger play from the engine but are more 
+computationally intensive. The default is 13 which is moderately intensive. Very strong players will find an engine playing at depth 20 challenging.</li>
+<li>Wait - The amount of time the machine should sleep whilst waiting for the engine to calculate. Increase for higher depths. Note that this value 
+is adjusted over time so don't fret over it. The default is usually fine except for high depths (18+).</li>
+</ul>
+
+<p>The engine is configured as follows:</p>
+
+<ul>
+<li>MultiPV = 1</li>
+<li>Ponder = False</li>
+<li>Threads = 4</li>
+<li>Hash Size = 1024 Mb</li>
+</ul>
+
+<p>These settings are not parameterised but are easily reconfigurable from the UCIEngine class in the uciEngine package.</p>
+
+<p>The score is appended to the player's name in the output. The closer the score is to 0, the greater the correlation is with engine use.</p>
+
+<p>Note that this functionality is very computationally intensive - even on modest depths and on strong hardware. Also note that the depth parameter 
+should increase proportionally to the skill of the player being assessed. </p>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>Extensive technical documentation is available in /target/site. Open index.html in a web browser. The following artifacts are 
+available:</p>
+
+<ul>
+<li>Technical Summary</li>
+<li>Dependencies</li>
+<li>Licence</li>
+<li>Maven Plugin Info</li>
+<li>Project Team</li>
+<li>JavaDocs</li>
+<li>ChangeLogs</li>
+<li>Unit Test Reports</li>
+</ul>
+
+<p>Note that the project follows Spring design patterns. Basic familiarity with Spring is recommended.</p>
+
+<p>In order to extend PGN-Extract-Alt:</p>
+
+<ol>
+<li>Add and define a new command class in commands package</li>
+<li>Add and define a new chess class in chess package (filters go in the filter package)</li>
+<li>Add your chess class as a Spring Bean (ignore for filters)</li>
+<li>Test your command class in commands package</li>
+<li>Test your chess class in chess package</li>
+<li>Test your filter class in filter package</li>
+<li>Rebuild (mvn install)</li>
+</ol>
+
+<h2>
+<a id="tutorial" class="anchor" href="#tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutorial</h2>
+
+<p>Once running, type "help" to get a full list of commands.</p>
+
+<p>Tab completion is available to help you with parameters.</p>
+
+<p>PGN processing has the following patterns</p>
+
+<ol>
+<li>Import: import --FilePath [pathToPGN]</li>
+<li>[Processing Commands] e.g: evaluate-result</li>
+<li>Export: export --FilePath [pathToNewPGN]</li>
+</ol>
+
+<p>A full user guide is currently under consideration.</p>
+
+<h2>
+<a id="structure" class="anchor" href="#structure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Structure</h2>
+
+<p>The core of PGN-extract-alt is based on Chesspresso (<a href="http://www.chesspresso.org/">http://www.chesspresso.org/</a>). The interface is built on Spring Shell (<a href="http://docs.spring">http://docs.spring</a>
+.io/spring-shell/docs/current/reference/htmlsingle/).</p>
+
+<p>Note that the source code is divided into 4 distinct packages:</p>
+
+<ul>
+<li>chess - For chess logic</li>
+<li>commands - For Spring Shell Commands logic</li>
+<li>filters - For logic that removes chess games</li>
+<li>core - For project dependent classes</li>
+<li>uciEngine - For engine classes</li>
+</ul>
+
+<h2>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
+
+<p>Developer: Toby Leheup - <a href="mailto:toby.leheup@googlemail.com">toby.leheup@googlemail.com</a></p>
+
+<p>Supervisor: Dr David Barnes - <a href="mailto:D.J.Barnes@kent.ac.uk">D.J.Barnes@kent.ac.uk</a></p>
+
+<h2>
+<a id="licence" class="anchor" href="#licence" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Licence</h2>
+
+<p>Code and documentation copyright 2015 Toby Leheup.</p>
+
+<p>Code released under the GPL v3.0 license.</p>
+
+<p>Documentation released under the Creative Commons license.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/bigtobster/pgn-extract-alt/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/bigtobster/pgn-extract-alt/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/bigtobster/pgn-extract-alt"></a> is maintained by <a href="https://github.com/bigtobster">bigtobster</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
