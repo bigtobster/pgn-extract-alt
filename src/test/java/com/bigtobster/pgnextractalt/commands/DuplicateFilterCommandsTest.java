@@ -10,17 +10,11 @@
 
 package com.bigtobster.pgnextractalt.commands;
 
-import chesspresso.game.Game;
 import com.bigtobster.pgnextractalt.core.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -28,83 +22,155 @@ import java.util.logging.Logger;
  *
  * @author Toby Leheup (Bigtobster)
  */
+@SuppressWarnings("ClassWithTooManyMethods")
 public class DuplicateFilterCommandsTest
 {
-	private static final Logger LOGGER = Logger.getLogger(DuplicateFilterCommandsTest.class.getName());
+	private static final String FILTER_DUPLICATES_CMD  = "filter-duplicates";
+	private static final String ISOLATE_DUPLICATES_CMD = "isolate-duplicates";
+	@SuppressWarnings("UnusedDeclaration")
+	private static final Logger LOGGER                 = Logger.getLogger(DuplicateFilterCommandsTest.class.getName());
+	private static final String PURGE_DUPLICATES_CMD   = "purge-duplicates";
+
+	private static void testCommandAvailability(final String command)
+	{
+		final TestCommandContext testCommandContext = new TestCommandContext();
+		testCommandContext.assertCommandFails(command);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+		Assert.assertNotNull(TestCommandContext.COMMAND_FAILS_UNEXPECTEDLY, testCommandContext.executeValidCommand(command));
+	}
+
+	@SuppressWarnings("SameParameterValue")
+	private static void testDuplicatesCommand(final String filterCommand, @SuppressWarnings("SameParameterValue") final int onTripleMulti)
+	{
+		DuplicateFilterCommandsTest.testDuplicatesCommand(filterCommand, onTripleMulti, - 1);
+	}
+
+	private static void testDuplicatesCommand(final String filterCommand, final int onTripleMulti, final int onSelf)
+	{
+		final TestCommandContext testCommandContext = new TestCommandContext();
+
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+		String expectedOutput = onTripleMulti + " " + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
+
+		final String command = TestCommandContext.buildCommand(filterCommand);
+		String actualOutput = testCommandContext.executeValidCommand(command);
+		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
+
+		if(testCommandContext.getChessIO().getGames().isEmpty())
+		{
+			testCommandContext.assertCommandFails(command);
+		}
+		else
+		{
+			expectedOutput = onSelf + " " + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
+			actualOutput = testCommandContext.executeValidCommand(command);
+			TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
+		}
+	}
 
 	/**
 	 * Tests the command for filtering duplicates is as expected
 	 */
 	@Test
-	public void getDuplicateFilterCommandTest()
+	public void getFilterDuplicatesCommandTest()
 	{
 		Assert.assertEquals(
 				TestCommandContext.COMMAND_NOT_EXPECTED_VALUE,
-				"duplicate-filter",
-				DuplicateFilterCommands.getDuplicateFilterCommand()
+				DuplicateFilterCommandsTest.FILTER_DUPLICATES_CMD,
+				DuplicateFilterCommands.getFilterDuplicatesCommand()
+						   );
+	}
+
+	/**
+	 * Tests the command for isolating duplicates is as expected
+	 */
+	@Test
+	public void getIsolateDuplicatesCommandTest()
+	{
+		Assert.assertEquals(
+				TestCommandContext.COMMAND_NOT_EXPECTED_VALUE,
+				DuplicateFilterCommandsTest.ISOLATE_DUPLICATES_CMD,
+				DuplicateFilterCommands.getIsolateDuplicatesCommand()
+						   );
+	}
+
+	/**
+	 * Tests the command for purging duplicates is as expected
+	 */
+	@Test
+	public void getPurgeDuplicatesCommandTest()
+	{
+		Assert.assertEquals(
+				TestCommandContext.COMMAND_NOT_EXPECTED_VALUE,
+				DuplicateFilterCommandsTest.PURGE_DUPLICATES_CMD,
+				DuplicateFilterCommands.getPurgeDuplicatesCommand()
 						   );
 	}
 
 	/**
 	 * Tests that that the availability of duplicates filter is correct
 	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "JUnitTestMethodWithNoAssertions"})
 	@Test
 	public void isDuplicateFilterAvailableTest()
 	{
-		final TestCommandContext testCommandContext = new TestCommandContext();
-		final String command = TestCommandContext.buildCommand(DuplicateFilterCommands.getDuplicateFilterCommand());
-		testCommandContext.assertCommandFails(command);
-		testCommandContext.loadPGN(TestContext.MULTI_PGN);
-		Assert.assertNotNull(TestCommandContext.COMMAND_FAILS_UNEXPECTEDLY, testCommandContext.executeValidCommand(command));
+		DuplicateFilterCommandsTest.testCommandAvailability(DuplicateFilterCommands.getFilterDuplicatesCommand());
+	}
+
+	/**
+	 * Tests that that the availability of isolate duplicates is correct
+	 */
+	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "JUnitTestMethodWithNoAssertions"})
+	@Test
+	public void isIsolateDuplicatesAvailableTest()
+	{
+		DuplicateFilterCommandsTest.testCommandAvailability(DuplicateFilterCommands.getIsolateDuplicatesCommand());
+	}
+
+	/**
+	 * Tests that that the availability of purge duplicates is correct
+	 */
+	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "JUnitTestMethodWithNoAssertions"})
+	@Test
+	public void isPurgeDuplicatesAvailableTest()
+	{
+		DuplicateFilterCommandsTest.testCommandAvailability(DuplicateFilterCommands.getPurgeDuplicatesCommand());
 	}
 
 	/**
 	 * Test that all games are filtered out when expected
-	 * @throws java.io.IOException Copy failure
+	 * @throws java.io.IOException Import failure
 	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
 	@Test
-	public void testDuplicateFilter() throws IOException
+	public void testFilterDuplicates() throws IOException
 	{
-		final TestCommandContext testCommandContext = new TestCommandContext();
+		DuplicateFilterCommandsTest.testDuplicatesCommand(DuplicateFilterCommands.getFilterDuplicatesCommand(), 10, 0);
+	}
 
-		testCommandContext.loadPGN(TestContext.MULTI_PGN);
-		testCommandContext.loadPGN(TestContext.MULTI_PGN);
-		final String expectedOutput = testCommandContext.getChessIO().getGames().size() + " " + CommandContext.SUCCESSFULLY_FILTERED_GAMES;
-		testCommandContext.loadPGN(TestContext.MULTI_PGN);
+	/**
+	 * Test that all games are isolated out when expected
+	 *
+	 * @throws java.io.IOException Import failure
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void testIsolateDuplicates() throws IOException
+	{
+		DuplicateFilterCommandsTest.testDuplicatesCommand(DuplicateFilterCommands.getIsolateDuplicatesCommand(), 0, 0);
+	}
 
-		final String command = TestCommandContext.buildCommand(DuplicateFilterCommands.getDuplicateFilterCommand());
-		final File duplicatesDoc = new File(DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
-		final String actualOutput = testCommandContext.executeValidCommand(command);
-		TestCommandContext.assertOutputMatchesPredicted(actualOutput, expectedOutput);
-
-		final File pgnFile = TestContext.getPGNFile(TestContext.IMPORTS_DIR, DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
-		try
-		{
-			Files.move(duplicatesDoc.toPath(), pgnFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		}
-		catch(final IOException e)
-		{
-			Assert.fail(e.getMessage());
-			//noinspection HardCodedStringLiteral
-			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "duplicatesDoc: " + duplicatesDoc.getAbsolutePath());
-			//noinspection HardCodedStringLiteral
-			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "duplicatesDoc exist?: " + duplicatesDoc.exists());
-			//noinspection HardCodedStringLiteral
-			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "pgnFile: " + pgnFile.getAbsolutePath());
-			//noinspection HardCodedStringLiteral
-			DuplicateFilterCommandsTest.LOGGER.log(Level.SEVERE, "pgnFile exists?: " + pgnFile.exists());
-			throw e;
-		}
-		Assert.assertNotNull(TestContext.TEST_RESOURCE_NOT_FOUND, pgnFile);
-
-		testCommandContext.getChessIO().reset();
-		testCommandContext.loadPGN(DuplicateFilterCommands.DUPLICATE_OUT_FILENAME);
-		Assert.assertTrue(TestContext.TEST_RESOURCE_NOT_FOUND, testCommandContext.getChessIO().isPGNImported());
-		final ArrayList<Game> duplicatedGames = testCommandContext.getChessIO().getGames();
-		Assert.assertEquals(TestContext.TEST_RESOURCE_NOT_FOUND, 5L, (long) duplicatedGames.size());
-		testCommandContext.getChessIO().reset();
-		testCommandContext.loadPGN(TestContext.MULTI_PGN);
-		Assert.assertEquals(TestContext.TEST_RESOURCE_NOT_FOUND, duplicatedGames, testCommandContext.getChessIO().getGames());
+	/**
+	 * Test that all games are purged out when expected
+	 *
+	 * @throws java.io.IOException Import failure
+	 */
+	@SuppressWarnings("JUnitTestMethodWithNoAssertions")
+	@Test
+	public void testPurgeDuplicates() throws IOException
+	{
+		DuplicateFilterCommandsTest.testDuplicatesCommand(DuplicateFilterCommands.getPurgeDuplicatesCommand(), 15);
 	}
 }

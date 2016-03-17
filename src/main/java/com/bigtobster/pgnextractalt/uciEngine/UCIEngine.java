@@ -302,6 +302,7 @@ public class UCIEngine
 		return builder.toString();
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private String getOutput(@SuppressWarnings("SameParameterValue") final String terminationString) throws IOException
 	{
 		final StringBuilder builder = new StringBuilder(1000);

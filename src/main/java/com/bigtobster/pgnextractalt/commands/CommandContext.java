@@ -33,7 +33,7 @@ class CommandContext
 	/**
 	 * The subcommand for all filter commands
 	 */
-	static final         String FILTER_SUBCOMMAND           = "-filter";
+	static final         String FILTER_SUBCOMMAND           = "filter";
 	/**
 	 * Message for user to notify developer
 	 */

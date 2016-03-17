@@ -6,6 +6,7 @@ A highly extensible modular rewrite of the PGN processing application pgn-extrac
  	<li>Project Started! - 19/11/2015</li>
  	<li>PGN-Extract-Alt Released! - 28/01/201</li>
  	<li>Major enhancements including Machine Correlation! - 16/03/2016</li>
+ 	<li>Added multiple Methods of splitting duplicate games! - 17/03/2016</li>
  </ul>
 
 ##Overview##

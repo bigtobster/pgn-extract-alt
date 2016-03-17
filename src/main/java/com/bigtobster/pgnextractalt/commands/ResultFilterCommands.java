@@ -46,6 +46,7 @@ public class ResultFilterCommands implements CommandMarker
 	static final         String FILTER_WHITE_WINS_OPTION  = "FilterWhiteWins";
 	private static final String FAILED_TO_FILTER          = "Filter failed.";
 	private static final String FILTER_BY_RESULT_HELP     = "Filter imported games by their result. Available on successful import.";
+	private static final char HYPHEN = '-';
 	private static final String NO_GAMES_SATISFY_CRITERIA = "None of the games satisfied the removal criteria.";
 	private static final String RESULT_FILTER_SUBCOMMAND  = "result";
 	private static final String SPACE                     = " ";
@@ -61,7 +62,7 @@ public class ResultFilterCommands implements CommandMarker
 	@SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "MethodReturnAlwaysConstant"})
 	static String getFilterByResultCommand()
 	{
-		return ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND;
+		return ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + ResultFilterCommands.HYPHEN + CommandContext.FILTER_SUBCOMMAND;
 	}
 
 	/**
@@ -74,7 +75,7 @@ public class ResultFilterCommands implements CommandMarker
 	 * @return Successful/failure message
 	 */
 	@SuppressWarnings({"BooleanParameter", "FeatureEnvy", "DuplicateStringLiteralInspection"})
-	@CliCommand(value = ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND,
+	@CliCommand(value = ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + ResultFilterCommands.HYPHEN + CommandContext.FILTER_SUBCOMMAND,
 				help = ResultFilterCommands.FILTER_BY_RESULT_HELP)
 	public String filterByResult(
 			@CliOption(key = {ResultFilterCommands.FILTER_WHITE_WINS_OPTION}, help = "Filter white wins in output", mandatory = false,
@@ -103,7 +104,7 @@ public class ResultFilterCommands implements CommandMarker
 	 *
 	 * @return boolean Available on import
 	 */
-	@CliAvailabilityIndicator(ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + CommandContext.FILTER_SUBCOMMAND)
+	@CliAvailabilityIndicator(ResultFilterCommands.RESULT_FILTER_SUBCOMMAND + ResultFilterCommands.HYPHEN + CommandContext.FILTER_SUBCOMMAND)
 	public boolean isFilterByResultAvailable()
 	{
 		return this.commandContext.getChessIO().isPGNImported();

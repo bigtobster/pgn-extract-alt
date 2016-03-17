@@ -13,7 +13,9 @@ package com.bigtobster.pgnextractalt.filters;
 import chesspresso.game.Game;
 import com.bigtobster.pgnextractalt.core.Filter;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Filter that removes duplicate games Created by Toby Leheup on 08/02/16 for pgn-extract-alt.
@@ -22,7 +24,58 @@ import java.util.ArrayList;
  */
 public class DuplicateFilter implements Filter
 {
-	private ArrayList<Game> duplicateGames = new ArrayList<Game>(0);
+	private static final String              FILTER_NO_MODE_ERROR = "Attempting to filter without a mode!";
+	private              DuplicateFilterMode mode                 = null;
+
+	private static ArrayList<Game> filterDuplicates(final ArrayList<Game> games)
+	{
+		final HashMap<Integer, Game> gamesMap = new HashMap<Integer, Game>(games.size());
+		for(final Game game : games)
+		{
+			gamesMap.put(game.hashCode(), game);
+		}
+		return new ArrayList<Game>(gamesMap.values());
+	}
+
+	private static ArrayList<Game> isolateDuplicates(final ArrayList<Game> games)
+	{
+		final HashMap<Integer, Game> gamesMap = new HashMap<Integer, Game>(games.size());
+		final ArrayList<Game> duplicatedGames = new ArrayList<Game>(games.size());
+		final HashMap<Integer, Game> duplicatedGamesMap = new HashMap<Integer, Game>(games.size());
+		for(final Game game : games)
+		{
+			if(gamesMap.containsKey(game.hashCode()))
+			{
+				duplicatedGames.add(game);
+				duplicatedGamesMap.put(game.hashCode(), game);
+			}
+			else
+			{
+				gamesMap.put(game.hashCode(), game);
+			}
+		}
+		duplicatedGames.addAll(duplicatedGamesMap.values());
+		return duplicatedGames;
+	}
+
+	private static ArrayList<Game> purgeDuplicates(final ArrayList<Game> games)
+	{
+		final HashMap<Integer, Game> gamesMap = new HashMap<Integer, Game>(games.size());
+		final HashMap<Integer, Game> duplicatedGamesMap = new HashMap<Integer, Game>(games.size());
+		for(final Game game : games)
+		{
+			if(gamesMap.containsKey(game.hashCode()))
+			{
+				duplicatedGamesMap.put(game.hashCode(), game);
+			}
+			else
+			{
+				gamesMap.put(game.hashCode(), game);
+			}
+		}
+		games.removeAll(duplicatedGamesMap.values());
+		return games;
+	}
 
 	/**
 	 * Filter out duplicate games
@@ -32,40 +85,29 @@ public class DuplicateFilter implements Filter
 	@Override
 	public ArrayList<Game> filter(final ArrayList<Game> games)
 	{
-		this.duplicateGames = new ArrayList<Game>(games.size() / 2);
-		final ArrayList<Game> newGames = new ArrayList<Game>(games.size());
-		for(int i = 0; i < games.size(); i++)
+		if(this.mode.equals(DuplicateFilterMode.FILTER))
 		{
-			boolean isDuplicated = false;
-			for(int j = i + 1; j < games.size(); j++)
-			{
-				if(games.get(i).equals(games.get(j)))
-				{
-					games.remove(j);
-					//Removed 1 item so pop index back 1 to stay pointing at the item it's supposed to be
-					//noinspection AssignmentToForLoopParameter
-					j = j - 1;
-					isDuplicated = true;
-				}
-			}
-			newGames.add(games.get(i));
-			if(isDuplicated)
-			{
-				this.duplicateGames.add(games.get(i));
-			}
+			return DuplicateFilter.filterDuplicates(games);
 		}
-		return newGames;
+		if(this.mode.equals(DuplicateFilterMode.ISOLATE))
+		{
+			return DuplicateFilter.isolateDuplicates(games);
+		}
+		if(this.mode.equals(DuplicateFilterMode.PURGE))
+		{
+			return DuplicateFilter.purgeDuplicates(games);
+		}
+		throw new InvalidParameterException(DuplicateFilter.FILTER_NO_MODE_ERROR);
 	}
 
 	/**
-	 * Gets an (un-duplicated) list of games that were identified as duplicate games in the previous filter run - or an empty list
-	 *
-	 * @return The list of games that were identified as duplicate games in the previous filter run - or an empty list
+	 * Sets the operation mode of the filter (Filter, Isolate or Purge)
+	 * @param newMode The mode that the filter should operate in
 	 */
 	@SuppressWarnings("PublicMethodNotExposedInInterface")
-	public ArrayList<Game> getDuplicateGames()
+	public void setMode(final DuplicateFilterMode newMode)
 	{
-		return this.duplicateGames;
+		this.mode = newMode;
 	}
 
 	@SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
@@ -73,7 +115,7 @@ public class DuplicateFilter implements Filter
 	public String toString()
 	{
 		return "DuplicateFilter{" +
-			   "duplicateGames=" + this.duplicateGames +
+			   "mode=" + this.mode +
 			   '}';
 	}
 }

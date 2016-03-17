@@ -10,17 +10,15 @@
 
 package com.bigtobster.pgnextractalt.chess;
 
-import chesspresso.game.Game;
 import com.bigtobster.pgnextractalt.core.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.MissingResourceException;
 
 /**
- * Handles filtering of games in PGN-Extract-Alt
- * All the filtering rules are defined by a class in the filter package
- * Created by Toby Leheup on 04/02/16 for pgn-extract-alt.
+ * Handles filtering of games in PGN-Extract-Alt All the filtering rules are defined by a class in the filter package Created by Toby Leheup on
+ * 04/02/16 for pgn-extract-alt.
+ *
  * @author Toby Leheup (Bigtobster)
  */
 @SuppressWarnings("PublicMethodNotExposedInInterface")
@@ -33,6 +31,7 @@ public class ChessFilterer
 
 	/**
 	 * Loads a new filter into the filterer
+	 *
 	 * @param newFilter The new filter to be used by the filterer
 	 */
 	public void loadFilter(final Filter newFilter)
@@ -45,19 +44,19 @@ public class ChessFilterer
 
 	/**
 	 * Executes the currently loaded filter
+	 *
 	 * @return The number of games filtered
 	 */
-	@SuppressWarnings("InstanceMethodNamingConvention")
+	@SuppressWarnings({"InstanceMethodNamingConvention", "FeatureEnvy"})
 	public int run()
 	{
-		if (this.filter == null)
+		if(this.filter == null)
 		{
 			throw new MissingResourceException("Missing filter", Filter.class.toString(), Filter.class.getSimpleName());
 		}
-		final ArrayList<Game> games = this.chessContext.getGames();
-		final int preGameCount = games.size();
-		this.chessContext.setGames(this.filter.filter(games));
-		final int postGameCount = games.size();
+		final int preGameCount = this.chessContext.getGames().size();
+		this.chessContext.setGames(this.filter.filter(this.chessContext.getGames()));
+		final int postGameCount = this.chessContext.getGames().size();
 		return preGameCount - postGameCount;
 	}
 

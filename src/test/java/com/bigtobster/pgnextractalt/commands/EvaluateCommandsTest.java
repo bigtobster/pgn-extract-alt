@@ -33,6 +33,7 @@ public class EvaluateCommandsTest
 		return TestCommandContext.buildCommand(command);
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private static String buildEvaluateMachineCorrelationCommand(
 			final Integer depth,
 			final Integer wait,
