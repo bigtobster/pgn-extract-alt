@@ -71,6 +71,14 @@
 		<system>GitHub</system>
 		<url>https://github.com/bigtobster/pgn-extract-alt/issues</url>
 	</issueManagement>
+	
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Internal repo</name>
+			<url>file:///tmp/PGN-Extract-Alt/</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
